@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot name="vault_box" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="box_heigh" value="0.120" />
+    <xacro:property name="box_width" value="0.190" />
+    <xacro:property name="box_depth" value="0.180" />
+    <xacro:property name="box_mass" value="0.25" />
+
+    <xacro:macro name="vault_box" params="parent">
+
+        <link name="vault_box_link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <geometry>
+                    <mesh filename="package://vault_description/meshes/box/vault_box.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="black" />
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <geometry>
+                    <box size="${box_width} ${box_depth} ${box_heigh}"/>
+                </geometry>
+            </collision>
+            <xacro:solid_cuboid_inertial 
+                rpy="0 0 0" xyz="0 0 0"
+                mass="${box_mass}"
+                x="${box_width}" y="${box_depth}" z="${box_heigh}" />
+        </link>
+
+        <gazebo reference="vault_box_link">
+            <material>Gazebo/Black</material>
+        </gazebo>
+
+        <joint name="vault_box_joint" type="fixed">
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <parent link="${parent}" />
+            <child link="vault_box_link" />
+        </joint>
+
+    </xacro:macro>
+</robot>
