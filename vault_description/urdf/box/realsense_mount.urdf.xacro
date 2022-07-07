@@ -10,18 +10,18 @@
 
         <link name="realsense_mount_link">
             <visual>
-                <origin rpy="0 0 0" xyz="0 0 -0.06" />
+                <origin rpy="0 0 0" xyz="0.002 0.0775 -0.0526" />
                 <geometry>
                     <mesh filename="package://vault_description/meshes/box/realsense_mount.stl"  scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="green" />
             </visual>
-            <!-- <collision>
+            <collision>
                 <origin rpy="0 0 0" xyz="0 0 0" />
                 <geometry>
                     <box size="${box_width} ${box_depth} ${box_heigh}"/>
                 </geometry>
-            </collision> -->
+            </collision>
             <xacro:solid_cuboid_inertial 
                 rpy="0 0 0" xyz="0 0 0"
                 mass="${box_mass}"
@@ -33,7 +33,7 @@
         </gazebo>
 
         <joint name="realsense_mount_joint" type="fixed">
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 -0.0775 -0.0074"/>
             <parent link="${parent}" />
             <child link="realsense_mount_link" />
         </joint>

@@ -10,4 +10,8 @@
   <!-- Hokuyo -->
   <xacro:include filename="$(find vault_description)/urdf/sensors/asus_xtion.urdf.xacro" /> 
   
+  <!-- Realsense -->
+  <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/d435.urdf.xacro" /> 
+  <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/d435i.urdf.xacro" /> 
+  
 </robot>
