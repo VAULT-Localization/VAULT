@@ -6,6 +6,8 @@
     <xacro:include filename="$(find vault_description)/urdf/inertials.xacro"/>
     <xacro:include filename="$(find vault_description)/urdf/materials.xacro"/>
     <xacro:include filename="$(find vault_description)/urdf/box/vault_box.urdf.xacro" />
+    <xacro:include filename="$(find vault_description)/urdf/box/cover.urdf.xacro" />
+    <xacro:include filename="$(find vault_description)/urdf/box/realsense_mount.urdf.xacro" />
     <xacro:include filename="$(find vault_description)/urdf/sensors/all_sensors.urdf.xacro" />
  
     <!-- The base link -->
@@ -25,5 +27,6 @@
 
     <!-- box -->
     <xacro:vault_box parent="vault_link" />
-
+    <xacro:cover parent="vault_box_link" />
+    <xacro:realsense_mount parent="vault_box_link" />
 </robot>

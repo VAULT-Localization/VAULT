@@ -1,18 +1,16 @@
 <?xml version="1.0"?>
 <robot name="vault_box" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:property name="box_heigh" value="0.120" />
-    <xacro:property name="box_width" value="0.190" />
-    <xacro:property name="box_depth" value="0.180" />
-    <xacro:property name="box_mass" value="0.25" />
-
-    <xacro:include filename="$(find vault_description)/urdf/box/cover.urdf.xacro" />
-    <xacro:include filename="$(find vault_description)/urdf/box/realsense_mount.urdf.xacro" />
 
     <xacro:macro name="vault_box" params="parent">
 
+        <xacro:property name="box_heigh" value="0.120" />
+        <xacro:property name="box_width" value="0.190" />
+        <xacro:property name="box_depth" value="0.180" />
+        <xacro:property name="box_mass" value="0.25" />
+
         <link name="vault_box_link">
             <visual>
-                <origin rpy="0 0 0" xyz="0 0 0" />
+                <origin rpy="0 0 0" xyz="0 0 -0.06" />
                 <geometry>
                     <mesh filename="package://vault_description/meshes/box/vault_box.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
@@ -35,13 +33,10 @@
         </gazebo>
 
         <joint name="vault_box_joint" type="fixed">
-            <origin rpy="0 0 0" xyz="0 0 -0.01"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
             <parent link="${parent}" />
             <child link="vault_box_link" />
         </joint>
-
-        <xacro:cover parent="vault_box_link" />
-        <xacro:realsense_mount parent="vault_box_link" />
 
     </xacro:macro>
 </robot>

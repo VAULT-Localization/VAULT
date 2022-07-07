@@ -1,26 +1,27 @@
 <?xml version="1.0"?>
 <robot name="realsense_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:property name="box_heigh" value="0.033" />
-    <xacro:property name="box_width" value="0.080" />
-    <xacro:property name="box_depth" value="0.019" />
-    <xacro:property name="box_mass" value="0.1" />
 
     <xacro:macro name="realsense_mount" params="parent">
 
+        <xacro:property name="box_heigh" value="0.033" />
+        <xacro:property name="box_width" value="0.080" />
+        <xacro:property name="box_depth" value="0.019" />
+        <xacro:property name="box_mass" value="0.1" />
+
         <link name="realsense_mount_link">
             <visual>
-                <origin rpy="0 0 0" xyz="0 0 0" />
+                <origin rpy="0 0 0" xyz="0 0 -0.06" />
                 <geometry>
                     <mesh filename="package://vault_description/meshes/box/realsense_mount.stl"  scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="green" />
             </visual>
-            <collision>
+            <!-- <collision>
                 <origin rpy="0 0 0" xyz="0 0 0" />
                 <geometry>
                     <box size="${box_width} ${box_depth} ${box_heigh}"/>
                 </geometry>
-            </collision>
+            </collision> -->
             <xacro:solid_cuboid_inertial 
                 rpy="0 0 0" xyz="0 0 0"
                 mass="${box_mass}"
