@@ -35,7 +35,7 @@
     <xacro:battery parent="vault_box_link" />
 
     <!-- sensors -->
-    <xacro:arg name="use_nominal_extrinsics" default="false" />
+    <xacro:arg name="use_nominal_extrinsics" default="true" />
     <xacro:sensor_d435i parent="realsense_mount_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
         <origin xyz="0 0 -0.005" rpy="0 0 -1.57"/>
     </xacro:sensor_d435i>
