@@ -20,6 +20,12 @@ def generate_launch_description():
         "default.rviz")
 
     ### ARGS ###
+    namespace = LaunchConfiguration("namespace")
+    namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="vault",
+        description="Vault namespace")
+
     world = LaunchConfiguration("world")
     world_cmd = DeclareLaunchArgument(
         "world",
@@ -41,7 +47,7 @@ def generate_launch_description():
     launch_rviz = LaunchConfiguration("launch_rviz")
     launch_rviz_cmd = DeclareLaunchArgument(
         "launch_rviz",
-        default_value="False",
+        default_value="True",
         description="Whether launch rviz2")
 
     initial_pose_x = LaunchConfiguration("initial_pose_x")
@@ -98,6 +104,7 @@ def generate_launch_description():
             os.path.join(pkg_path, "launch", "spawn.launch.py")
         ),
         launch_arguments={
+            "namespace": namespace,
             "initial_pose_x": initial_pose_x,
             "initial_pose_y": initial_pose_y,
             "initial_pose_z": initial_pose_z,
@@ -107,6 +114,7 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
+    ld.add_action(namespace_cmd)
     ld.add_action(launch_gui_cmd)
     ld.add_action(pause_gz_cmd)
     ld.add_action(launch_rviz_cmd)

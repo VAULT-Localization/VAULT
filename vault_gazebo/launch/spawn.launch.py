@@ -4,17 +4,17 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch import LaunchDescription
-import xacro
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 
 
 def generate_launch_description():
 
-    xacro_file = os.path.join(get_package_share_directory(
-        "vault_description"), "robots/vault.urdf.xacro")
-
-    doc = xacro.parse(open(xacro_file))
-    xacro.process_doc(doc)
-    params = {"robot_description": doc.toxml(), "use_sim_time": True}
+    ### ARGS ###
+    namespace = LaunchConfiguration("namespace")
+    namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="vault",
+        description="Vault namespace")
 
     initial_pose_x = LaunchConfiguration("initial_pose_x")
     initial_pose_x_cmd = DeclareLaunchArgument(
@@ -40,8 +40,27 @@ def generate_launch_description():
         default_value="0.0",
         description="Initial pose yaw")
 
+    ### XACRO ###
+    xacro_file = os.path.join(get_package_share_directory(
+        "vault_description"), "robots/vault.urdf.xacro")
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            xacro_file,
+            " ",
+            "prefix:=", namespace
+        ]
+    )
+
+    params = {"robot_description": robot_description_content,
+              "use_sim_time": True,
+              "frame_prefix": [namespace, "/"]}
+
+    ### NODES ###
     robot_state_publisher_cmd = Node(
         name="robot_state_publisher",
+        namespace=namespace,
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
@@ -50,10 +69,12 @@ def generate_launch_description():
 
     spawn_entity_cmd = Node(
         package="gazebo_ros",
+        namespace=namespace,
         executable="spawn_entity.py",
-        arguments=["-entity", "vault",
+        arguments=["-entity", namespace,
                    "-topic", "robot_description",
                    "-timeout", "120",
+                   "-robot_namespace", namespace,
                    "-x", initial_pose_x,
                    "-y", initial_pose_y,
                    "-z", initial_pose_z,
@@ -64,6 +85,7 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
+    ld.add_action(namespace_cmd)
     ld.add_action(initial_pose_x_cmd)
     ld.add_action(initial_pose_y_cmd)
     ld.add_action(initial_pose_z_cmd)

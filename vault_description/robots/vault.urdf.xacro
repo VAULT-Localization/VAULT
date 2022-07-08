@@ -13,7 +13,7 @@
     <xacro:include filename="$(find vault_description)/urdf/sensors/all_sensors.urdf.xacro" />
  
     <!-- The base link -->
-    <link name="vault_link">
+    <link name="base_link">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
@@ -23,17 +23,16 @@
         </visual>
     </link>
 
-    <gazebo reference="vault_link">
+    <gazebo reference="base_link">
         <material>Gazebo/Orange</material>
     </gazebo>
 
     <!-- box -->
-    <xacro:vault_box parent="vault_link" />
+    <xacro:vault_box parent="base_link" />
     <xacro:cover parent="vault_box_link" />
     <xacro:realsense_mount parent="vault_box_link" />
     <xacro:computer parent="vault_box_link" />
     <xacro:battery parent="vault_box_link" />
-
 
     <!-- sensors -->
     <xacro:arg name="use_nominal_extrinsics" default="false" />

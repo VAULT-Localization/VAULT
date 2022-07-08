@@ -3,13 +3,13 @@
     
     
   <xacro:macro name="sensor_hokuyo" params="prefix parent *origin min_angle:=-1.57079637051 max_angle:=1.57079637051">
-     
+    <xacro:arg name="prefix" default=""/>
+
     <joint name="${prefix}_base_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent}"/>
       <child link="${prefix}_base_link"/>
-    </joint>
-  
+    </joint> 
     
     <link name="${prefix}_base_link">
       <collision>
@@ -77,7 +77,7 @@
                     <argument>~/out:=scan</argument>
                   </ros>
                   <output_type>sensor_msgs/LaserScan</output_type>
-                  <frame_name>${prefix}_link</frame_name>
+                  <frame_name>$(arg prefix)/${prefix}_link</frame_name>
                 </plugin>
             </sensor>
     </gazebo>

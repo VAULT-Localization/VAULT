@@ -9,6 +9,7 @@ aluminum peripherial evaluation case.
 -->
 
 <robot name="sensor_d435" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="prefix" default=""/>
 
   <xacro:macro name="sensor_d435" params="parent *origin name:=camera use_nominal_extrinsics:=false add_plug:=false use_mesh:=true">
     <!-- Includes -->
@@ -164,7 +165,7 @@ aluminum peripherial evaluation case.
     <!-- gazebo realsense plugin -->
     <gazebo reference="${name}_link">
       <sensor name="${name}" type="depth">
-        <camera name="camera">
+        <camera name="${name}">
           <horizontal_fov>1.57</horizontal_fov>
           <image>
             <width>1280</width>
@@ -187,21 +188,21 @@ aluminum peripherial evaluation case.
 
         <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
           <ros>
-            <remapping>/${name}/image_raw:=/${name}/color/image_raw</remapping>
-            <remapping>/${name}/image_raw/compressed:=/${name}/color/image_raw/compressed</remapping>
-            <remapping>/${name}/image_raw/compressedDepth:=/${name}/color/image_raw/compressedDepth</remapping>
-            <remapping>/${name}/camera_info:=/${name}/color/camera_info</remapping>
-            <remapping>/${name}/depth/image_raw:=/${name}/aligned_depth_to_color/image_raw</remapping>
-            <remapping>/${name}/depth/image_raw/compressed:=/${name}/aligned_depth_to_color/image_raw/compressed</remapping>
-            <remapping>/${name}/depth/image_raw/compressedDepth:=/${name}/aligned_depth_to_color/image_raw/compressedDepth</remapping>
-            <remapping>/${name}/depth/camera_info:=/${name}/aligned_depth_to_color/camera_info</remapping>
-            <remapping>/${name}/points:=/${name}/depth/color/points</remapping>
+            <remapping>/$(arg prefix)/${name}/image_raw:=/$(arg prefix)/${name}/color/image_raw</remapping>
+            <remapping>/$(arg prefix)/${name}/image_raw/compressed:=/$(arg prefix)/${name}/color/image_raw/compressed</remapping>
+            <remapping>/$(arg prefix)/${name}/image_raw/compressedDepth:=/$(arg prefix)/${name}/color/image_raw/compressedDepth</remapping>
+            <remapping>/$(arg prefix)/${name}/camera_info:=/$(arg prefix)/${name}/color/camera_info</remapping>
+            <remapping>/$(arg prefix)/${name}/depth/image_raw:=/$(arg prefix)/${name}/aligned_depth_to_color/image_raw</remapping>
+            <remapping>/$(arg prefix)/${name}/depth/image_raw/compressed:=/$(arg prefix)/${name}/aligned_depth_to_color/image_raw/compressed</remapping>
+            <remapping>/$(arg prefix)/${name}/depth/image_raw/compressedDepth:=/$(arg prefix)/${name}/aligned_depth_to_color/image_raw/compressedDepth</remapping>
+            <remapping>/$(arg prefix)/${name}/depth/camera_info:=/$(arg prefix)/${name}/aligned_depth_to_color/camera_info</remapping>
+            <remapping>/$(arg prefix)/${name}/points:=/$(arg prefix)/${name}/depth/color/points</remapping>
           </ros>
           <visualize>true</visualize>
           <baseline>0.05</baseline>
           <always_on>true</always_on>
           <update_rate>0.0</update_rate>
-          <frame_name>${name}_color_optical_frame</frame_name>
+          <frame_name>$(arg prefix)/${name}_color_optical_frame</frame_name>
           <camera_name>camera</camera_name>
           <min_depth>0.3</min_depth>
           <max_depth>3.0</max_depth>
