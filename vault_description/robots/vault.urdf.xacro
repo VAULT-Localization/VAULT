@@ -40,14 +40,14 @@
         <origin xyz="0 0 -0.005" rpy="0 0 -1.57"/>
     </xacro:sensor_d435i>
 
-    <xacro:sensor_imu prefix="imu" parent="vault_box_link">
+    <xacro:sensor_imu name="imu" parent="vault_box_link">
         <origin xyz="0.075 -0.05 0" rpy="0 -1.57 0"/>
     </xacro:sensor_imu>
 
-    <xacro:sensor_gps prefix="gps" parent="vault_box_link">
+    <xacro:sensor_gps name="gps" parent="vault_box_link">
         <origin xyz="0 0 0.0725" rpy="0 0 0"/>
     </xacro:sensor_gps>
-    <xacro:gps_board prefix="gps" parent="vault_box_link">
+    <xacro:gps_board name="gps" parent="vault_box_link">
         <origin xyz="-0.072 -0.005 0" rpy="0 1.57 0"/>
     </xacro:gps_board>
 </robot>

@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <robot name="sensor_gps" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="sensor_gps" params="prefix parent *origin">
+  <xacro:macro name="sensor_gps" params="name parent *origin">
     <xacro:arg name="prefix" default=""/>
 
     <!-- antenna -->
-    <joint name="${prefix}_antenna_joint" type="fixed">
+    <joint name="${name}_antenna_joint" type="fixed">
         <axis xyz="1 0 0"/>
         <xacro:insert_block name="origin"/>
         <parent link="${parent}"/>
-        <child link="${prefix}_antenna_link"/>
+        <child link="${name}_antenna_link"/>
     </joint>
     
-    <link name="${prefix}_antenna_link">
+    <link name="${name}_antenna_link">
       <inertial>
         <mass value="0.001"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -33,20 +33,20 @@
       </collision>
     </link>
        
-    <gazebo reference="${prefix}_antenna_link">
+    <gazebo reference="${name}_antenna_link">
       <material>Gazebo/Grey</material>
     </gazebo>
 
     <!-- plugin -->
-    <gazebo reference="${prefix}_antenna_link">
+    <gazebo reference="${name}_antenna_link">
         <sensor name="gps_sensor" type="gps">
             <always_on>true</always_on>
             <update_rate>1.0</update_rate>
             <plugin name="gps_controller" filename="libgazebo_ros_gps_sensor.so">
                 <ros>
-                    <remapping>gps_controller/out:=gps</remapping>
+                    <remapping>gps_controller/out:=fix</remapping>
                 </ros>
-                <frame_name>$(arg prefix)/${prefix}_antenna_link</frame_name>
+                <frame_name>$(arg prefix)/${name}_antenna_link</frame_name>
             </plugin>
         </sensor>
         <material>Gazebo/Grey</material>

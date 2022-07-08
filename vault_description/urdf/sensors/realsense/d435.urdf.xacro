@@ -188,15 +188,15 @@ aluminum peripherial evaluation case.
 
         <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
           <ros>
-            <remapping>/$(arg prefix)/${name}/image_raw:=/$(arg prefix)/${name}/color/image_raw</remapping>
-            <remapping>/$(arg prefix)/${name}/image_raw/compressed:=/$(arg prefix)/${name}/color/image_raw/compressed</remapping>
-            <remapping>/$(arg prefix)/${name}/image_raw/compressedDepth:=/$(arg prefix)/${name}/color/image_raw/compressedDepth</remapping>
-            <remapping>/$(arg prefix)/${name}/camera_info:=/$(arg prefix)/${name}/color/camera_info</remapping>
-            <remapping>/$(arg prefix)/${name}/depth/image_raw:=/$(arg prefix)/${name}/aligned_depth_to_color/image_raw</remapping>
-            <remapping>/$(arg prefix)/${name}/depth/image_raw/compressed:=/$(arg prefix)/${name}/aligned_depth_to_color/image_raw/compressed</remapping>
-            <remapping>/$(arg prefix)/${name}/depth/image_raw/compressedDepth:=/$(arg prefix)/${name}/aligned_depth_to_color/image_raw/compressedDepth</remapping>
-            <remapping>/$(arg prefix)/${name}/depth/camera_info:=/$(arg prefix)/${name}/aligned_depth_to_color/camera_info</remapping>
-            <remapping>/$(arg prefix)/${name}/points:=/$(arg prefix)/${name}/depth/color/points</remapping>
+            <remapping>camera/image_raw:=camera/color/image_raw</remapping>
+            <remapping>camera/image_raw/compressed:=camera/color/image_raw/compressed</remapping>
+            <remapping>camera/image_raw/compressedDepth:=camera/color/image_raw/compressedDepth</remapping>
+            <remapping>camera/camera_info:=camera/color/camera_info</remapping>
+            <remapping>camera/depth/image_raw:=camera/aligned_depth_to_color/image_raw</remapping>
+            <remapping>camera/depth/image_raw/compressed:=camera/aligned_depth_to_color/image_raw/compressed</remapping>
+            <remapping>camera/depth/image_raw/compressedDepth:=camera/aligned_depth_to_color/image_raw/compressedDepth</remapping>
+            <remapping>camera/depth/camera_info:=camera/aligned_depth_to_color/camera_info</remapping>
+            <remapping>camera/points:=camera/depth/color/points</remapping>
           </ros>
           <visualize>true</visualize>
           <baseline>0.05</baseline>
