@@ -8,6 +8,8 @@
     <xacro:include filename="$(find vault_description)/urdf/box/vault_box.urdf.xacro" />
     <xacro:include filename="$(find vault_description)/urdf/box/cover.urdf.xacro" />
     <xacro:include filename="$(find vault_description)/urdf/box/realsense_mount.urdf.xacro" />
+    <xacro:include filename="$(find vault_description)/urdf/box/computer.urdf.xacro" />
+    <xacro:include filename="$(find vault_description)/urdf/box/battery.urdf.xacro" />
     <xacro:include filename="$(find vault_description)/urdf/sensors/all_sensors.urdf.xacro" />
  
     <!-- The base link -->
@@ -28,10 +30,25 @@
     <!-- box -->
     <xacro:vault_box parent="vault_link" />
     <xacro:cover parent="vault_box_link" />
-    <xacro:realsense_mount parent="vault_link" />
+    <xacro:realsense_mount parent="vault_box_link" />
+    <xacro:computer parent="vault_box_link" />
+    <xacro:battery parent="vault_box_link" />
 
+
+    <!-- sensors -->
     <xacro:arg name="use_nominal_extrinsics" default="false" />
     <xacro:sensor_d435i parent="realsense_mount_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
         <origin xyz="0 0 -0.005" rpy="0 0 -1.57"/>
     </xacro:sensor_d435i>
+
+    <xacro:sensor_imu prefix="imu" parent="vault_box_link">
+        <origin xyz="0.075 -0.05 0" rpy="0 -1.57 0"/>
+    </xacro:sensor_imu>
+
+    <xacro:sensor_gps prefix="gps" parent="vault_box_link">
+        <origin xyz="0 0 0.0725" rpy="0 0 0"/>
+    </xacro:sensor_gps>
+    <xacro:gps_board prefix="gps" parent="vault_box_link">
+        <origin xyz="-0.072 -0.005 0" rpy="0 1.57 0"/>
+    </xacro:gps_board>
 </robot>

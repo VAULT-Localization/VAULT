@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot name="battery" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="battery" params="parent">
+
+        <xacro:property name="box_heigh" value="0.076" />
+        <xacro:property name="box_width" value="0.158" />
+        <xacro:property name="box_depth" value="0.038" />
+        <xacro:property name="box_mass" value="1.000" />
+
+        <link name="battery_link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <geometry>
+                    <box size="${box_width} ${box_depth} ${box_heigh}"/>
+                </geometry>
+                <material name="blue" />
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <geometry>
+                    <box size="${box_width} ${box_depth} ${box_heigh}"/>
+                </geometry>
+            </collision>
+            <xacro:solid_cuboid_inertial 
+                rpy="0 0 0" xyz="0 0 0"
+                mass="${box_mass}"
+                x="${box_width}" y="${box_depth}" z="${box_heigh}" />
+        </link>
+
+        <gazebo reference="battery_link">
+            <material>Gazebo/Blue</material>
+        </gazebo>
+
+        <joint name="battery_joint" type="fixed">
+            <origin rpy="0 0 0" xyz="0 0.08 -0.002"/>
+            <parent link="${parent}" />
+            <child link="battery_link" />
+        </joint>
+
+    </xacro:macro>
+</robot>

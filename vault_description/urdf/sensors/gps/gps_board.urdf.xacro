@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot name="gps_board" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="gps_board" params="prefix parent *origin">
+
+    <!-- board -->
+    <joint name="${prefix}_joint" type="fixed">
+        <axis xyz="1 0 0"/>
+        <xacro:insert_block name="origin"/>
+        <parent link="${parent}"/>
+        <child link="${prefix}_board_link"/>
+    </joint>
+    
+    <link name="${prefix}_board_link">
+      <inertial>
+        <mass value="0.001"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.0001"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size="0.055 0.110 0.030"/>
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size="0.055 0.110 0.030"/>
+        </geometry>
+      </collision>
+    </link>
+       
+    <gazebo reference="${prefix}_board_link">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

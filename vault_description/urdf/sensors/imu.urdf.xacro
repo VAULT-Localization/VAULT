@@ -19,20 +19,20 @@
       <visual>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
-          <box size="0.03 0.02 0.01"/>
+          <box size="0.034 0.034 0.016"/>
         </geometry>
-        <material name="blue" />
+        <material name="turquoise" />
       </visual>
       <collision>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
-          <box size=".001 .001 .001"/>
+          <box size="0.034 0.034 0.016"/>
         </geometry>
       </collision>
     </link>
        
     <gazebo reference="${prefix}_link">
-        <material>Gazebo/Blue</material>
+        <material>Gazebo/Turquoise</material>
     </gazebo>
 
     <gazebo reference="${prefix}_link">

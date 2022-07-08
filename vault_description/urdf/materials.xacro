@@ -13,6 +13,10 @@
         <color rgba="0 0 0.8 1"/>
     </material>
     
+    <material name="turquoise">
+        <color rgba="0.188 0.835 0.784 1"/>
+    </material>
+
     <material name="orange">
         <color rgba="0.8 0.25 0 1"/>
     </material>

@@ -5,7 +5,7 @@
 
         <xacro:property name="box_heigh" value="0.120" />
         <xacro:property name="box_width" value="0.190" />
-        <xacro:property name="box_depth" value="0.180" />
+        <xacro:property name="box_depth" value="0.210" />
         <xacro:property name="box_mass" value="0.25" />
 
         <link name="vault_box_link">
