@@ -31,7 +31,8 @@ def generate_launch_description():
             "pointcloud.enable": "true",
             "align_depth.enable": "true",
             # "enable_infra1": "true",
-            # "enable_infra2": "true"}.items()
+            # "enable_infra2": "true"
+        }.items()
     )
 
     ld = LaunchDescription()
