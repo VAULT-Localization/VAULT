@@ -1,11 +1,11 @@
 import os
-from ament_index_python import get_package_share_directory
+from ament_index_python.packages import get_package_share_directory
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch import LaunchDescription
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
-import xacro
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -41,23 +41,7 @@ def generate_launch_description():
         default_value="0.0",
         description="Initial pose yaw")
 
-    ### XACRO ###
-    xacro_file = os.path.join(get_package_share_directory(
-        "vault_description"), "robots/vault.urdf.xacro")
-    doc = xacro.parse(open(xacro_file))
-    xacro.process_doc(doc)
-    params = {"robot_description": doc.toxml(), "use_sim_time": True}
-
     ### NODES ###
-    robot_state_publisher_cmd = Node(
-        name="robot_state_publisher",
-        namespace=namespace,
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        parameters=[params]
-    )
-
     spawn_entity_cmd = Node(
         package="gazebo_ros",
         namespace=namespace,
@@ -74,6 +58,17 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}]
     )
 
+    ### LAUNCHES ###
+    robot_state_publisher_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory("vault_description"),
+                         "launch", "robot_state_publisher.launch.py")
+        ),
+        launch_arguments={
+            "namespace": namespace
+        }.items()
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
@@ -82,7 +77,7 @@ def generate_launch_description():
     ld.add_action(initial_pose_z_cmd)
     ld.add_action(initial_pose_yaw_cmd)
 
-    ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_entity_cmd)
+    ld.add_action(robot_state_publisher_cmd)
 
     return ld

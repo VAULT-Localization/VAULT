@@ -4,7 +4,7 @@ project(vault_description)
 find_package(ament_cmake REQUIRED)
 
 install(
-  DIRECTORY meshes robots urdf
+  DIRECTORY launch meshes robots urdf
   DESTINATION share/${PROJECT_NAME}
 )
 
