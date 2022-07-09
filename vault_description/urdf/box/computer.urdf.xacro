@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<robot name="computer" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="vault_computer" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="computer" params="parent">
+    <xacro:macro name="vault_computer" params="parent">
 
         <xacro:property name="box_heigh" value="0.040" />
         <xacro:property name="box_width" value="0.110" />
         <xacro:property name="box_depth" value="0.110" />
         <xacro:property name="box_mass" value="0.500" />
 
-        <link name="computer_link">
+        <link name="vault_computer_link">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0" />
                 <geometry>
@@ -28,14 +28,14 @@
                 x="${box_width}" y="${box_depth}" z="${box_heigh}" />
         </link>
 
-        <gazebo reference="computer_link">
+        <gazebo reference="vault_computer_link">
             <material>Gazebo/DarkGrey</material>
         </gazebo>
 
-        <joint name="computer_joint" type="fixed">
+        <joint name="vault_computer_joint" type="fixed">
             <origin rpy="0 0 0" xyz="0 0 0.03"/>
             <parent link="${parent}" />
-            <child link="computer_link" />
+            <child link="vault_computer_link" />
         </joint>
 
     </xacro:macro>

@@ -2,7 +2,6 @@
 <robot name="sensor_gps" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="sensor_gps" params="name parent *origin">
-    <xacro:arg name="prefix" default=""/>
 
     <!-- antenna -->
     <joint name="${name}_antenna_joint" type="fixed">
@@ -46,7 +45,7 @@
                 <ros>
                     <remapping>gps_controller/out:=fix</remapping>
                 </ros>
-                <frame_name>$(arg prefix)/${name}_antenna_link</frame_name>
+                <frame_name>${name}_antenna_link</frame_name>
             </plugin>
         </sensor>
         <material>Gazebo/Grey</material>

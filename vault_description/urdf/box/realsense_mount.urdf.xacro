@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<robot name="realsense_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="vault_realsense_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="realsense_mount" params="parent">
+    <xacro:macro name="vault_realsense_mount" params="parent">
 
         <xacro:property name="box_heigh" value="0.033" />
         <xacro:property name="box_width" value="0.080" />
         <xacro:property name="box_depth" value="0.019" />
         <xacro:property name="box_mass" value="0.1" />
 
-        <link name="realsense_mount_link">
+        <link name="vault_realsense_mount_link">
             <visual>
                 <origin rpy="0 0 0" xyz="0.002 0.0775 -0.0526" />
                 <geometry>
@@ -28,14 +28,14 @@
                 x="${box_width}" y="${box_depth}" z="${box_heigh}" />
         </link>
 
-        <gazebo reference="realsense_mount_link">
+        <gazebo reference="vault_realsense_mount_link">
             <material>Gazebo/Green</material>
         </gazebo>
 
-        <joint name="realsense_mount_joint" type="fixed">
+        <joint name="vault_realsense_mount_joint" type="fixed">
             <origin rpy="0 0 0" xyz="0 -0.0775 -0.0074"/>
             <parent link="${parent}" />
-            <child link="realsense_mount_link" />
+            <child link="vault_realsense_mount_link" />
         </joint>
 
     </xacro:macro>

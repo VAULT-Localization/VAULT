@@ -9,7 +9,6 @@ aluminum peripherial evaluation case.
 -->
 
 <robot name="sensor_d435" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:arg name="prefix" default=""/>
 
   <xacro:macro name="sensor_d435" params="parent *origin name:=camera use_nominal_extrinsics:=false add_plug:=false use_mesh:=true">
     <!-- Includes -->
@@ -202,7 +201,7 @@ aluminum peripherial evaluation case.
           <baseline>0.05</baseline>
           <always_on>true</always_on>
           <update_rate>0.0</update_rate>
-          <frame_name>$(arg prefix)/${name}_color_optical_frame</frame_name>
+          <frame_name>${name}_color_optical_frame</frame_name>
           <camera_name>camera</camera_name>
           <min_depth>0.3</min_depth>
           <max_depth>3.0</max_depth>

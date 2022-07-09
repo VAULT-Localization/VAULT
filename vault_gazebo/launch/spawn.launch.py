@@ -5,6 +5,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+import xacro
 
 
 def generate_launch_description():
@@ -43,19 +44,9 @@ def generate_launch_description():
     ### XACRO ###
     xacro_file = os.path.join(get_package_share_directory(
         "vault_description"), "robots/vault.urdf.xacro")
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            xacro_file,
-            " ",
-            "prefix:=", namespace
-        ]
-    )
-
-    params = {"robot_description": robot_description_content,
-              "use_sim_time": True,
-              "frame_prefix": [namespace, "/"]}
+    doc = xacro.parse(open(xacro_file))
+    xacro.process_doc(doc)
+    params = {"robot_description": doc.toxml(), "use_sim_time": True}
 
     ### NODES ###
     robot_state_publisher_cmd = Node(

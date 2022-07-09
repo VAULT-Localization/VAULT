@@ -23,7 +23,7 @@ def generate_launch_description():
         launch_arguments={
             "node_namespace": [namespace, "/camera"],
             "node_name": "camera",
-            "camera_name": [namespace, "/camera"],
+            "camera_name": [namespace, "_camera"],
             "device_type": "d435",
             # "enable_gyro": "true",
             # "enable_accel": "true",

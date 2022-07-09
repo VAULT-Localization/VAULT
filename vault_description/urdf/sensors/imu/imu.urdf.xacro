@@ -2,7 +2,6 @@
 <robot name="sensor_imu" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="sensor_imu" params="name parent *origin">
-    <xacro:arg name="prefix" default=""/>
 
     <joint name="${name}_joint" type="fixed">
         <axis xyz="1 0 0"/>
@@ -43,7 +42,7 @@
             <remapping>~/out:=imu</remapping>
           </ros>
           <initial_orientation_as_reference>false</initial_orientation_as_reference>
-          <frame_name>$(arg prefix)/${name}_link</frame_name>
+          <frame_name>${name}_link</frame_name>
         </plugin>
         
         <always_on>true</always_on>
