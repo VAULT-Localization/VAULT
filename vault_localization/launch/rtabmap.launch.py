@@ -32,6 +32,7 @@ def generate_launch_description():
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "subscribe_scan": False,
+        "subscribe_odom_info": True,
         "approx_sync": True,
         "publish_tf": True,
         "use_sim_time": use_sim_time,
@@ -75,6 +76,7 @@ def generate_launch_description():
         ("depth/image", "camera/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
         ("odom", "odom"),
+        ("odom_info", "odom_info"),
         ("goal", "goal_pose"),
         ("gps/fix", "fix")]
 
