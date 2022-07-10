@@ -9,7 +9,7 @@ from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
 
-    vault_dir = get_package_share_directory("vault")
+    vault_localization_dir = get_package_share_directory("vault_localization")
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
@@ -25,16 +25,16 @@ def generate_launch_description():
 
     rgbd_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_dir,
-                         "launch/localization", "rgbd_odometry.launch.py")
+            os.path.join(vault_localization_dir,
+                         "launch", "rgbd_odometry.launch.py")
         ),
         launch_arguments={"namespace": namespace}.items()
     )
 
     rtabmap_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_dir,
-                         "launch/localization", "rtabmap.launch.py")
+            os.path.join(vault_localization_dir,
+                         "launch", "rtabmap.launch.py")
         ),
         launch_arguments={
             "namespace": namespace,
@@ -44,8 +44,8 @@ def generate_launch_description():
 
     ekf_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_dir,
-                         "launch/localization", "ekf.launch.py")
+            os.path.join(vault_localization_dir,
+                         "launch", "ekf.launch.py")
         ),
         launch_arguments={"namespace": namespace,
                           "use_sim_time": use_sim_time

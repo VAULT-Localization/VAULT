@@ -22,12 +22,12 @@ def generate_launch_description():
         "Optimizer/GravitySigma": "0.0",
 
         "Odom/Strategy": "0",
-        "Odom/ResetCountdown": "1",
+        "Odom/ResetCountdown": "10",
         "Odom/Holonomic": "false",
         "Odom/FilteringStrategy": "0",
         "Odom/ParticleSize": "500",
 
-        "GFTT/MinDistance": "10",
+        "GFTT/MinDistance": "7",
         "GFTT/QualityLevel": "0.1",
 
         "SURF/Extended": "true",
@@ -46,7 +46,7 @@ def generate_launch_description():
         "Vis/CorType": "0",
         "Vis/MaxFeatures": "1000",
         "Vis/MinDepth": "0.0",
-        "Vis/MaxDepth": "2.5",
+        "Vis/MaxDepth": "3.0",
     }]
 
     remappings = [

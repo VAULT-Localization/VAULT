@@ -12,7 +12,7 @@ from launch.conditions import IfCondition
 def generate_launch_description():
 
     pkg_path = get_package_share_directory("vault_gazebo")
-    pkg_vault_path = get_package_share_directory("vault")
+    pkg_localization_path = get_package_share_directory("vault_localization")
     pkg_gazebo_ros = get_package_share_directory("gazebo_ros")
 
     rviz_config = os.path.join(
@@ -115,7 +115,8 @@ def generate_launch_description():
 
     vault_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_vault_path, "launch", "vault.launch.py")
+            os.path.join(pkg_localization_path, "launch",
+                         "localization.launch.py")
         ),
         launch_arguments={
             "namespace": namespace,

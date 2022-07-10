@@ -9,17 +9,15 @@ from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
 
-    vault_dir = get_package_share_directory("vault")
-
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
         "namespace",
         default_value="vault",
         description="Vault namespace")
 
-    vault_cmd = IncludeLaunchDescription(
+    localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_dir,
+            os.path.join(get_package_share_directory("vault_localization"),
                          "launch", "vault.launch.py")
         ),
         launch_arguments={"namespace": namespace,
@@ -29,7 +27,7 @@ def generate_launch_description():
 
     realsense_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_dir,
+            os.path.join(get_package_share_directory("vault"),
                          "launch", "realsense.launch.py")
         ),
         launch_arguments={
@@ -51,8 +49,8 @@ def generate_launch_description():
 
     ld.add_action(namespace_cmd)
 
-    ld.add_action(vault_cmd)
     ld.add_action(realsense_cmd)
+    ld.add_action(localization_cmd)
     ld.add_action(robot_state_publisher_cmd)
 
     return ld

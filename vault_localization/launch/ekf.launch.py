@@ -22,7 +22,7 @@ def generate_launch_description():
         description="Use simulation (Gazebo) clock if True")
 
     params_file = os.path.join(get_package_share_directory(
-        "vault"), "config", "ekf.yaml")
+        "vault_localization"), "config", "ekf.yaml")
 
     param_substitutions = {
         "use_sim_time": use_sim_time}

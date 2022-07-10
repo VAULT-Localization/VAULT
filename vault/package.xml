@@ -10,9 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>vault_description</depend>
-  <depend>rtabmap</depend>
-  <depend>rtabmap_ros</depend>
-  <depend>robot_localization</depend>
+  <depend>vault_localization</depend>
   <depend>realsense2_camera</depend>
 
   <export>
