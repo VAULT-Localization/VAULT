@@ -18,7 +18,7 @@ def generate_launch_description():
     localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory("vault_localization"),
-                         "launch", "vault.launch.py")
+                         "launch", "localization.launch.py")
         ),
         launch_arguments={"namespace": namespace,
                           "use_sim_time": "False"
