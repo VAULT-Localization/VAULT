@@ -1,5 +1,9 @@
 # ros2_vault
 
+<p align="center">
+  <img src="./docs/logo.png" width="50%" />
+</p>
+
 ## Table of Contents
 
 1. [Installation](#installation)
