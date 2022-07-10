@@ -42,11 +42,14 @@ def generate_launch_description():
         "qos_imu": 2,
         "qos_scan": 2,
 
+        "Rtabmap/LoopGPS": "true",
+
         "Optimizer/Strategy": "1",
         "Optimizer/GravitySigma": "0.0",
 
         "RGBD/OptimizeMaxError": "1.0",
         "RGBD/OptimizeFromGraphEnd": "true",
+        "RGBD/LocalRadius": "20",
 
         "GFTT/MinDistance": "2.5",
         "GFTT/QualityLevel": "0.1",
