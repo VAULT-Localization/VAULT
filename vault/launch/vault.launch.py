@@ -26,7 +26,7 @@ def generate_launch_description():
     rgbd_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_dir,
-                         "launch", "rgbd_odometry.launch.py")
+                         "launch/localization", "rgbd_odometry.launch.py")
         ),
         launch_arguments={"namespace": namespace}.items()
     )
@@ -34,7 +34,7 @@ def generate_launch_description():
     rtabmap_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_dir,
-                         "launch", "rtabmap.launch.py")
+                         "launch/localization", "rtabmap.launch.py")
         ),
         launch_arguments={
             "namespace": namespace,
@@ -45,7 +45,7 @@ def generate_launch_description():
     ekf_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_dir,
-                         "launch", "ekf.launch.py")
+                         "launch/localization", "ekf.launch.py")
         ),
         launch_arguments={"namespace": namespace,
                           "use_sim_time": use_sim_time
