@@ -9,6 +9,12 @@ import os
 
 def generate_launch_description():
 
+    namespace = LaunchConfiguration("namespace")
+    namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="vault",
+        description="Vault namespace")
+
     use_sim_time = LaunchConfiguration("use_sim_time")
     use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time",
@@ -30,13 +36,15 @@ def generate_launch_description():
         package="robot_localization",
         executable="ekf_node",
         name="ekf_filter_node",
+        namespace=namespace,
         output="log",
         parameters=[configured_params],
-        remappings=[("odometry/filtered", "/odom"),
-                    ("accel/filtered", "/accel")])
+        remappings=[("odometry/filtered", "odom"),
+                    ("accel/filtered", "accel")])
 
     ld = LaunchDescription()
 
+    ld.add_action(namespace_cmd)
     ld.add_action(use_sim_time_cmd)
 
     ld.add_action(ekf_cmd)

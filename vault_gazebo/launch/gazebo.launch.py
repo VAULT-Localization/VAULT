@@ -12,6 +12,7 @@ from launch.conditions import IfCondition
 def generate_launch_description():
 
     pkg_path = get_package_share_directory("vault_gazebo")
+    pkg_vault_path = get_package_share_directory("vault")
     pkg_gazebo_ros = get_package_share_directory("gazebo_ros")
 
     rviz_config = os.path.join(
@@ -112,6 +113,16 @@ def generate_launch_description():
         }.items()
     )
 
+    vault_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_vault_path, "launch", "vault.launch.py")
+        ),
+        launch_arguments={
+            "namespace": namespace,
+            "use_sim_time": "True"
+        }.items()
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
@@ -124,9 +135,10 @@ def generate_launch_description():
     ld.add_action(initial_pose_z_cmd)
     ld.add_action(initial_pose_yaw_cmd)
 
+    ld.add_action(rviz_cmd)
     ld.add_action(gazebo_client_cmd)
     ld.add_action(gazebo_server_cmd)
     ld.add_action(spawn_cmd)
-    ld.add_action(rviz_cmd)
+    ld.add_action(vault_cmd)
 
     return ld

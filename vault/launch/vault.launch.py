@@ -11,6 +11,12 @@ def generate_launch_description():
 
     vault_dir = get_package_share_directory("vault")
 
+    namespace = LaunchConfiguration("namespace")
+    namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="vault",
+        description="Vault namespace")
+
     use_sim_time = LaunchConfiguration("use_sim_time")
     use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time",
@@ -21,7 +27,8 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(vault_dir,
                          "launch", "rgbd_odometry.launch.py")
-        )
+        ),
+        launch_arguments={"namespace": namespace}.items()
     )
 
     rtabmap_cmd = IncludeLaunchDescription(
@@ -29,7 +36,10 @@ def generate_launch_description():
             os.path.join(vault_dir,
                          "launch", "rtabmap.launch.py")
         ),
-        launch_arguments={"use_sim_time": use_sim_time}.items()
+        launch_arguments={
+            "namespace": namespace,
+            "use_sim_time": use_sim_time
+        }.items()
     )
 
     ekf_cmd = IncludeLaunchDescription(
@@ -37,11 +47,14 @@ def generate_launch_description():
             os.path.join(vault_dir,
                          "launch", "ekf.launch.py")
         ),
-        launch_arguments={"use_sim_time": use_sim_time}.items()
+        launch_arguments={"namespace": namespace,
+                          "use_sim_time": use_sim_time
+                          }.items()
     )
 
     ld = LaunchDescription()
 
+    ld.add_action(namespace_cmd)
     ld.add_action(use_sim_time_cmd)
 
     ld.add_action(rgbd_odometry_cmd)

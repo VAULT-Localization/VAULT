@@ -7,6 +7,12 @@ from launch.conditions import IfCondition
 
 def generate_launch_description():
 
+    namespace = LaunchConfiguration("namespace")
+    namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="vault",
+        description="Vault namespace")
+
     use_sim_time = LaunchConfiguration("use_sim_time")
     use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time",
@@ -20,13 +26,20 @@ def generate_launch_description():
         description="Wheather to launch rtabmapviz")
 
     parameters = [{
-        "frame_id": "base_link",
+        "frame_id": "vault_base_link",
+        "odom_frame_id": "vault_odom",
+        "map_frame_id": "vault_map",
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "subscribe_scan": False,
         "approx_sync": True,
         "publish_tf": True,
         "use_sim_time": use_sim_time,
+        "qos_image": 2,
+        "qos_camera_info": 2,
+        "qos_gps": 2,
+        "qos_imu": 2,
+        "qos_scan": 2,
 
         "Optimizer/Strategy": "1",
         "Optimizer/GravitySigma": "0.0",
@@ -57,14 +70,16 @@ def generate_launch_description():
     }]
 
     remappings = [
-        ("rgb/image", "camera/image_raw"),
-        ("rgb/camera_info", "camera/camera_info"),
-        ("depth/image", "camera/depth/image_raw"),
+        ("rgb/image", "camera/color/image_raw"),
+        ("rgb/camera_info", "camera/color/camera_info"),
+        ("depth/image", "camera/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
         ("odom", "odom"),
-        ("goal", "goal_pose")]
+        ("goal", "goal_pose"),
+        ("gps/fix", "fix")]
 
     return LaunchDescription([
+        namespace_cmd,
         use_sim_time_cmd,
         launch_rtabmapviz_cmd,
 
@@ -72,6 +87,7 @@ def generate_launch_description():
             package="rtabmap_ros",
             executable="rtabmap",
             output="screen",
+            namespace=namespace,
             parameters=parameters,
             remappings=remappings,
             arguments=["-d",
@@ -82,6 +98,7 @@ def generate_launch_description():
             package="rtabmap_ros",
             executable="rtabmapviz",
             output="screen",
+            namespace=namespace,
             parameters=parameters,
             remappings=remappings),
     ])

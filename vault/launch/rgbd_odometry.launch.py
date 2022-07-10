@@ -1,16 +1,22 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
+
     parameters = [{
-        "frame_id": "base_link",
+        "frame_id": "vault_base_link",
+        "odom_frame_id": "vault_odom",
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "approx_sync": True,
         "publish_tf": False,
         "wait_imu_to_init": False,
         "publish_null_when_lost": False,
+        "qos": 2,
+        "qos_camera_info": 2,
 
         "Optimizer/Strategy": "2",
         "Optimizer/GravitySigma": "0.0",
@@ -44,18 +50,23 @@ def generate_launch_description():
     }]
 
     remappings = [
-        ("rgb/image", "camera/image_raw"),
-        ("rgb/camera_info", "camera/camera_info"),
-        ("depth/image", "camera/depth/image_raw"),
+        ("rgb/image", "camera/color/image_raw"),
+        ("rgb/camera_info", "camera/color/camera_info"),
+        ("depth/image", "camera/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
         ("odom", "odom_rgbd")]
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            "namespace",
+            default_value="vault",
+            description="Vault namespace"),
 
         Node(
             package="rtabmap_ros",
             executable="rgbd_odometry",
             output="log",
+            namespace=LaunchConfiguration("namespace"),
             parameters=parameters,
             remappings=remappings,
             arguments=["--ros-args", "--log-level", "Warn"]),

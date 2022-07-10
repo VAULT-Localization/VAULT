@@ -4,9 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
         - /TF1/Frames1
         - /Image1/Topic1
+        - /Odometry1/Topic1
         - /PointCloud21/Topic1
       Splitter Ratio: 0.429983526468277
     Tree Height: 578
@@ -218,6 +218,10 @@ Visualization Manager:
           Value: true
         vault_imu_link:
           Value: true
+        vault_map:
+          Value: true
+        vault_odom:
+          Value: true
         vault_realsense_mount_link:
           Value: true
       Marker Scale: 1
@@ -226,41 +230,43 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        vault_base_link:
-          vault_box_link:
-            vault_battery_link:
-              {}
-            vault_computer_link:
-              {}
-            vault_cover_link:
-              {}
-            vault_gps_antenna_link:
-              {}
-            vault_gps_board_link:
-              {}
-            vault_imu_link:
-              {}
-            vault_realsense_mount_link:
-              vault_camera_bottom_screw_frame:
-                vault_camera_link:
-                  vault_camera_accel_frame:
-                    vault_camera_accel_optical_frame:
-                      {}
-                  vault_camera_color_frame:
-                    vault_camera_color_optical_frame:
-                      {}
-                  vault_camera_depth_frame:
-                    vault_camera_depth_optical_frame:
-                      {}
-                  vault_camera_gyro_frame:
-                    vault_camera_gyro_optical_frame:
-                      {}
-                  vault_camera_infra1_frame:
-                    vault_camera_infra1_optical_frame:
-                      {}
-                  vault_camera_infra2_frame:
-                    vault_camera_infra2_optical_frame:
-                      {}
+        vault_map:
+          vault_odom:
+            vault_base_link:
+              vault_box_link:
+                vault_battery_link:
+                  {}
+                vault_computer_link:
+                  {}
+                vault_cover_link:
+                  {}
+                vault_gps_antenna_link:
+                  {}
+                vault_gps_board_link:
+                  {}
+                vault_imu_link:
+                  {}
+                vault_realsense_mount_link:
+                  vault_camera_bottom_screw_frame:
+                    vault_camera_link:
+                      vault_camera_accel_frame:
+                        vault_camera_accel_optical_frame:
+                          {}
+                      vault_camera_color_frame:
+                        vault_camera_color_optical_frame:
+                          {}
+                      vault_camera_depth_frame:
+                        vault_camera_depth_optical_frame:
+                          {}
+                      vault_camera_gyro_frame:
+                        vault_camera_gyro_optical_frame:
+                          {}
+                      vault_camera_infra1_frame:
+                        vault_camera_infra1_optical_frame:
+                          {}
+                      vault_camera_infra2_frame:
+                        vault_camera_infra2_optical_frame:
+                          {}
       Update Interval: 0
       Value: true
     - Class: rviz_default_plugins/Image
@@ -277,6 +283,45 @@ Visualization Manager:
         Reliability Policy: Best Effort
         Value: /vault/camera/color/image_raw
       Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 100
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /vault/odom
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -287,7 +332,7 @@ Visualization Manager:
       Channel Name: intensity
       Class: rviz_default_plugins/PointCloud2
       Color: 255; 255; 255
-      Color Transformer: ""
+      Color Transformer: RGB8
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
@@ -296,7 +341,7 @@ Visualization Manager:
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: PointCloud2
-      Position Transformer: ""
+      Position Transformer: XYZ
       Selectable: true
       Size (Pixels): 3
       Size (m): 0.009999999776482582
@@ -307,14 +352,14 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /vault/camera/depth/color/points
+        Value: /vault/cloud_map
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: vault_base_link
+    Fixed Frame: vault_map
     Frame Rate: 30
   Name: root
   Tools:
@@ -357,25 +402,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.2669105529785156
+      Distance: 1.3585201501846313
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.1917574256658554
-        Y: 0.27143964171409607
-        Z: 0.4674626588821411
+        X: -0.11056547611951828
+        Y: 0.2869080901145935
+        Z: 0.43608465790748596
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.46479690074920654
+      Pitch: 0.37479734420776367
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.4635591506958008
+      Yaw: 1.5035443305969238
     Saved: ~
 Window Geometry:
   Displays:
