@@ -184,6 +184,13 @@ aluminum peripherial evaluation case.
             <mean>0.0</mean>
             <stddev>0.007</stddev>
           </noise>
+          <distortion>
+            <k1>0.0</k1>
+            <k2>0.0</k2>
+            <k3>0.0</k3>
+            <p1>0.0</p1>
+            <p2>0.0</p2>
+          </distortion>
         </camera>
 
         <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
@@ -208,15 +215,6 @@ aluminum peripherial evaluation case.
           <max_depth>3.0</max_depth>
           <focal_length>0</focal_length>
           <hack_baseline>0</hack_baseline>
-          
-          <distortion_k1>0</distortion_k1>
-          <distortion_k2>0</distortion_k2>
-          <distortion_k3>0</distortion_k3>
-          <distortion_t1>0</distortion_t1>
-          <distortion_t2>0</distortion_t2>
-          <CxPrime>0</CxPrime>
-          <Cx>0</Cx>
-          <Cy>0</Cy>
         </plugin>
       </sensor>
     </gazebo>
