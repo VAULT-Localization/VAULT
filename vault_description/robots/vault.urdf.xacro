@@ -37,7 +37,7 @@
     <!-- sensors -->
     <xacro:arg name="use_nominal_extrinsics" default="true" />
     <xacro:sensor_d435i parent="vault_realsense_mount_link" name="vault_camera" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-        <origin xyz="0 0 -0.005" rpy="0 0 -1.57"/>
+        <origin xyz="0 -0.005 -0.005" rpy="0 0 -1.57"/>
     </xacro:sensor_d435i>
 
     <xacro:sensor_imu name="vault_imu" parent="vault_box_link">
@@ -45,7 +45,7 @@
     </xacro:sensor_imu>
 
     <xacro:sensor_gps name="vault_gps" parent="vault_box_link">
-        <origin xyz="0 0 0.0725" rpy="0 0 0"/>
+        <origin xyz="0 0 0.1025" rpy="0 0 0"/>
     </xacro:sensor_gps>
     <xacro:gps_board name="vault_gps" parent="vault_box_link">
         <origin xyz="-0.072 -0.005 0" rpy="0 1.57 0"/>

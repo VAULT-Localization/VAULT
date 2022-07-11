@@ -104,7 +104,7 @@ def generate_launch_description():
         }.items()
     )
 
-    vault_cmd = IncludeLaunchDescription(
+    localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_localization_path, "launch",
                          "localization.launch.py")
@@ -127,10 +127,10 @@ def generate_launch_description():
     ld.add_action(initial_pose_z_cmd)
     ld.add_action(initial_pose_yaw_cmd)
 
-    ld.add_action(rviz_cmd)
+    # ld.add_action(rviz_cmd)
     ld.add_action(gazebo_client_cmd)
     ld.add_action(gazebo_server_cmd)
     ld.add_action(spawn_cmd)
-    ld.add_action(vault_cmd)
+    # ld.add_action(localization_cmd)
 
     return ld
