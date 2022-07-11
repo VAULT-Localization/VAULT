@@ -3,9 +3,8 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PythonExpression
+from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
 
 
 def generate_launch_description():
@@ -38,19 +37,9 @@ def generate_launch_description():
                          "launch", "realsense.launch.py")
         ),
         launch_arguments={
-            "namespace": namespace
+            "namespace": namespace,
+            "use_camera_imu": use_camera_imu
         }.items()
-    )
-
-    imu_filter_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_sensors"),
-                         "launch", "imu_filter.launch.py")
-        ),
-        launch_arguments={
-            "namespace": namespace
-        }.items(),
-        condition=IfCondition(PythonExpression([use_camera_imu]))
     )
 
     robot_state_publisher_cmd = IncludeLaunchDescription(
@@ -69,7 +58,6 @@ def generate_launch_description():
     ld.add_action(use_camera_imu_cmd)
 
     ld.add_action(realsense_cmd)
-    ld.add_action(imu_filter_cmd)
     ld.add_action(localization_cmd)
     ld.add_action(robot_state_publisher_cmd)
 
