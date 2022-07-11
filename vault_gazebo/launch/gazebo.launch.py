@@ -1,11 +1,9 @@
 import os
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import Node
 from launch.conditions import IfCondition
 
 
@@ -14,11 +12,7 @@ def generate_launch_description():
     pkg_path = get_package_share_directory("vault_gazebo")
     pkg_localization_path = get_package_share_directory("vault_localization")
     pkg_gazebo_ros = get_package_share_directory("gazebo_ros")
-
-    rviz_config = os.path.join(
-        pkg_path,
-        "rviz",
-        "default.rviz")
+    pkg_visualization_path = get_package_share_directory("vault_visualization")
 
     ### ARGS ###
     namespace = LaunchConfiguration("namespace")
@@ -75,17 +69,14 @@ def generate_launch_description():
         default_value="0.0",
         description="Initial pose yaw")
 
-    ### NODES ###
-    rviz_cmd = Node(
-        name="rviz",
-        package="rviz2",
-        executable="rviz2",
-        arguments=["-d", rviz_config],
-        parameters=[{"use_sim_time": True}],
-        condition=IfCondition(PythonExpression([launch_rviz])),
+    ### LAUNCHS ###
+    rviz_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_visualization_path, "launch", "rviz.launch.py")
+        ),
+        condition=IfCondition(PythonExpression([launch_rviz]))
     )
 
-    ### LAUNCHS ###
     gazebo_client_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_gazebo_ros, "launch", "gzclient.launch.py")
