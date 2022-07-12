@@ -29,7 +29,7 @@ def generate_launch_description():
                 output="screen",
                 parameters=[os.path.join(config_dir, "imu_filter.yaml")],
                 remappings=[("imu/data_raw", "camera/imu"),
-                            ("imu/data", "imu")]
+                            ("imu/data", "imu/data")]
             )
         ]
     )

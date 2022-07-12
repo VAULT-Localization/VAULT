@@ -9,6 +9,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>sensor_msgs</depend>
   <depend>realsense2_camera</depend>
   <depend>imu_filter_madgwick</depend>
 

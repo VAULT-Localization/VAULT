@@ -5,6 +5,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.actions import DeclareLaunchArgument
+from launch_ros.actions import Node
 from launch.conditions import IfCondition
 
 
@@ -53,6 +54,19 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression([use_camera_imu]))
     )
 
+    fix_imu_frame_cmd = Node(
+        package="vault_sensors",
+        executable="fix_imu_frame_node",
+        name="fix_imu_frame_node",
+        namespace=LaunchConfiguration("namespace"),
+        output="screen",
+        parameters=[{"new_frame": "imu_optical_frame",
+                     "frame_prefix": [namespace, "_camera"]}],
+        remappings=[("imu/data", "imu/data"),
+                    ("imu", "imu")],
+        condition=IfCondition(PythonExpression([use_camera_imu]))
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
@@ -60,5 +74,6 @@ def generate_launch_description():
 
     ld.add_action(realsense_cmd)
     ld.add_action(imu_filter_cmd)
+    ld.add_action(fix_imu_frame_cmd)
 
     return ld

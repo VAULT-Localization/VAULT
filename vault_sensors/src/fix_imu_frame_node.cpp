@@ -1,0 +1,34 @@
+
+#define BOOST_BIND_NO_PLACEHOLDERS
+
+#include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/imu.hpp"
+
+#include "vault_sensors/fix_imu_frame_node.hpp"
+
+using std::placeholders::_1;
+
+FixImuFrameNode::FixImuFrameNode() : rclcpp::Node("fix_imu_frame_node") {
+
+  this->declare_parameter<std::string>("new_frame", "imu_optical_frame");
+  this->get_parameter("my_parameter", this->new_frame);
+
+  this->declare_parameter<std::string>("frame_prefix", "camera");
+  this->get_parameter("my_parameter", this->frame_prefix);
+
+  this->pub = this->create_publisher<sensor_msgs::msg::Imu>("imu", 10);
+  this->sub = this->create_subscription<sensor_msgs::msg::Imu>(
+      "imu/data", 10, std::bind(&FixImuFrameNode::callback, this, _1));
+}
+
+void FixImuFrameNode::callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
+  msg->header.frame_id = this->frame_prefix + "_" + this->new_frame;
+  this->pub->publish(*msg);
+}
+
+int main(int argc, char *argv[]) {
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<FixImuFrameNode>());
+  rclcpp::shutdown();
+  return 0;
+}
