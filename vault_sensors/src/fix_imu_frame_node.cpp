@@ -11,10 +11,10 @@ using std::placeholders::_1;
 FixImuFrameNode::FixImuFrameNode() : rclcpp::Node("fix_imu_frame_node") {
 
   this->declare_parameter<std::string>("new_frame", "imu_optical_frame");
-  this->get_parameter("my_parameter", this->new_frame);
+  this->get_parameter("new_frame", this->new_frame);
 
   this->declare_parameter<std::string>("frame_prefix", "camera");
-  this->get_parameter("my_parameter", this->frame_prefix);
+  this->get_parameter("frame_prefix", this->frame_prefix);
 
   this->pub = this->create_publisher<sensor_msgs::msg::Imu>("imu", 10);
   this->sub = this->create_subscription<sensor_msgs::msg::Imu>(
