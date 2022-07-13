@@ -1,0 +1,12 @@
+[Unit]
+After=network.service
+
+[Service]
+User=vault
+Group=vault
+ExecStart=/bin/bash /usr/local/bin/vault.sh
+EnvironmentFile=-/etc/vault
+
+
+[Install]
+WantedBy=default.target
