@@ -52,6 +52,16 @@ def generate_launch_description():
         }.items()
     )
 
+    ubx_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory("vault_sensors"),
+                         "launch", "ubx.launch.py")
+        ),
+        launch_arguments={
+            "namespace": namespace
+        }.items()
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
@@ -60,5 +70,6 @@ def generate_launch_description():
     ld.add_action(realsense_cmd)
     ld.add_action(localization_cmd)
     ld.add_action(robot_state_publisher_cmd)
+    ld.add_action(ubx_cmd)
 
     return ld
