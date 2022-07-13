@@ -29,7 +29,7 @@ def generate_launch_description():
     frame_id = LaunchConfiguration("frame_id")
     frame_id_cmd = DeclareLaunchArgument(
         "frame_id",
-        default_value=[namespace, "_gps__antenna_link"],
+        default_value=[namespace, "_gps_antenna_link"],
         description="frame_id")
 
     use_nav = LaunchConfiguration("use_nav")
