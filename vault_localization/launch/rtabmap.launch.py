@@ -44,6 +44,7 @@ def generate_launch_description():
         "qos_gps": 2,
         "qos_imu": 2,
         "qos_scan": 2,
+        "queue_size": 30,
 
         "Rtabmap/LoopGPS": "true",
 
@@ -61,11 +62,11 @@ def generate_launch_description():
         "Vis/CorType": "0",
         "Vis/MaxFeatures": "1000",
         "Vis/MinDepth": "0.0",
-        "Vis/MaxDepth": "2.5",
+        "Vis/MaxDepth": "3.0",
 
         "Grid/DepthDecimation": "2",
         "Grid/RangeMin": "0.0",
-        "Grid/RangeMax": "2.5",
+        "Grid/RangeMax": "3.0",
         "Grid/MinClusterSize": "20",
         "Grid/MaxGroundAngle": "35",
         "Grid/NormalK": "20",
@@ -73,7 +74,13 @@ def generate_launch_description():
         "Grid/FlatObstacleDetected": "false",
 
         "GridGlobal/UpdateError": "0.01",
-        "GridGlobal/MinSize": "200"
+        "GridGlobal/MinSize": "200",
+
+        "Mem/ImageKept": "true",
+        "Mem/STMSize": "100",
+        "Mem/IncrementalMemory": "true",
+        "DbSqlite3/InMemory": "true",
+        "FAST/CV": "10"
     }]
 
     remappings = [

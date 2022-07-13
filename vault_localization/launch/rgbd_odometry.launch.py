@@ -47,6 +47,11 @@ def generate_launch_description():
         "Vis/MaxFeatures": "1000",
         "Vis/MinDepth": "0.0",
         "Vis/MaxDepth": "3.0",
+
+        "Mem/ImageKept": "true",
+        "Mem/STMSize": "100",
+        "Mem/IncrementalMemory": "true",
+        "FAST/CV": "10"
     }]
 
     remappings = [
