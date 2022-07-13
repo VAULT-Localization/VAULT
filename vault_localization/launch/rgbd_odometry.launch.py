@@ -6,9 +6,15 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
 
+    namespace = LaunchConfiguration("namespace")
+    namespace_cmd = DeclareLaunchArgument(
+        "namespace",
+        default_value="vault",
+        description="Vault namespace")
+
     parameters = [{
-        "frame_id": "vault_base_link",
-        "odom_frame_id": "vault_odom",
+        "frame_id": [namespace, "_base_link"],
+        "odom_frame_id": [namespace, "_odom"],
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "approx_sync": True,
@@ -18,40 +24,35 @@ def generate_launch_description():
         "qos": 2,
         "qos_camera_info": 2,
 
-        "Optimizer/Strategy": "2",
-        "Optimizer/GravitySigma": "0.0",
+        # "Optimizer/Strategy": "2",
+        # "Optimizer/GravitySigma": "0.0",
 
-        "Odom/Strategy": "0",
-        "Odom/ResetCountdown": "10",
-        "Odom/Holonomic": "false",
-        "Odom/FilteringStrategy": "0",
-        "Odom/ParticleSize": "500",
+        # "Odom/Strategy": "0",
+        # "Odom/ResetCountdown": "10",
+        # "Odom/Holonomic": "false",
+        # "Odom/FilteringStrategy": "0",
+        # "Odom/ParticleSize": "500",
 
-        "GFTT/MinDistance": "7",
-        "GFTT/QualityLevel": "0.1",
+        # "GFTT/MinDistance": "7",
+        # "GFTT/QualityLevel": "0.1",
 
-        "SURF/Extended": "true",
-        "SURF/Upright": "true",
+        # "SURF/Extended": "true",
+        # "SURF/Upright": "true",
 
-        "SIFT/NFeatures": "500",
-        "SIFT/NOctaveLayers": "5",
+        # "SIFT/NFeatures": "500",
+        # "SIFT/NOctaveLayers": "5",
 
-        "FREAK/OrientationNormalized": "true",
-        "FREAK/ScaleNormalized": "true",
+        # "FREAK/OrientationNormalized": "true",
+        # "FREAK/ScaleNormalized": "true",
 
-        "KAZE/Extended": "true",
-        "KAZE/Upright": "true",
+        # "KAZE/Extended": "true",
+        # "KAZE/Upright": "true",
 
-        "Vis/CorGuessWinSize": "40",
-        "Vis/CorType": "0",
-        "Vis/MaxFeatures": "1000",
-        "Vis/MinDepth": "0.0",
-        "Vis/MaxDepth": "3.0",
-
-        "Mem/ImageKept": "true",
-        "Mem/STMSize": "100",
-        "Mem/IncrementalMemory": "true",
-        "FAST/CV": "10"
+        # "Vis/CorGuessWinSize": "40",
+        # "Vis/CorType": "0",
+        # "Vis/MaxFeatures": "1000",
+        # "Vis/MinDepth": "0.0",
+        # "Vis/MaxDepth": "3.0",
     }]
 
     remappings = [
@@ -62,16 +63,13 @@ def generate_launch_description():
         ("odom", "odom_rgbd")]
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            "namespace",
-            default_value="vault",
-            description="Vault namespace"),
+        namespace_cmd,
 
         Node(
             package="rtabmap_ros",
             executable="rgbd_odometry",
             output="log",
-            namespace=LaunchConfiguration("namespace"),
+            namespace=namespace,
             parameters=parameters,
             remappings=remappings,
             arguments=["--ros-args", "--log-level", "Warn"]),

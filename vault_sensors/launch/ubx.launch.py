@@ -14,6 +14,12 @@ def generate_launch_description():
         default_value="vault",
         description="Vault namespace")
 
+    update_rate = LaunchConfiguration("update_rate")
+    update_rate_cmd = DeclareLaunchArgument(
+        "update_rate",
+        default_value="30",
+        description="update rate")
+
     device = LaunchConfiguration("device")
     device_cmd = DeclareLaunchArgument(
         "device",
@@ -44,6 +50,7 @@ def generate_launch_description():
                     output="both",
                     parameters=[
                         {
+                            "update_rate": update_rate,
                             "device": device,
                             "baud": baud,
                             "frame_id": frame_id,
@@ -79,6 +86,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
+    ld.add_action(update_rate_cmd)
     ld.add_action(device_cmd)
     ld.add_action(baud_cmd)
     ld.add_action(frame_id_cmd)

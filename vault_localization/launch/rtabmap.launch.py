@@ -29,13 +29,15 @@ def generate_launch_description():
         description="Wheather to launch rtabmapviz")
 
     parameters = [{
-        "frame_id": "vault_base_link",
-        "odom_frame_id": "vault_odom",
-        "map_frame_id": "vault_map",
+        "frame_id": [namespace, "_base_link"],
+        # "odom_frame_id": [namespace, "_odom"],
+        "map_frame_id": [namespace, "_map"],
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "subscribe_scan": False,
+        "subscribe_odom": True,
         "subscribe_odom_info": True,
+        "odom_sensor_sync": True,
         "approx_sync": True,
         "publish_tf": True,
         "use_sim_time": use_sim_time,
@@ -75,12 +77,6 @@ def generate_launch_description():
 
         "GridGlobal/UpdateError": "0.01",
         "GridGlobal/MinSize": "200",
-
-        "Mem/ImageKept": "true",
-        "Mem/STMSize": "100",
-        "Mem/IncrementalMemory": "true",
-        "DbSqlite3/InMemory": "true",
-        "FAST/CV": "10"
     }]
 
     remappings = [
@@ -91,7 +87,8 @@ def generate_launch_description():
         ("odom", "odom"),
         ("odom_info", "odom_info"),
         ("goal", "goal_pose"),
-        ("gps/fix", "fix")]
+        ("gps/fix", "fix")
+    ]
 
     return LaunchDescription([
         namespace_cmd,
