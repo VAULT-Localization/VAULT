@@ -1,4 +1,4 @@
-# ros2_vault
+# VAULT
 
 <p align="center">
   <img src="./docs/logo.png" width="50%" />
