@@ -16,10 +16,10 @@
     publish_acceleration: true
     publish_tf: true
 
-    map_frame: vault_map
-    odom_frame: vault_odom
-    base_link_frame: vault_base_link
-    world_frame: vault_odom
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_link
+    world_frame: odom
 
     odom0: odom_rgbd
     odom0_config: [
@@ -29,8 +29,8 @@
         true,
 
         # orientation
-        false,
-        false,
+        true,
+        true,
         true,
 
         # lineal vel
@@ -63,8 +63,8 @@
         false,
 
         # orientation
-        true,
-        true,
+        false,
+        false,
         false,
 
         # lineal vel

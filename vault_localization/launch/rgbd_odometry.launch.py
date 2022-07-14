@@ -13,8 +13,8 @@ def generate_launch_description():
         description="Vault namespace")
 
     parameters = [{
-        "frame_id": [namespace, "_base_link"],
-        "odom_frame_id": [namespace, "_odom"],
+        "frame_id": "base_link",
+        "odom_frame_id": "odom",
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "approx_sync": True,

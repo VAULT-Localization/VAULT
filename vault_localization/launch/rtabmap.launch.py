@@ -29,9 +29,8 @@ def generate_launch_description():
         description="Wheather to launch rtabmapviz")
 
     parameters = [{
-        "frame_id": [namespace, "_base_link"],
-        # "odom_frame_id": [namespace, "_odom"],
-        "map_frame_id": [namespace, "_map"],
+        "frame_id": "base_link",
+        "map_frame_id": "map",
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "subscribe_scan": False,

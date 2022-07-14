@@ -19,9 +19,9 @@ def generate_launch_description():
         description="Use simulation (Gazebo) clock if True")
 
     parameters = [{
-        "frame_id": "vault_base_link",
-        "odom_frame_id": "vault_odom",
-        "map_frame_id": "vault_map",
+        "frame_id": "base_link",
+        "odom_frame_id": "odom",
+        "map_frame_id": "map",
         "subscribe_depth": True,
         "subscribe_rgb": True,
         "subscribe_scan": False,

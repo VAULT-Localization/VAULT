@@ -44,7 +44,6 @@ def generate_launch_description():
     ### NODES ###
     spawn_entity_cmd = Node(
         package="gazebo_ros",
-        namespace=namespace,
         executable="spawn_entity.py",
         arguments=["-entity", namespace,
                    "-topic", "robot_description",

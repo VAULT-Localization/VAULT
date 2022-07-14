@@ -54,7 +54,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: vault/robot_description
+        Value: robot_description
       Enabled: true
       Links:
         All Links Enabled: true
@@ -218,7 +218,7 @@ Visualization Manager:
           Value: true
         vault_imu_link:
           Value: true
-        vault_map:
+        map:
           Value: true
         vault_odom:
           Value: true
@@ -230,43 +230,31 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        vault_map:
+        map:
           vault_odom:
             vault_base_link:
               vault_box_link:
-                vault_battery_link:
-                  {}
-                vault_computer_link:
-                  {}
-                vault_cover_link:
-                  {}
-                vault_gps_antenna_link:
-                  {}
-                vault_gps_board_link:
-                  {}
-                vault_imu_link:
-                  {}
+                vault_battery_link: {}
+                vault_computer_link: {}
+                vault_cover_link: {}
+                vault_gps_antenna_link: {}
+                vault_gps_board_link: {}
+                vault_imu_link: {}
                 vault_realsense_mount_link:
                   vault_camera_bottom_screw_frame:
                     vault_camera_link:
                       vault_camera_accel_frame:
-                        vault_camera_accel_optical_frame:
-                          {}
+                        vault_camera_accel_optical_frame: {}
                       vault_camera_color_frame:
-                        vault_camera_color_optical_frame:
-                          {}
+                        vault_camera_color_optical_frame: {}
                       vault_camera_depth_frame:
-                        vault_camera_depth_optical_frame:
-                          {}
+                        vault_camera_depth_optical_frame: {}
                       vault_camera_gyro_frame:
-                        vault_camera_gyro_optical_frame:
-                          {}
+                        vault_camera_gyro_optical_frame: {}
                       vault_camera_infra1_frame:
-                        vault_camera_infra1_optical_frame:
-                          {}
+                        vault_camera_infra1_optical_frame: {}
                       vault_camera_infra2_frame:
-                        vault_camera_infra2_optical_frame:
-                          {}
+                        vault_camera_infra2_optical_frame: {}
       Update Interval: 0
       Value: true
     - Class: rviz_default_plugins/Image
@@ -357,7 +345,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: vault_map
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
