@@ -24,6 +24,8 @@ def generate_launch_description():
         "qos": 2,
         "qos_camera_info": 2,
 
+        "Rtabmap/StartNewMapOnLoopClosure": "true",
+
         # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
         "Optimizer/Strategy": "2",
         "Optimizer/GravitySigma": "0.0",
@@ -36,7 +38,9 @@ def generate_launch_description():
         "Odom/FilteringStrategy": "1",
         "Odom/ParticleSize": "400",
 
-        "GFTT/MinDistance": "7",
+        "OdomF2M/MaxSize": "1000",
+
+        "GFTT/MinDistance": "10",
         "GFTT/QualityLevel": "0.001",
 
         "SURF/Extended": "false",
@@ -54,7 +58,7 @@ def generate_launch_description():
         "Vis/CorGuessWinSize": "40",
         # 0=Features Matching, 1=Optical Flow
         "Vis/CorType": "1",
-        "Vis/MaxFeatures": "1000",
+        "Vis/MaxFeatures": "600",
         # "Vis/MinDepth": "0.0",
         # "Vis/MaxDepth": "3.0",
     }]
