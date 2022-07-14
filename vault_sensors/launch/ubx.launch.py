@@ -64,6 +64,7 @@ def generate_launch_description():
         package="ntrip_client",
         executable="ntrip_ros.py",
         namespace=namespace,
+        arguments=["--ros-args", "--log-level", "Error"],
         parameters=[
             {
                 "host": os.getenv("NTRIP_HOST"),

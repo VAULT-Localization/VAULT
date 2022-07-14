@@ -24,33 +24,37 @@ def generate_launch_description():
         "qos": 2,
         "qos_camera_info": 2,
 
-        # "Optimizer/Strategy": "2",
-        # "Optimizer/GravitySigma": "0.0",
+        # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
+        "Optimizer/Strategy": "2",
+        "Optimizer/GravitySigma": "0.0",
 
-        # "Odom/Strategy": "0",
-        # "Odom/ResetCountdown": "10",
-        # "Odom/Holonomic": "false",
-        # "Odom/FilteringStrategy": "0",
-        # "Odom/ParticleSize": "500",
+        # 0=Frame-to-Map (F2M) 1=Frame-to-Frame (F2F) 2=Fovis 3=viso2 4=DVO-SLAM 5=ORB_SLAM2 6=OKVIS 7=LOAM 8=MSCKF_VIO 9=VINS-Fusion 10=OpenVINS 11=FLOAM 12=Open3D
+        "Odom/Strategy": "1",
+        "Odom/ResetCountdown": "1",
+        "Odom/Holonomic": "true",
+        # 0=No filtering 1=Kalman filtering 2=Particle filtering
+        "Odom/FilteringStrategy": "1",
+        "Odom/ParticleSize": "400",
 
-        # "GFTT/MinDistance": "7",
-        # "GFTT/QualityLevel": "0.1",
+        "GFTT/MinDistance": "7",
+        "GFTT/QualityLevel": "0.001",
 
-        # "SURF/Extended": "true",
-        # "SURF/Upright": "true",
+        "SURF/Extended": "false",
+        "SURF/Upright": "false",
 
-        # "SIFT/NFeatures": "500",
-        # "SIFT/NOctaveLayers": "5",
+        "SIFT/NFeatures": "0",
+        "SIFT/NOctaveLayers": "4",
 
-        # "FREAK/OrientationNormalized": "true",
-        # "FREAK/ScaleNormalized": "true",
+        "FREAK/OrientationNormalized": "true",
+        "FREAK/ScaleNormalized": "true",
 
-        # "KAZE/Extended": "true",
-        # "KAZE/Upright": "true",
+        "KAZE/Extended": "false",
+        "KAZE/Upright": "false",
 
-        # "Vis/CorGuessWinSize": "40",
-        # "Vis/CorType": "0",
-        # "Vis/MaxFeatures": "1000",
+        "Vis/CorGuessWinSize": "40",
+        # 0=Features Matching, 1=Optical Flow
+        "Vis/CorType": "1",
+        "Vis/MaxFeatures": "1000",
         # "Vis/MinDepth": "0.0",
         # "Vis/MaxDepth": "3.0",
     }]
