@@ -11,12 +11,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
 
     ### ARGS ###
-    namespace = LaunchConfiguration("namespace")
-    namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
-
     initial_pose_x = LaunchConfiguration("initial_pose_x")
     initial_pose_x_cmd = DeclareLaunchArgument(
         "initial_pose_x",
@@ -45,10 +39,9 @@ def generate_launch_description():
     spawn_entity_cmd = Node(
         package="gazebo_ros",
         executable="spawn_entity.py",
-        arguments=["-entity", namespace,
+        arguments=["-entity", "vault",
                    "-topic", "robot_description",
                    "-timeout", "120",
-                   "-robot_namespace", namespace,
                    "-x", initial_pose_x,
                    "-y", initial_pose_y,
                    "-z", initial_pose_z,
@@ -62,15 +55,11 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory("vault_description"),
                          "launch", "robot_state_publisher.launch.py")
-        ),
-        launch_arguments={
-            "namespace": namespace
-        }.items()
+        )
     )
 
     ld = LaunchDescription()
 
-    ld.add_action(namespace_cmd)
     ld.add_action(initial_pose_x_cmd)
     ld.add_action(initial_pose_y_cmd)
     ld.add_action(initial_pose_z_cmd)

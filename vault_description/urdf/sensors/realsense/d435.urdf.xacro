@@ -195,6 +195,7 @@ aluminum peripherial evaluation case.
 
         <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
           <ros>
+            <namespace>/vault</namespace>
             <remapping>camera/image_raw:=camera/color/image_raw</remapping>
             <remapping>camera/image_raw/compressed:=camera/color/image_raw/compressed</remapping>
             <remapping>camera/image_raw/compressedDepth:=camera/color/image_raw/compressedDepth</remapping>
