@@ -8,10 +8,10 @@
     print_diagnostics: true
     debug: false
 
-    map_frame: vault_map
-    odom_frame: vault_odom
+    map_frame: map
+    odom_frame: odom
     base_link_frame: vault_base_link
-    world_frame: vault_odom
+    world_frame: odom
 
     odom0: odom_rgbd
     odom0_config:
@@ -114,10 +114,10 @@
     print_diagnostics: true
     debug: false
 
-    map_frame: vault_map
-    odom_frame: vault_odom
+    map_frame: map
+    odom_frame: odom
     base_link_frame: vault_base_link
-    world_frame: vault_map
+    world_frame: map
 
     odom0: odom_rgbd
     odom0_config:
