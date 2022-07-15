@@ -4,8 +4,8 @@
     <xacro:macro name="vault_cover" params="parent">
 
         <xacro:property name="box_heigh" value="0.003" />
-        <xacro:property name="box_width" value="0.186" />
-        <xacro:property name="box_depth" value="0.194" />
+        <xacro:property name="box_width" value="0.180" />
+        <xacro:property name="box_depth" value="0.200" />
         <xacro:property name="box_mass" value="0.01" />
 
         <link name="vault_cover_link">
@@ -33,7 +33,7 @@
         </gazebo>
 
         <joint name="vault_cover_joint" type="fixed">
-            <origin rpy="0 0 0" xyz="-0.004 -0.005 -0.0725"/>
+            <origin rpy="0 0 0" xyz="-0.005 -0.005 -0.0895"/>
             <parent link="${parent}" />
             <child link="vault_cover_link" />
         </joint>
