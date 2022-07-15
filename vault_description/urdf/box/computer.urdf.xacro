@@ -14,7 +14,7 @@
                 <geometry>
                     <box size="${box_width} ${box_depth} ${box_heigh}"/>
                 </geometry>
-                <material name="dark_gray" />
+                <material name="white" />
             </visual>
             <collision>
                 <origin rpy="0 0 0" xyz="0 0 0" />
@@ -29,11 +29,11 @@
         </link>
 
         <gazebo reference="vault_computer_link">
-            <material>Gazebo/DarkGrey</material>
+            <material>Gazebo/White</material>
         </gazebo>
 
         <joint name="vault_computer_joint" type="fixed">
-            <origin rpy="0 0 0" xyz="0 0 0.060"/>
+            <origin rpy="0 0 0" xyz="0 0 0.014"/>
             <parent link="${parent}" />
             <child link="vault_computer_link" />
         </joint>

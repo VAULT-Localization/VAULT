@@ -3,16 +3,16 @@
 
     <xacro:macro name="vault_cover" params="parent">
 
-        <xacro:property name="box_heigh" value="0.0085" />
-        <xacro:property name="box_width" value="0.168" />
-        <xacro:property name="box_depth" value="0.213" />
+        <xacro:property name="box_heigh" value="0.003" />
+        <xacro:property name="box_width" value="0.186" />
+        <xacro:property name="box_depth" value="0.194" />
         <xacro:property name="box_mass" value="0.01" />
 
         <link name="vault_cover_link">
             <visual>
-                <origin rpy="0 0 0" xyz="0 -0.008 -0.015" />
+                <origin rpy="0 0 0" xyz="0 0 0" />
                 <geometry>
-                    <mesh filename="package://vault_description/meshes/box/cover.stl" scale="0.001 0.001 0.001"/>
+                    <box size="${box_width} ${box_depth} ${box_heigh}"/>
                 </geometry>
                 <material name="red" />
             </visual>
@@ -33,7 +33,7 @@
         </gazebo>
 
         <joint name="vault_cover_joint" type="fixed">
-            <origin rpy="0 0 0" xyz="0 0.006 -0.0445"/>
+            <origin rpy="0 0 0" xyz="-0.004 -0.005 -0.0725"/>
             <parent link="${parent}" />
             <child link="vault_cover_link" />
         </joint>

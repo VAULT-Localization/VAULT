@@ -3,14 +3,14 @@
 
     <xacro:macro name="vault_box" params="parent">
 
-        <xacro:property name="box_heigh" value="0.120" />
+        <xacro:property name="box_heigh" value="0.150" />
         <xacro:property name="box_width" value="0.190" />
-        <xacro:property name="box_depth" value="0.210" />
-        <xacro:property name="box_mass" value="0.25" />
+        <xacro:property name="box_depth" value="0.190" />
+        <xacro:property name="box_mass" value="0.2" />
 
         <link name="vault_box_link">
             <visual>
-                <origin rpy="0 0 0" xyz="0 0 -0.06" />
+                <origin rpy="0 0 0" xyz="0 0 -0.075" />
                 <geometry>
                     <mesh filename="package://vault_description/meshes/box/box.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
