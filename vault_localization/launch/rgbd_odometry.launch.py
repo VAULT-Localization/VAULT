@@ -24,8 +24,6 @@ def generate_launch_description():
         "qos": 2,
         "qos_camera_info": 2,
 
-        "Rtabmap/StartNewMapOnLoopClosure": "true",
-
         # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
         "Optimizer/Strategy": "2",
         "Optimizer/GravitySigma": "0.0",
@@ -33,34 +31,53 @@ def generate_launch_description():
         # 0=Frame-to-Map (F2M) 1=Frame-to-Frame (F2F) 2=Fovis 3=viso2 4=DVO-SLAM 5=ORB_SLAM2 6=OKVIS 7=LOAM 8=MSCKF_VIO 9=VINS-Fusion 10=OpenVINS 11=FLOAM 12=Open3D
         "Odom/Strategy": "1",
         "Odom/ResetCountdown": "1",
-        "Odom/Holonomic": "true",
+        "Odom/Holonomic": "false",
         # 0=No filtering 1=Kalman filtering 2=Particle filtering
-        "Odom/FilteringStrategy": "1",
-        "Odom/ParticleSize": "400",
+        "Odom/FilteringStrategy": "0",
+        "Odom/ParticleSize": "500",
+        "Odom/GuessMotion": "true",
+        "Odom/AlignWithGround": "false",
 
-        "OdomF2M/MaxSize": "1000",
+        "GFTT/MinDistance": "2",
+        "GFTT/QualityLevel": "0.1",
+        "GFTT/BlockSize": "4",
+        "GFTT/UseHarrisDetector": "false",
+        "GFTT/K": "0.04",
 
-        "GFTT/MinDistance": "10",
-        "GFTT/QualityLevel": "0.001",
-
-        "SURF/Extended": "false",
+        "SURF/Extended": "true",
+        "SURF/HessianThreshold": "500",
+        "SURF/Octaves": "4",
+        "SURF/OctaveLayers": "4",
         "SURF/Upright": "false",
+        "SURF/GpuVersion": "false",
+        "SURF/GpuKeypointsRatio": "0.01",
 
-        "SIFT/NFeatures": "0",
+        "SIFT/NFeatures": "1000",
         "SIFT/NOctaveLayers": "4",
+        "SIFT/RootSIFT": "false",
 
         "FREAK/OrientationNormalized": "true",
         "FREAK/ScaleNormalized": "true",
+        "FREAK/PatternScale": "30",
+        "FREAK/NOctaves": "4",
 
-        "KAZE/Extended": "false",
+        "KAZE/Extended": "true",
         "KAZE/Upright": "false",
+        "KAZE/NOctaves": "4",
+        "KAZE/NOctaveLayers": "4",
+        # 0=DIFF_PM_G1, 1=DIFF_PM_G2, 2=DIFF_WEICKERT or 3=DIFF_CHARBONNIER
+        "KAZE/Diffusivity": "1",
 
+        "BRIEF/Bytes": "128",
+
+        # 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK 8=GFTT/ORB 9=KAZE 10=ORB-OCTREE 11=SuperPoint 12=SURF/FREAK 13=GFTT/DAISY 14=SURF/DAISY 15=PyDetector
+        "Vis/FeatureType": "8",
         "Vis/CorGuessWinSize": "40",
+        "Vis/MaxFeatures": "1000",
         # 0=Features Matching, 1=Optical Flow
-        "Vis/CorType": "1",
-        "Vis/MaxFeatures": "600",
-        # "Vis/MinDepth": "0.0",
-        # "Vis/MaxDepth": "3.0",
+        "Vis/CorType": "0",
+        # kNNFlannNaive=0, kNNFlannKdTree=1, kNNFlannLSH=2, kNNBruteForce=3, kNNBruteForceGPU=4, BruteForceCrossCheck=5, SuperGlue=6, GMS=7
+        "Vis/CorNNType": "1"
     }]
 
     remappings = [

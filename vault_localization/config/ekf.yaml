@@ -29,8 +29,8 @@
         true,
 
         # orientation
-        true,
-        true,
+        false,
+        false,
         true,
 
         # lineal vel
@@ -63,9 +63,9 @@
         false,
 
         # orientation
-        false,
-        false,
-        false,
+        true,
+        true,
+        true,
 
         # lineal vel
         true,
