@@ -33,7 +33,7 @@
         </gazebo>
 
         <joint name="vault_battery_joint" type="fixed">
-            <origin rpy="0 0 0" xyz="0 0 0.073"/>
+            <origin rpy="0 0 0" xyz="0 0.054 0.073"/>
             <parent link="${parent}" />
             <child link="vault_battery_link" />
         </joint>

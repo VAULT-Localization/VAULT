@@ -10,7 +10,7 @@
 
         <link name="vault_box_link">
             <visual>
-                <origin rpy="0 0 0" xyz="0 0 -0.095" />
+                <origin rpy="0 0 0" xyz="0.005 0.005 -0.095" />
                 <geometry>
                     <mesh filename="package://vault_description/meshes/box/box.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
