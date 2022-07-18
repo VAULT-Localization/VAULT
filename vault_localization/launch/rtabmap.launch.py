@@ -35,7 +35,7 @@ def generate_launch_description():
         "subscribe_rgb": True,
         "subscribe_scan": False,
         "subscribe_odom": True,
-        "subscribe_odom_info": True,
+        "subscribe_odom_info": False,
         "odom_sensor_sync": True,
         "approx_sync": True,
         "publish_tf": True,
@@ -50,8 +50,8 @@ def generate_launch_description():
         "Rtabmap/LoopGPS": "true",
 
         # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
-        "Optimizer/Strategy": "1",
-        "Optimizer/GravitySigma": "0.0",
+        "Optimizer/Strategy": "2",
+        "Optimizer/GravitySigma": "0.3",
 
         "RGBD/OptimizeMaxError": "1.0",
         "RGBD/OptimizeFromGraphEnd": "true",
@@ -103,6 +103,8 @@ def generate_launch_description():
 
         # 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK 8=GFTT/ORB 9=KAZE 10=ORB-OCTREE 11=SuperPoint 12=SURF/FREAK 13=GFTT/DAISY 14=SURF/DAISY 15=PyDetector
         "Vis/FeatureType": "8",
+        "Vis/DepthAsMask": "true",
+        "Vis/FeatureWindowSize": "9",
         "Vis/CorGuessWinSize": "40",
         "Vis/MaxFeatures": "1000",
         # 0=Features Matching, 1=Optical Flow

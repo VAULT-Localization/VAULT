@@ -17,7 +17,8 @@ def generate_launch_description():
         "odom_frame_id": "odom",
         "subscribe_depth": True,
         "subscribe_rgb": True,
-        "approx_sync": True,
+        "subscribe_rgbd": False,
+        "approx_sync": False,
         "publish_tf": False,
         "wait_imu_to_init": False,
         "publish_null_when_lost": False,
@@ -26,14 +27,14 @@ def generate_launch_description():
 
         # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
         "Optimizer/Strategy": "2",
-        "Optimizer/GravitySigma": "0.0",
+        "Optimizer/GravitySigma": "0.3",
 
         # 0=Frame-to-Map (F2M) 1=Frame-to-Frame (F2F) 2=Fovis 3=viso2 4=DVO-SLAM 5=ORB_SLAM2 6=OKVIS 7=LOAM 8=MSCKF_VIO 9=VINS-Fusion 10=OpenVINS 11=FLOAM 12=Open3D
-        "Odom/Strategy": "1",
+        "Odom/Strategy": "0",
         "Odom/ResetCountdown": "1",
-        "Odom/Holonomic": "false",
+        "Odom/Holonomic": "true",
         # 0=No filtering 1=Kalman filtering 2=Particle filtering
-        "Odom/FilteringStrategy": "0",
+        "Odom/FilteringStrategy": "1",
         "Odom/ParticleSize": "500",
         "Odom/GuessMotion": "true",
         "Odom/AlignWithGround": "false",
@@ -72,6 +73,8 @@ def generate_launch_description():
 
         # 0=SURF 1=SIFT 2=ORB 3=FAST/FREAK 4=FAST/BRIEF 5=GFTT/FREAK 6=GFTT/BRIEF 7=BRISK 8=GFTT/ORB 9=KAZE 10=ORB-OCTREE 11=SuperPoint 12=SURF/FREAK 13=GFTT/DAISY 14=SURF/DAISY 15=PyDetector
         "Vis/FeatureType": "8",
+        "Vis/DepthAsMask": "true",
+        "Vis/FeatureWindowSize": "9",
         "Vis/CorGuessWinSize": "40",
         "Vis/MaxFeatures": "1000",
         # 0=Features Matching, 1=Optical Flow

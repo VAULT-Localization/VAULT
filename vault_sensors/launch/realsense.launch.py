@@ -35,9 +35,11 @@ def generate_launch_description():
             "device_type": "d435",
             "enable_gyro": use_camera_imu,
             "enable_accel": use_camera_imu,
-            "unite_imu_method": "1",
-            "pointcloud.enable": "true",
+            "unite_imu_method": "2",
+            "pointcloud.enable": "false",
             "align_depth.enable": "true",
+            "enable_sync": "true",
+            "linear_accel_cov": "1.0",
             # "enable_infra1": "true",
             # "enable_infra2": "true"
         }.items()
