@@ -21,14 +21,28 @@ def generate_launch_description():
         default_value="False",
         description="Use simulation (Gazebo) clock if True")
 
-    params_file = os.path.join(get_package_share_directory(
-        "vault_localization"), "config", "dual_ekf.yaml")
+    ekf_odom_params_file = os.path.join(get_package_share_directory(
+        "vault_localization"), "config/dual_ekf", "ekf_odom.yaml")
+    ekf_map_params_file = os.path.join(get_package_share_directory(
+        "vault_localization"), "config/dual_ekf", "ekf_map.yaml")
+    navsat_transform_params_file = os.path.join(get_package_share_directory(
+        "vault_localization"), "config/dual_ekf", "navsat_transform.yaml")
 
     param_substitutions = {
         "use_sim_time": use_sim_time}
 
-    configured_params = RewrittenYaml(
-        source_file=params_file,
+    ekf_odom_params = RewrittenYaml(
+        source_file=ekf_odom_params_file,
+        param_rewrites=param_substitutions,
+        convert_types=True)
+
+    ekf_map_params = RewrittenYaml(
+        source_file=ekf_map_params_file,
+        param_rewrites=param_substitutions,
+        convert_types=True)
+
+    navsat_transform_params = RewrittenYaml(
+        source_file=navsat_transform_params_file,
         param_rewrites=param_substitutions,
         convert_types=True)
 
@@ -42,7 +56,7 @@ def generate_launch_description():
             name="ekf_filter_node_odom",
             namespace=namespace,
             output="screen",
-            parameters=[configured_params],
+            parameters=[ekf_odom_params],
             remappings=[("odometry/filtered", "odom_local")]
         ),
 
@@ -52,7 +66,7 @@ def generate_launch_description():
             name="ekf_filter_node_map",
             namespace=namespace,
             output="screen",
-            parameters=[configured_params],
+            parameters=[ekf_map_params],
             remappings=[("odometry/filtered", "odom_global")]
         ),
 
@@ -62,7 +76,7 @@ def generate_launch_description():
             name="navsat_transform",
             namespace=namespace,
             output="screen",
-            parameters=[configured_params],
+            parameters=[navsat_transform_params],
             remappings=[("imu/data", "imu"),
                         ("gps/fix", "fix"),
                         ("gps/filtered", "gps"),

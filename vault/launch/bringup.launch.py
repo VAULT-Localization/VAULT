@@ -21,13 +21,20 @@ def generate_launch_description():
         default_value="True",
         description="Whether to use camera IMU")
 
+    use_visual_slam = LaunchConfiguration("use_visual_slam")
+    use_visual_slam_cmd = DeclareLaunchArgument(
+        "use_visual_slam",
+        default_value="True",
+        description="Wheter to use visual SLAM or EKF map")
+
     localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory("vault_localization"),
                          "launch", "localization.launch.py")
         ),
         launch_arguments={"namespace": namespace,
-                          "use_sim_time": "False"
+                          "use_sim_time": "False",
+                          "use_visual_slam": use_visual_slam
                           }.items()
     )
 
@@ -66,6 +73,7 @@ def generate_launch_description():
 
     ld.add_action(namespace_cmd)
     ld.add_action(use_camera_imu_cmd)
+    ld.add_action(use_visual_slam_cmd)
 
     ld.add_action(realsense_cmd)
     ld.add_action(localization_cmd)
