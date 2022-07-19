@@ -50,19 +50,13 @@
     <xacro:macro name="sensor_t265" params="name parent rate *origin">
 
         <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/materials.urdf.xacro" />
-
-        <joint name="${name}_odom_frame_joint" type="fixed">
-            <parent link="${parent}"/>
-            <child link="${name}_odom_frame"/>
-            <xacro:insert_block name="origin"/>
-        </joint>
+        <xacro:property name="M_PI" value="3.1415926535897931" />
 
         <joint name="${name}_pose_frame_joint" type="fixed">
-            <parent link="${name}_odom_frame"/>
+            <parent link="${parent}"/>
             <child link="${name}_pose_frame"/>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <xacro:insert_block name="origin"/>
         </joint>
-        <link name="${name}_odom_frame"/>
 
         <link name="${name}_pose_frame">
             <visual>
@@ -107,8 +101,15 @@
         </joint>
         <link name="${name}_fisheye1_frame"/>
 
+        <joint name="${name}_ligned_depth_to_fisheye1_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="${name}_aligned_depth_to_fisheye1_frame"/>
+            <origin rpy="0 0 0" xyz="0 0.042 0"/>
+        </joint>
+        <link name="${name}_aligned_depth_to_fisheye1_frame"/>
+
         <joint name="${name}_fisheye1_optical_joint" type="fixed">
-            <parent link="${name}_fisheye1_frame"/>
+            <parent link="${name}_aligned_depth_to_fisheye1_frame"/>
             <child link="${name}_fisheye1_optical_frame"/>
             <origin rpy="0 0 0" xyz="0.01 0 0"/>
         </joint>
@@ -143,9 +144,16 @@
         <joint name="${name}_gyro_joint" type="fixed">
             <parent link="${name}_link"/>
             <child link="${name}_gyro_frame"/>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <origin rpy="-${M_PI} 0 -${M_PI}" xyz="0 0.02 0"/>
         </joint>
         <link name="${name}_gyro_frame"/>
+
+        <joint name="${name}_gyro_optical_joint" type="fixed">
+            <parent link="${name}_gyro_frame"/>
+            <child link="${name}_gyro_optical_frame"/>
+            <origin rpy="-${M_PI/2} -${M_PI/2} 0" xyz="0 0 0"/>
+        </joint>
+        <link name="${name}_gyro_optical_frame"/>
 
         <gazebo reference="${name}_gyro_frame">
             <gravity>true</gravity>
@@ -221,19 +229,26 @@
         <joint name="${name}_accel_joint" type="fixed">
             <parent link="${name}_link"/>
             <child link="${name}_accel_frame"/>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <origin rpy="0 0 0" xyz="0 0.02 0"/>
         </joint>
         <link name="${name}_accel_frame"/>
+
+        <joint name="${name}_accel_optical_joint" type="fixed">
+            <parent link="${name}_accel_frame"/>
+            <child link="${name}_accel_optical_frame"/>
+            <origin rpy="-${M_PI/2} -${M_PI/2} 0" xyz="0 0 0"/>
+        </joint>
+        <link name="${name}_accel_optical_frame"/>
 
         <gazebo>
             <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
                 <ros>
-                    <remapping>~/out:=${name}/odom/sample</remapping>
+                    <remapping>~/out:=${name}/pose/sample</remapping>
                 </ros>
 
                 <always_on>true</always_on>
                 <update_rate>${rate}</update_rate>
-                <frame_name>${name}_odom_frame</frame_name>
+                <frame_name>${name}_pose_frame</frame_name>
             </plugin>
         </gazebo>
 

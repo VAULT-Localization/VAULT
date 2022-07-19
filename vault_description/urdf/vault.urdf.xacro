@@ -43,14 +43,14 @@
         <xacro:vault_battery parent="vault_box_link" />
 
         <!-- sensors -->
-        <xacro:arg name="use_nominal_extrinsics" default="true" />
+        <!-- <xacro:arg name="use_nominal_extrinsics" default="true" />
         <xacro:sensor_d435i parent="vault_realsense_mount_link" name="vault_camera" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
             <origin xyz="0 -0.005 -0.0075" rpy="0 0 -1.57"/>
-        </xacro:sensor_d435i>
+        </xacro:sensor_d435i> -->
 
-        <!-- <xacro:sensor_t265 name="vault_camera" parent="vault_realsense_mount_link" rate="30">
+        <xacro:sensor_t265 name="vault_camera" parent="vault_realsense_mount_link" rate="30">
             <origin xyz="0 -0.01 0.0075" rpy="0 0 -1.57"/>
-        </xacro:sensor_t265> -->
+        </xacro:sensor_t265>
 
         <xacro:sensor_imu name="vault_imu" parent="vault_box_link">
             <origin xyz="0 -0.075 0.084" rpy="0 -3.141516 0"/>
