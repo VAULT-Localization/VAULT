@@ -30,13 +30,21 @@ def generate_launch_description():
         default_value="True",
         description="Wheter to use visual SLAM or EKF map")
 
+    use_rgbd_odom = LaunchConfiguration("use_rgbd_odom")
+    use_rgbd_odom_cmd = DeclareLaunchArgument(
+        "use_rgbd_odom",
+        default_value="True",
+        description="Wheter to use visual RGBD odometry")
+
     rgbd_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_localization_dir,
                          "launch", "rgbd_odometry.launch.py")
         ),
-        launch_arguments={"namespace": namespace}.items()
+        launch_arguments={"namespace": namespace}.items(),
+        condition=IfCondition(PythonExpression([use_rgbd_odom]))
     )
+
 
     rtabmap_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -77,6 +85,7 @@ def generate_launch_description():
     ld.add_action(namespace_cmd)
     ld.add_action(use_sim_time_cmd)
     ld.add_action(use_visual_slam_cmd)
+    ld.add_action(use_rgbd_odom_cmd)
 
     ld.add_action(rgbd_odometry_cmd)
     ld.add_action(rtabmap_cmd)

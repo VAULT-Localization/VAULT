@@ -40,6 +40,11 @@ def generate_launch_description():
             "align_depth.enable": "true",
             "enable_sync": "true",
             "linear_accel_cov": "1.0",
+            "decimation_filter.enable": "true",
+            "disparity_filter.enable": "true",
+            "hole_filling_filter.enable": "true",
+            "spatial_filter.enable": "true",
+            "temporal_filter.enable": "true",
             # "enable_infra1": "true",
             # "enable_infra2": "true"
         }.items()
