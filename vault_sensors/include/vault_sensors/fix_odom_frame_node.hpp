@@ -20,9 +20,9 @@ private:
   std::string frame_id;
   std::string odom_frame;
 
-  std::shared_ptr<tf2_ros::TransformListener> transform_listener_{nullptr};
-  std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
-  std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
+  std::shared_ptr<tf2_ros::TransformListener> transform_listener{nullptr};
+  std::unique_ptr<tf2_ros::Buffer> tf_buffer;
+  std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster;
 
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr sub;
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pub;

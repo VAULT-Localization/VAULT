@@ -45,7 +45,6 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression([use_rgbd_odom]))
     )
 
-
     rtabmap_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_localization_dir,
@@ -53,7 +52,8 @@ def generate_launch_description():
         ),
         launch_arguments={
             "namespace": namespace,
-            "use_sim_time": use_sim_time
+            "use_sim_time": use_sim_time,
+            "use_rgbd": use_rgbd_odom
         }.items(),
         condition=IfCondition(PythonExpression([use_visual_slam]))
     )
@@ -66,7 +66,8 @@ def generate_launch_description():
         launch_arguments={"namespace": namespace,
                           "use_sim_time": use_sim_time
                           }.items(),
-        condition=IfCondition(PythonExpression([use_visual_slam]))
+        condition=IfCondition(PythonExpression(
+            [use_visual_slam, " and ", use_rgbd_odom]))
     )
 
     dual_ekf_cmd = IncludeLaunchDescription(

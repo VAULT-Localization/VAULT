@@ -52,7 +52,7 @@ def generate_launch_description():
         launch_arguments={"namespace": namespace,
                           "use_sim_time": "False",
                           "use_visual_slam": use_visual_slam,
-                          "use_rgbd_odom": PythonExpression(["not", " ", use_t265])
+                          "use_rgbd_odom": PythonExpression(["not ", use_t265])
                           }.items()
     )
 

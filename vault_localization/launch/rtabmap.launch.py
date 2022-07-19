@@ -22,6 +22,12 @@ def generate_launch_description():
         default_value="False",
         description="Use simulation (Gazebo) clock if True")
 
+    use_rgbd = LaunchConfiguration("use_rgbd")
+    use_rgbd_cmd = DeclareLaunchArgument(
+        "use_rgbd",
+        default_value="True",
+        description="Wheter to use RGBD")
+
     launch_rtabmapviz = LaunchConfiguration("launch_rtabmapviz")
     launch_rtabmapviz_cmd = DeclareLaunchArgument(
         "launch_rtabmapviz",
@@ -31,8 +37,9 @@ def generate_launch_description():
     parameters = [{
         "frame_id": "base_link",
         "map_frame_id": "map",
-        "subscribe_depth": True,
-        "subscribe_rgb": True,
+        "subscribe_depth": use_rgbd,
+        "subscribe_rgb": use_rgbd,
+        "subscribe_stereo": PythonExpression(["not ", use_rgbd]),
         "subscribe_scan": False,
         "subscribe_odom": True,
         "subscribe_odom_info": False,
@@ -122,13 +129,18 @@ def generate_launch_description():
         ("odom", "odom"),
         ("odom_info", "odom_info"),
         ("goal", "goal_pose"),
-        ("gps/fix", "fix")
+        ("gps/fix", "fix"),
+        ("left/image_rect", "camera/fisheye1/image_raw"),
+        ("left/camera_info", "camera/fisheye1/camera_info"),
+        ("right/image_rect", "camera/fisheye2/image_raw"),
+        ("right/camera_info", "camera/fisheye2/camera_info"),
     ]
 
     return LaunchDescription([
         namespace_cmd,
         use_sim_time_cmd,
         launch_rtabmapviz_cmd,
+        use_rgbd_cmd,
 
         Node(
             package="rtabmap_ros",
