@@ -14,5 +14,6 @@
   <!-- Realsense -->
   <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/d435.urdf.xacro" /> 
   <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/d435i.urdf.xacro" /> 
+  <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/t265.urdf.xacro" /> 
   
 </robot>
