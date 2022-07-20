@@ -5,6 +5,7 @@ from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.conditions import IfCondition
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -122,6 +123,19 @@ def generate_launch_description():
         }.items()
     )
 
+    fix_odom_frame_cmd = Node(
+        package="vault_sensors",
+        executable="fix_odom_frame_node",
+        name="fix_odom_frame_node",
+        namespace=LaunchConfiguration("namespace"),
+        output="screen",
+        parameters=[{"frame_id": "base_link",
+                     "odom_frame": "odom"}],
+        remappings=[("odom_out", "odom"),
+                    ("odom_in", "camera/pose/sample")],
+        condition=IfCondition(PythonExpression([use_t265]))
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
@@ -140,5 +154,6 @@ def generate_launch_description():
     ld.add_action(gazebo_server_cmd)
     ld.add_action(spawn_cmd)
     ld.add_action(localization_cmd)
+    ld.add_action(fix_odom_frame_cmd)
 
     return ld
