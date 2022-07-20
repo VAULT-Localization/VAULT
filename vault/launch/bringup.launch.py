@@ -40,7 +40,8 @@ def generate_launch_description():
                          "launch", "robot_state_publisher.launch.py")
         ),
         launch_arguments={
-            "namespace": namespace
+            "namespace": namespace,
+            "use_t265": use_t265
         }.items()
     )
 
