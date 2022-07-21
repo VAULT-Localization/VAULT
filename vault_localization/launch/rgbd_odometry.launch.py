@@ -84,9 +84,9 @@ def generate_launch_description():
     }]
 
     remappings = [
-        ("rgb/image", "camera/color/image_raw"),
-        ("rgb/camera_info", "camera/color/camera_info"),
-        ("depth/image", "camera/aligned_depth_to_color/image_raw"),
+        ("rgb/image", "d435i/color/image_raw"),
+        ("rgb/camera_info", "d435i/color/camera_info"),
+        ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
         ("odom", "odom_rgbd")]
 

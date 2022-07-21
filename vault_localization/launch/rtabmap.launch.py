@@ -22,11 +22,11 @@ def generate_launch_description():
         default_value="False",
         description="Use simulation (Gazebo) clock if True")
 
-    use_rgbd = LaunchConfiguration("use_rgbd")
-    use_rgbd_cmd = DeclareLaunchArgument(
-        "use_rgbd",
-        default_value="True",
-        description="Wheter to use RGBD")
+    use_t265 = LaunchConfiguration("use_t265")
+    use_t265_cmd = DeclareLaunchArgument(
+        "use_t265",
+        default_value="False",
+        description="Wheter to use T265 camera or D435i for visual SLAM")
 
     launch_rtabmapviz = LaunchConfiguration("launch_rtabmapviz")
     launch_rtabmapviz_cmd = DeclareLaunchArgument(
@@ -37,9 +37,9 @@ def generate_launch_description():
     parameters = [{
         "frame_id": "base_link",
         "map_frame_id": "map",
-        "subscribe_depth": use_rgbd,
-        "subscribe_rgb": use_rgbd,
-        "subscribe_stereo": PythonExpression(["not ", use_rgbd]),
+        "subscribe_depth": use_t265,
+        "subscribe_rgb": use_t265,
+        "subscribe_stereo": PythonExpression(["not ", use_t265]),
         "subscribe_scan": False,
         "subscribe_odom": True,
         "subscribe_odom_info": False,
@@ -122,25 +122,25 @@ def generate_launch_description():
     }]
 
     remappings = [
-        ("rgb/image", "camera/color/image_raw"),
-        ("rgb/camera_info", "camera/color/camera_info"),
-        ("depth/image", "camera/aligned_depth_to_color/image_raw"),
+        ("rgb/image", "d435i/color/image_raw"),
+        ("rgb/camera_info", "d435i/color/camera_info"),
+        ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
         ("odom", "odom"),
         ("odom_info", "odom_info"),
         ("goal", "goal_pose"),
         ("gps/fix", "fix"),
-        ("left/image_rect", "camera/fisheye1/image_raw"),
-        ("left/camera_info", "camera/fisheye1/camera_info"),
-        ("right/image_rect", "camera/fisheye2/image_raw"),
-        ("right/camera_info", "camera/fisheye2/camera_info"),
+        ("left/image_rect", "t265/fisheye1/image_raw"),
+        ("left/camera_info", "t265/fisheye1/camera_info"),
+        ("right/image_rect", "t265/fisheye2/image_raw"),
+        ("right/camera_info", "t265/fisheye2/camera_info"),
     ]
 
     return LaunchDescription([
         namespace_cmd,
         use_sim_time_cmd,
         launch_rtabmapviz_cmd,
-        use_rgbd_cmd,
+        use_t265_cmd,
 
         Node(
             package="rtabmap_ros",

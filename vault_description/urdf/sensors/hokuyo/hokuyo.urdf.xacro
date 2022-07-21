@@ -2,15 +2,15 @@
 <robot name="sensor_hokuyo" xmlns:xacro="http://www.ros.org/wiki/xacro">
     
     
-  <xacro:macro name="sensor_hokuyo" params="prefix parent *origin min_angle:=-1.57079637051 max_angle:=1.57079637051">
+  <xacro:macro name="sensor_hokuyo" params="name namespace parent *origin min_angle:=-1.57079637051 max_angle:=1.57079637051">
 
-    <joint name="${name}_base_joint" type="fixed">
+    <joint name="${namespace}_${name}_base_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent}"/>
-      <child link="${name}_base_link"/>
+      <child link="${namespace}_${name}_base_link"/>
     </joint> 
     
-    <link name="${name}_base_link">
+    <link name="${namespace}_${name}_base_link">
       <collision>
         <origin xyz="0 0 -0.05" rpy="0 0 0"/>
         <geometry>
@@ -32,21 +32,21 @@
       </inertial>
     </link>
 
-    <gazebo reference="${name}_base_link">
+    <gazebo reference="${namespace}_${name}_base_link">
         <material>Gazebo/DarkGrey</material>
     </gazebo>
 
 
-    <link name="${name}_link">
+    <link name="${namespace}_${name}_link">
     </link>
 
-    <joint name="${name}_joint" type="fixed">
-      <parent link="${name}_base_link"/>
-      <child link="${name}_link"/>
+    <joint name="${namespace}_${name}_joint" type="fixed">
+      <parent link="${namespace}_${name}_base_link"/>
+      <child link="${namespace}_${name}_link"/>
       <origin xyz="0.00 0 0.0" rpy="0 0 0"/>
     </joint>
   
-    <gazebo reference="${name}_link">
+    <gazebo reference="${namespace}_${name}_link">
             <sensor type="gpu_ray" name="hokuyo_sensor">   
                 <pose>0 0 0 0 0 0</pose>
                 <visualize>true</visualize>
@@ -71,12 +71,13 @@
                         <stddev>0.01</stddev>
                     </noise>
                 </ray>
-                <plugin name="${name}_controller" filename="libgazebo_ros_ray_sensor.so">
+                <plugin name="${namespace}_${name}_controller" filename="libgazebo_ros_ray_sensor.so">
                   <ros>
+                    <namespace>${namespace}</namespace>
                     <remapping>~/out:=scan</remapping>
                   </ros>
                   <output_type>sensor_msgs/LaserScan</output_type>
-                  <frame_name>${name}_link</frame_name>
+                  <frame_name>${namespace}_${name}_link</frame_name>
                 </plugin>
             </sensor>
     </gazebo>

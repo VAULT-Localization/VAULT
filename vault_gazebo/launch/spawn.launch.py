@@ -54,7 +54,6 @@ def generate_launch_description():
         arguments=["-entity", "vault",
                    "-topic", "robot_description",
                    "-timeout", "120",
-                   "-robot_namespace", namespace,
                    "-x", initial_pose_x,
                    "-y", initial_pose_y,
                    "-z", initial_pose_z,

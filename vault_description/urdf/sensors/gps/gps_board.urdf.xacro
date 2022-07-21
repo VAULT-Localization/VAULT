@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <robot name="gps_board" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="gps_board" params="name parent *origin">
+  <xacro:macro name="gps_board" params="name namespace parent *origin">
 
     <!-- board -->
-    <joint name="${name}_joint" type="fixed">
+    <joint name="${namespace}_${name}_joint" type="fixed">
         <axis xyz="1 0 0"/>
         <xacro:insert_block name="origin"/>
         <parent link="${parent}"/>
-        <child link="${name}_board_link"/>
+        <child link="${namespace}_${name}_board_link"/>
     </joint>
     
-    <link name="${name}_board_link">
+    <link name="${namespace}_${name}_board_link">
       <inertial>
         <mass value="0.001"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -32,7 +32,7 @@
       </collision>
     </link>
        
-    <gazebo reference="${name}_board_link">
+    <gazebo reference="${namespace}_${name}_board_link">
       <material>Gazebo/Grey</material>
     </gazebo>
 

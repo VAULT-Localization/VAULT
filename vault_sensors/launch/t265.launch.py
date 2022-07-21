@@ -28,9 +28,9 @@ def generate_launch_description():
                          "launch", "rs.launch.py")
         ),
         launch_arguments={
-            "node_namespace": [namespace, "/camera"],
-            "node_name": "camera",
-            "camera_name": [namespace, "_camera"],
+            "node_namespace": [namespace, "/t265"],
+            "node_name": "t265",
+            "camera_name": [namespace, "_t265"],
             "device_type": "t265",
             "enable_gyro": use_camera_imu,
             "enable_accel": use_camera_imu,
@@ -52,7 +52,7 @@ def generate_launch_description():
         parameters=[{"frame_id": "base_link",
                      "odom_frame": "odom"}],
         remappings=[("odom_out", "odom"),
-                    ("odom_in", "camera/pose/sample")]
+                    ("odom_in", "t265/pose/sample")]
     )
 
     ld = LaunchDescription()

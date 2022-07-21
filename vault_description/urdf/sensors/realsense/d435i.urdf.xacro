@@ -11,11 +11,11 @@ aluminum peripherial evaluation case.
   <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/d435.urdf.xacro"/>
   <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/d435i_imu_modules.urdf.xacro"/>
 
-  <xacro:macro name="sensor_d435i" params="parent *origin name:=camera use_nominal_extrinsics:=false">
-    <xacro:sensor_d435 parent="${parent}" name="${name}" use_nominal_extrinsics="${use_nominal_extrinsics}">
+  <xacro:macro name="sensor_d435i" params="parent *origin name:=d435i namespace:=vault use_nominal_extrinsics:=true add_plug:=false use_mesh:=true">
+    <xacro:sensor_d435 parent="${parent}" name="${name}" namespace="${namespace}" use_nominal_extrinsics="${use_nominal_extrinsics}">
       <xacro:insert_block name="origin" />
     </xacro:sensor_d435>
-    <xacro:d435i_imu_modules name="${name}" use_nominal_extrinsics="${use_nominal_extrinsics}"/>
+    <xacro:d435i_imu_modules name="${name}" namespace="${namespace}" use_nominal_extrinsics="${use_nominal_extrinsics}"/>
   </xacro:macro>
 </robot>
 

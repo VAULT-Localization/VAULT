@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <robot name="sensor_t265" xmlns:xacro="http://ros.org/wiki/xacro">
 
-    <xacro:macro name="t265_fisheye" params="name reference_frame topic"> 
-        <gazebo reference="${name}_link">
-            <sensor name="camera" type="wideanglecamera">
+    <xacro:macro name="t265_fisheye" params="name namespace reference_frame topic"> 
+        <gazebo reference="${namespace}_${name}_link">
+            <sensor name="${name}_${topic}" type="wideanglecamera">
                 <camera>
                     <horizontal_fov>6.283</horizontal_fov>
                     <image>
@@ -37,9 +37,13 @@
                     </distortion>
                 </camera>
 
-                <plugin name="${topic}_camera_controller" filename="libgazebo_ros_camera.so">
+                <plugin name="${name}_${topic}_plugin" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>${namespace}</namespace>
+                    </ros>
+
                     <always_on>true</always_on>
-                    <camera_name>camera/${topic}</camera_name>
+                    <camera_name>${name}/${topic}</camera_name>
                     <frame_name>${reference_frame}</frame_name>
                     <hack_baseline>-0.0</hack_baseline>
                     <focal_length>285.5480041503906</focal_length>
@@ -50,18 +54,18 @@
         </gazebo>
     </xacro:macro>
 
-    <xacro:macro name="sensor_t265" params="name parent *origin">
+    <xacro:macro name="sensor_t265" params="name:=t265 namespace:=vault parent base_link *origin">
 
         <xacro:include filename="$(find vault_description)/urdf/sensors/realsense/materials.urdf.xacro" />
         <xacro:property name="M_PI" value="3.1415926535897931" />
 
-        <joint name="${name}_pose_frame_joint" type="fixed">
+        <joint name="${namespace}_${name}_pose_frame_joint" type="fixed">
             <parent link="${parent}"/>
-            <child link="${name}_pose_frame"/>
+            <child link="${namespace}_${name}_pose_frame"/>
             <xacro:insert_block name="origin"/>
         </joint>
 
-        <link name="${name}_pose_frame">
+        <link name="${namespace}_${name}_pose_frame">
             <visual>
                 <origin rpy="1.57 0 1.57" xyz="0 0 0"/>
                 <geometry>
@@ -86,115 +90,118 @@
             </inertial>
         </link>
 
-        <gazebo reference="${name}_pose_frame">
+        <gazebo reference="${namespace}_${name}_pose_frame">
         <material>Gazebo/Silver</material>
         </gazebo>
 
-        <joint name="${name}_joint" type="fixed">
-            <parent link="${name}_pose_frame"/>
-            <child link="${name}_link"/>
+        <joint name="${namespace}_${name}_joint" type="fixed">
+            <parent link="${namespace}_${name}_pose_frame"/>
+            <child link="${namespace}_${name}_link"/>
             <origin rpy="0 0 0" xyz="0 0 0"/>
         </joint>
-        <link name="${name}_link"/>
+        <link name="${namespace}_${name}_link"/>
 
-        <joint name="${name}_fisheye1_joint" type="fixed">
-            <parent link="${name}_link"/>
-            <child link="${name}_fisheye1_frame"/>
+        <joint name="${namespace}_${name}_fisheye1_joint" type="fixed">
+            <parent link="${namespace}_${name}_link"/>
+            <child link="${namespace}_${name}_fisheye1_frame"/>
             <origin rpy="${M_PI} 0 ${M_PI}" xyz="0 0.032 0"/>
         </joint>
-        <link name="${name}_fisheye1_frame"/>
+        <link name="${namespace}_${name}_fisheye1_frame"/>
 
-        <joint name="${name}_ligned_depth_to_fisheye1_joint" type="fixed">
-            <parent link="${name}_link"/>
-            <child link="${name}_aligned_depth_to_fisheye1_frame"/>
+        <joint name="${namespace}_${name}_ligned_depth_to_fisheye1_joint" type="fixed">
+            <parent link="${namespace}_${name}_link"/>
+            <child link="${namespace}_${name}_aligned_depth_to_fisheye1_frame"/>
             <origin rpy="${M_PI} 0 ${M_PI}" xyz="0 0.032 0"/>
         </joint>
-        <link name="${name}_aligned_depth_to_fisheye1_frame"/>
+        <link name="${namespace}_${name}_aligned_depth_to_fisheye1_frame"/>
 
-        <joint name="${name}_fisheye1_optical_joint" type="fixed">
-            <parent link="${name}_aligned_depth_to_fisheye1_frame"/>
-            <child link="${name}_fisheye1_optical_frame"/>
+        <joint name="${namespace}_${name}_fisheye1_optical_joint" type="fixed">
+            <parent link="${namespace}_${name}_aligned_depth_to_fisheye1_frame"/>
+            <child link="${namespace}_${name}_fisheye1_optical_frame"/>
             <origin rpy="${M_PI/2} 0 -${M_PI/2}" xyz="0 0 0"/>
         </joint>
-        <link name="${name}_fisheye1_optical_frame"/>
+        <link name="${namespace}_${name}_fisheye1_optical_frame"/>
         <xacro:t265_fisheye
-        name="${name}"
-        reference_frame="${name}_fisheye1_optical_frame"
-        topic="fisheye1">
+            name="${name}"
+            namespace="${namespace}"
+            reference_frame="${namespace}_${name}_fisheye1_optical_frame"
+            topic="fisheye1">
         </xacro:t265_fisheye>
 
-        <joint name="${name}_fisheye2_joint" type="fixed">
-            <parent link="${name}_link"/>
-            <child link="${name}_fisheye2_frame"/>
+        <joint name="${namespace}_${name}_fisheye2_joint" type="fixed">
+            <parent link="${namespace}_${name}_link"/>
+            <child link="${namespace}_${name}_fisheye2_frame"/>
             <origin rpy="${M_PI} 0 ${M_PI}" xyz="0 -0.032 0"/>
         </joint>
-        <link name="${name}_fisheye2_frame"/>
+        <link name="${namespace}_${name}_fisheye2_frame"/>
 
-        <joint name="${name}_fisheye2_optical_joint" type="fixed">
-            <parent link="${name}_fisheye2_frame"/>
-            <child link="${name}_fisheye2_optical_frame"/>
+        <joint name="${namespace}_${name}_fisheye2_optical_joint" type="fixed">
+            <parent link="${namespace}_${name}_fisheye2_frame"/>
+            <child link="${namespace}_${name}_fisheye2_optical_frame"/>
             <origin rpy="${M_PI/2} 0 -${M_PI/2}" xyz="0 0 0"/>
         </joint>
-        <link name="${name}_fisheye2_optical_frame"/>
+        <link name="${namespace}_${name}_fisheye2_optical_frame"/>
         <xacro:t265_fisheye
-        name="${name}"
-        reference_frame="${name}_fisheye2_optical_frame"
-        topic="fisheye2">
+            name="${name}"
+            namespace="${namespace}"
+            reference_frame="${namespace}_${name}_fisheye2_optical_frame"
+            topic="fisheye2">
         </xacro:t265_fisheye>
 
-        <joint name="${name}_gyro_joint" type="fixed">
-            <parent link="${name}_link"/>
-            <child link="${name}_gyro_frame"/>
+        <joint name="${namespace}_${name}_gyro_joint" type="fixed">
+            <parent link="${namespace}_${name}_link"/>
+            <child link="${namespace}_${name}_gyro_frame"/>
             <origin rpy="0 0 ${M_PI}" xyz="0 0.021 0"/>
         </joint>
-        <link name="${name}_gyro_frame"/>
+        <link name="${namespace}_${name}_gyro_frame"/>
 
-        <joint name="${name}_gyro_optical_joint" type="fixed">
-            <parent link="${name}_gyro_frame"/>
-            <child link="${name}_gyro_optical_frame"/>
+        <joint name="${namespace}_${name}_gyro_optical_joint" type="fixed">
+            <parent link="${namespace}_${name}_gyro_frame"/>
+            <child link="${namespace}_${name}_gyro_optical_frame"/>
             <origin rpy="${M_PI/2} 0 -${M_PI/2}" xyz="0 0 0"/>
         </joint>
-        <link name="${name}_gyro_optical_frame"/>
+        <link name="${namespace}_${name}_gyro_optical_frame"/>
 
-        <joint name="${name}_accel_joint" type="fixed">
-            <parent link="${name}_link"/>
-            <child link="${name}_accel_frame"/>
+        <joint name="${namespace}_${name}_accel_joint" type="fixed">
+            <parent link="${namespace}_${name}_link"/>
+            <child link="${namespace}_${name}_accel_frame"/>
             <origin rpy="0 0 ${M_PI}" xyz="0 0.021 0"/>
         </joint>
-        <link name="${name}_accel_frame"/>
+        <link name="${namespace}_${name}_accel_frame"/>
 
-        <joint name="${name}_accel_optical_joint" type="fixed">
-            <parent link="${name}_accel_frame"/>
-            <child link="${name}_accel_optical_frame"/>
+        <joint name="${namespace}_${name}_accel_optical_joint" type="fixed">
+            <parent link="${namespace}_${name}_accel_frame"/>
+            <child link="${namespace}_${name}_accel_optical_frame"/>
             <origin rpy="${M_PI/2} 0 -${M_PI/2}" xyz="0 0 0"/>
         </joint>
-        <link name="${name}_accel_optical_frame"/>
+        <link name="${namespace}_${name}_accel_optical_frame"/>
 
-        <joint name="${name}_imu_joint" type="fixed">
-            <parent link="${name}_link"/>
-            <child link="${name}_imu_frame"/>
+        <joint name="${namespace}_${name}_imu_joint" type="fixed">
+            <parent link="${namespace}_${name}_link"/>
+            <child link="${namespace}_${name}_imu_frame"/>
             <origin rpy="0 0 ${M_PI}" xyz="0 0.021 0"/>
         </joint>
-        <link name="${name}_imu_frame"/>
+        <link name="${namespace}_${name}_imu_frame"/>
 
-        <joint name="${name}_imu_optical_joint" type="fixed">
-            <parent link="${name}_imu_frame"/>
-            <child link="${name}_imu_optical_frame"/>
+        <joint name="${namespace}_${name}_imu_optical_joint" type="fixed">
+            <parent link="${namespace}_${name}_imu_frame"/>
+            <child link="${namespace}_${name}_imu_optical_frame"/>
             <origin rpy="${M_PI/2} 0 -${M_PI/2}" xyz="0 0 0"/>
         </joint>
-        <link name="${name}_imu_optical_frame"/>
+        <link name="${namespace}_${name}_imu_optical_frame"/>
 
-        <gazebo reference="${name}_imu_optical_frame">
+        <gazebo reference="${namespace}_${name}_imu_optical_frame">
             <gravity>true</gravity>
-            <sensor name="${name}_imu" type="imu">
+            <sensor name="${name}_imu_plugin" type="imu">
                 <always_on>true</always_on>
                 <update_rate>200</update_rate>
                 <visualize>false</visualize>
                 <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
                     <ros>
-                        <remapping>~/out:=camera/imu</remapping>
+                        <namespace>${namespace}</namespace>
+                        <remapping>~/out:=${name}/imu</remapping>
                     </ros>
-                    <frame_name>${name}_imu_optical_frame</frame_name>
+                    <frame_name>${namespace}_${name}_imu_optical_frame</frame_name>
                 </plugin>
 
                 <imu>      
@@ -257,13 +264,14 @@
 
         <!-- odom -->
         <gazebo>
-            <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+            <plugin name="${name}_p3d_plugin" filename="libgazebo_ros_p3d.so">
                 <ros>
-                    <remapping>odom:=camera/pose/sample</remapping>
+                    <namespace>${namespace}</namespace>
+                    <remapping>odom:=${name}/pose/sample</remapping>
                 </ros>
-
+      
                 <always_on>true</always_on>
-                <body_name>base_link</body_name>
+                <body_name>${base_link}</body_name>
                 <frame_name>odom</frame_name>
                 <update_rate>200</update_rate>
                 <xyz_offset>0 0 0</xyz_offset>

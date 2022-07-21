@@ -28,8 +28,8 @@ def generate_launch_description():
                 namespace=LaunchConfiguration("namespace"),
                 output="screen",
                 parameters=[os.path.join(config_dir, "imu_filter.yaml")],
-                remappings=[("imu/data_raw", "camera/imu"),
-                            ("imu/data", "imu/data")]
+                remappings=[("imu/data_raw", "d435i/imu"),
+                            ("imu/data", "d435i/imu/data")]
             )
         ]
     )

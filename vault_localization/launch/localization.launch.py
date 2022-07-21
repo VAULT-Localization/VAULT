@@ -30,19 +30,18 @@ def generate_launch_description():
         default_value="True",
         description="Wheter to use visual SLAM or EKF map")
 
-    use_rgbd_odom = LaunchConfiguration("use_rgbd_odom")
-    use_rgbd_odom_cmd = DeclareLaunchArgument(
-        "use_rgbd_odom",
-        default_value="True",
-        description="Wheter to use visual RGBD odometry")
+    use_t265 = LaunchConfiguration("use_t265")
+    use_t265_cmd = DeclareLaunchArgument(
+        "use_t265",
+        default_value="False",
+        description="Wheter to use T265 camera or D435i for visual SLAM")
 
     rgbd_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_localization_dir,
                          "launch", "rgbd_odometry.launch.py")
         ),
-        launch_arguments={"namespace": namespace}.items(),
-        condition=IfCondition(PythonExpression([use_rgbd_odom]))
+        launch_arguments={"namespace": namespace}.items()
     )
 
     rtabmap_cmd = IncludeLaunchDescription(
@@ -53,7 +52,7 @@ def generate_launch_description():
         launch_arguments={
             "namespace": namespace,
             "use_sim_time": use_sim_time,
-            "use_rgbd": use_rgbd_odom
+            "use_t265": use_t265
         }.items(),
         condition=IfCondition(PythonExpression([use_visual_slam]))
     )
@@ -66,8 +65,7 @@ def generate_launch_description():
         launch_arguments={"namespace": namespace,
                           "use_sim_time": use_sim_time
                           }.items(),
-        condition=IfCondition(PythonExpression(
-            [use_visual_slam, " and ", use_rgbd_odom]))
+        condition=IfCondition(PythonExpression([use_visual_slam]))
     )
 
     dual_ekf_cmd = IncludeLaunchDescription(
@@ -86,11 +84,11 @@ def generate_launch_description():
     ld.add_action(namespace_cmd)
     ld.add_action(use_sim_time_cmd)
     ld.add_action(use_visual_slam_cmd)
-    ld.add_action(use_rgbd_odom_cmd)
+    ld.add_action(use_t265_cmd)
 
-    ld.add_action(rgbd_odometry_cmd)
+    # ld.add_action(rgbd_odometry_cmd)
+    # ld.add_action(ekf_cmd)
     ld.add_action(rtabmap_cmd)
-    ld.add_action(ekf_cmd)
     ld.add_action(dual_ekf_cmd)
 
     return ld

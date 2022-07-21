@@ -17,24 +17,18 @@ def generate_launch_description():
         default_value="vault",
         description="Vault namespace")
 
-    use_camera_imu = LaunchConfiguration("use_camera_imu")
-    use_camera_imu_cmd = DeclareLaunchArgument(
-        "use_camera_imu",
-        default_value="False",
-        description="Whether to use camera IMU")
-
     realsense_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory("vault_sensors"),
                          "launch", "rs.launch.py")
         ),
         launch_arguments={
-            "node_namespace": [namespace, "/camera"],
-            "node_name": "camera",
-            "camera_name": [namespace, "_camera"],
+            "node_namespace": [namespace, "/d435i"],
+            "node_name": "d435i",
+            "camera_name": [namespace, "_d435i"],
             "device_type": "d435",
-            "enable_gyro": use_camera_imu,
-            "enable_accel": use_camera_imu,
+            "enable_gyro": "true",
+            "enable_accel": "true",
             "unite_imu_method": "2",
             "pointcloud.enable": "false",
             "align_depth.enable": "true",
@@ -57,8 +51,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             "namespace": namespace
-        }.items(),
-        condition=IfCondition(PythonExpression([use_camera_imu]))
+        }.items()
     )
 
     fix_imu_frame_cmd = Node(
@@ -68,17 +61,14 @@ def generate_launch_description():
         namespace=LaunchConfiguration("namespace"),
         output="screen",
         parameters=[{"new_frame": "imu_optical_frame",
-                     "frame_prefix": [namespace, "_camera"]}],
-        remappings=[("imu/data", "imu/data"),
-                    ("imu", "imu")],
-        condition=IfCondition(PythonExpression([use_camera_imu]))
+                     "frame_prefix": [namespace, "_d435i"]}],
+        remappings=[("imu/data", "d435i/imu/data"),
+                    ("imu", "d435i/imu/fix_data")]
     )
 
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
-    ld.add_action(use_camera_imu_cmd)
-
     ld.add_action(realsense_cmd)
     ld.add_action(imu_filter_cmd)
     ld.add_action(fix_imu_frame_cmd)

@@ -4,8 +4,6 @@
     
     <xacro:macro name="vault" params="parent *origin">
 
-        <xacro:arg name="t265" default="false"/>
-
         <!-- Include macros -->
         <xacro:include filename="$(find vault_description)/urdf/inertials.xacro"/>
         <xacro:include filename="$(find vault_description)/urdf/box/box.urdf.xacro" />
@@ -46,27 +44,22 @@
         <xacro:vault_battery parent="vault_box_link" />
 
         <!-- sensors -->
-        <xacro:unless value="$(arg t265)">
-            <xacro:arg name="use_nominal_extrinsics" default="true" />
-            <xacro:sensor_d435i parent="vault_realsense_mount_link" name="vault_camera" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-                <origin xyz="0 -0.005 -0.0075" rpy="0 0 -1.57"/>
-            </xacro:sensor_d435i>
-        </xacro:unless>
+        <xacro:sensor_d435i parent="vault_realsense_mount_link" name="d435i" namespace="vault">
+            <origin xyz="0 -0.005 -0.0075" rpy="0 0 -1.57"/>
+        </xacro:sensor_d435i>
 
-        <xacro:if value="$(arg t265)">
-            <xacro:sensor_t265 name="vault_camera" parent="vault_realsense_mount_link">
-                <origin xyz="0 -0.01 0.0075" rpy="0 0 -1.57"/>
-            </xacro:sensor_t265>
-        </xacro:if>
+        <xacro:sensor_t265 parent="vault_realsense_mount_link" name="t265" namespace="vault" base_link="${parent}">
+            <origin xyz="-0.01 0.0035 0.035" rpy="0 0 -1.57"/>
+        </xacro:sensor_t265>
 
-        <xacro:sensor_imu name="vault_imu" parent="vault_box_link">
+        <xacro:sensor_imu name="imu" namespace="vault" parent="vault_box_link">
             <origin xyz="0 -0.075 0.084" rpy="0 -3.141516 0"/>
         </xacro:sensor_imu>
 
-        <xacro:sensor_gps name="vault_gps" parent="vault_box_link">
+        <xacro:sensor_gps name="gps" namespace="vault" parent="vault_box_link">
             <origin xyz="0 0 0.1075" rpy="0 0 0"/>
         </xacro:sensor_gps>
-        <xacro:gps_board name="vault_gps" parent="vault_box_link">
+        <xacro:gps_board name="gps" namespace="vault" parent="vault_box_link">
             <origin xyz="-0.077 0 -0.010" rpy="0 1.57 0"/>
         </xacro:gps_board>
     </xacro:macro>
