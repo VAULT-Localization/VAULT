@@ -37,9 +37,9 @@ def generate_launch_description():
     parameters = [{
         "frame_id": "base_link",
         "map_frame_id": "map",
-        "subscribe_depth": use_t265,
-        "subscribe_rgb": use_t265,
-        "subscribe_stereo": PythonExpression(["not ", use_t265]),
+        "subscribe_depth": PythonExpression(["not ", use_t265]),
+        "subscribe_rgb": PythonExpression(["not ", use_t265]),
+        "subscribe_stereo": use_t265,
         "subscribe_scan": False,
         "subscribe_odom": True,
         "subscribe_odom_info": False,

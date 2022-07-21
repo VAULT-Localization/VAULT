@@ -50,7 +50,7 @@ def generate_launch_description():
         launch_arguments={"namespace": namespace,
                           "use_sim_time": "False",
                           "use_visual_slam": use_visual_slam,
-                          "use_t265": PythonExpression(["not ", use_t265])
+                          "use_t265": use_t265
                           }.items()
     )
 
