@@ -112,20 +112,22 @@ def generate_launch_description():
         ),
         launch_arguments={
             "namespace": namespace,
-            "use_sim_time": "True"
-        }.items()
-    )
+            "use_sim_time": "True",
 
-    fix_odom_frame_cmd = Node(
-        package="vault_sensors",
-        executable="fix_odom_frame_node",
-        name="fix_odom_frame_node",
-        namespace=LaunchConfiguration("namespace"),
-        output="screen",
-        parameters=[{"frame_id": "base_link",
-                     "odom_frame": "odom"}],
-        remappings=[("odom_out", "odom"),
-                    ("odom_in", "t265/pose/sample")]
+            "publish_t265_odom_tf": "True",
+            "publish_d435i_imu_filter": "False",
+
+            "publish_visual_slam_tf": "True",
+            "use_t265": "False",
+            "use_gps": "False",
+
+            "run_ekf": "False",
+            "run_dual_ekf": "False",
+
+            "run_rgbd_odometry": "False",
+            "run_stereo_odometry": "False",
+            "run_icp_odometry": "False",
+        }.items()
     )
 
     ld = LaunchDescription()
@@ -145,6 +147,5 @@ def generate_launch_description():
     ld.add_action(gazebo_server_cmd)
     ld.add_action(spawn_cmd)
     ld.add_action(localization_cmd)
-    ld.add_action(fix_odom_frame_cmd)
 
     return ld

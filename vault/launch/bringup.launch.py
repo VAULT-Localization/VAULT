@@ -3,7 +3,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PythonExpression
+from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
 
 
@@ -16,24 +16,6 @@ def generate_launch_description():
         default_value="vault",
         description="Vault namespace")
 
-    # use_camera_imu = LaunchConfiguration("use_camera_imu")
-    # use_camera_imu_cmd = DeclareLaunchArgument(
-    #     "use_camera_imu",
-    #     default_value="True",
-    #     description="Whether to use camera IMU")
-
-    use_visual_slam = LaunchConfiguration("use_visual_slam")
-    use_visual_slam_cmd = DeclareLaunchArgument(
-        "use_visual_slam",
-        default_value="True",
-        description="Wheter to use visual SLAM or EKF map")
-
-    use_t265 = LaunchConfiguration("use_t265")
-    use_t265_cmd = DeclareLaunchArgument(
-        "use_t265",
-        default_value="False",
-        description="Wheter to use T265 camera or D435i for visual SLAM")
-
     ### LAUNCHS ###
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -42,18 +24,7 @@ def generate_launch_description():
         )
     )
 
-    localization_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_localization"),
-                         "launch", "localization.launch.py")
-        ),
-        launch_arguments={"namespace": namespace,
-                          "use_sim_time": "False",
-                          "use_visual_slam": use_visual_slam,
-                          "use_t265": use_t265
-                          }.items()
-    )
-
+    ## Sensors ##
     t265_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory("vault_sensors"),
@@ -84,16 +55,39 @@ def generate_launch_description():
         }.items()
     )
 
+    ## Localization ##
+    localization_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory("vault_localization"),
+                         "launch", "localization.launch.py")
+        ),
+        launch_arguments={
+            "namespace": namespace,
+            "use_sim_time": "False",
+
+            "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default=True),
+            "publish_d435i_imu_filter": os.getenv("PUBLISH_D435i_IMU_FILTER", default=False),
+
+            "publish_visual_slam_tf": os.getenv("PUBLISH_VISUAL_SLAM_TF", default=True),
+            "use_t265": os.getenv("USE_T265", default=False),
+            "use_gps": os.getenv("USE_GPS", default=False),
+
+            "run_ekf": os.getenv("RUN_EKF", default=False),
+            "run_dual_ekf": os.getenv("RUN_DUAL_EKF", default=False),
+
+            "run_rgbd_odometry": os.getenv("RUN_RDGD_ODOMETRY", default=False),
+            "run_stereo_odometry": os.getenv("RUN_STEREO_ODOMETRY", default=False),
+            "run_icp_odometry": os.getenv("RUN_ICP_ODOMETRY", default=False),
+        }.items()
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
-    ld.add_action(use_visual_slam_cmd)
-    ld.add_action(use_t265_cmd)
-
+    ld.add_action(robot_state_publisher_cmd)
     ld.add_action(t265_cmd)
     ld.add_action(d435i_cmd)
-    ld.add_action(localization_cmd)
-    ld.add_action(robot_state_publisher_cmd)
     # ld.add_action(ubx_cmd)
+    ld.add_action(localization_cmd)
 
     return ld

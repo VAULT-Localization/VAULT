@@ -44,33 +44,9 @@ def generate_launch_description():
         }.items()
     )
 
-    imu_filter_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_sensors"),
-                         "launch", "imu_filter.launch.py")
-        ),
-        launch_arguments={
-            "namespace": namespace
-        }.items()
-    )
-
-    fix_imu_frame_cmd = Node(
-        package="vault_sensors",
-        executable="fix_imu_frame_node",
-        name="fix_imu_frame_node",
-        namespace=LaunchConfiguration("namespace"),
-        output="screen",
-        parameters=[{"new_frame": "imu_optical_frame",
-                     "frame_prefix": [namespace, "_d435i"]}],
-        remappings=[("imu/data", "d435i/imu/data"),
-                    ("imu", "d435i/imu/fix_data")]
-    )
-
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
     ld.add_action(realsense_cmd)
-    ld.add_action(imu_filter_cmd)
-    ld.add_action(fix_imu_frame_cmd)
 
     return ld

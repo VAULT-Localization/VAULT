@@ -43,24 +43,11 @@ def generate_launch_description():
         }.items()
     )
 
-    fix_odom_frame_cmd = Node(
-        package="vault_sensors",
-        executable="fix_odom_frame_node",
-        name="fix_odom_frame_node",
-        namespace=LaunchConfiguration("namespace"),
-        output="screen",
-        parameters=[{"frame_id": "base_link",
-                     "odom_frame": "odom"}],
-        remappings=[("odom_out", "odom"),
-                    ("odom_in", "t265/pose/sample")]
-    )
-
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
     ld.add_action(use_camera_imu_cmd)
 
     ld.add_action(realsense_cmd)
-    ld.add_action(fix_odom_frame_cmd)
 
     return ld

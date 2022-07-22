@@ -30,6 +30,18 @@ def generate_launch_description():
                 parameters=[os.path.join(config_dir, "imu_filter.yaml")],
                 remappings=[("imu/data_raw", "d435i/imu"),
                             ("imu/data", "d435i/imu/data")]
+            ),
+
+            launch_ros.actions.Node(
+                package="vault_sensors",
+                executable="fix_imu_frame_node",
+                name="fix_imu_frame_node",
+                namespace=LaunchConfiguration("namespace"),
+                output="screen",
+                parameters=[{"new_frame": "imu_optical_frame",
+                             "frame_prefix": [LaunchConfiguration("namespace"), "_d435i"]}],
+                remappings=[("imu/data", "d435i/imu/data"),
+                            ("imu", "d435i/imu/fix_data")]
             )
         ]
     )
