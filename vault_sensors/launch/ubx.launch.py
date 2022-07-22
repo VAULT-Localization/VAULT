@@ -79,8 +79,8 @@ def generate_launch_description():
             }
         ],
         remappings=[
-            ("nmea", "nmea"),
-            ("rtcm", "rtcm")
+            ("nmea", "gps/nmea"),
+            ("rtcm", "gps/rtcm")
         ],
     )
 
