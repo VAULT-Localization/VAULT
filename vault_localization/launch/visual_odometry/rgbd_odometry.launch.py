@@ -84,17 +84,28 @@ def generate_launch_description():
     }]
 
     remappings = [
-        ("scan_cloud", "camera/depth/color/points"),
-        ("scan", "scan"),
+        # subs
+        ("rgb/image", "d435i/color/image_raw"),
+        ("rgb/camera_info", "d435i/color/camera_info"),
+        ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
-        ("odom", "odom_icp")]
+
+        # pubs
+        ("odom", "rgbd/odom"),
+        ("odom_info", "rgbd/odom_info"),
+        ("odom_info_lite", "rgbd/odom_info_lite"),
+        ("odom_last_frame", "rgbd/odom_last_frame"),
+        ("odom_local_map", "rgbd/odom_local_map"),
+        ("odom_local_scan_map", "rgbd/odom_local_scan_map"),
+        ("odom_rgbd_image", "rgbd/odom_rgbd_image")
+    ]
 
     return LaunchDescription([
         namespace_cmd,
 
         Node(
             package="rtabmap_ros",
-            executable="icp_odometry",
+            executable="rgbd_odometry",
             output="log",
             namespace=namespace,
             parameters=parameters,

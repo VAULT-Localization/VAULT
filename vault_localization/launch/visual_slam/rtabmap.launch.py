@@ -54,7 +54,7 @@ def generate_launch_description():
         "qos_scan": 2,
         "queue_size": 30,
 
-        "Rtabmap/LoopGPS": "true",
+        "Rtabmap/LoopGPS": "false",
 
         # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
         "Optimizer/Strategy": "2",
@@ -122,6 +122,7 @@ def generate_launch_description():
     }]
 
     remappings = [
+        # subs
         ("rgb/image", "d435i/color/image_raw"),
         ("rgb/camera_info", "d435i/color/camera_info"),
         ("depth/image", "d435i/aligned_depth_to_color/image_raw"),

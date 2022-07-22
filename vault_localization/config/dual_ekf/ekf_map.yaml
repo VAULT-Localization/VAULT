@@ -1,6 +1,6 @@
 /**:
   ros__parameters:
-    frequency: 300.0
+    frequency: 30.0
     # sensor_timeout: 20.0
     use_sim_time: false
 
@@ -17,17 +17,17 @@
     base_link_frame: base_link
     world_frame: map
 
-    odom0: odom_rgbd
+    odom0: t265/pose/sample
     odom0_config: [
         # position
-        true,
-        true,
-        true,
+        false,
+        false,
+        false,
 
         # orientation
-        true,
-        true,
-        true,
+        false,
+        false,
+        false,
 
         # lineal vel
         true,
@@ -35,8 +35,8 @@
         true,
 
         # angular vel
-        true,
-        true,
+        false,
+        false,
         true,
 
         # lineal acc
@@ -44,14 +44,12 @@
         false,
         false,
       ]
-    # odom0_queue_size: 10
-    # odom0_nodelay: false
+    odom0_queue_size: 10
+    odom0_nodelay: true
     odom0_differential: false
-    odom0_relative: true
-    odom0_pose_rejection_threshold: 10000000.0
-    odom0_twist_rejection_threshold: 10000000.0
+    odom0_relative: false
 
-    odom1: odom_gps
+    odom1: gps/odom
     odom1_config: [
         # position
         true,
@@ -59,31 +57,29 @@
         true,
 
         # orientation
-        true,
-        true,
-        true,
+        false,
+        false,
+        false,
 
         # lineal vel
-        true,
-        true,
-        true,
+        false,
+        false,
+        false,
 
         # angular vel
-        true,
-        true,
-        true,
+        false,
+        false,
+        false,
 
         # lineal acc
         false,
         false,
         false,
       ]
-    # odom0_queue_size: 10
+    odom1_queue_size: 10
     odom1_nodelay: true
     odom1_differential: false
-    odom1_relative: true
-    odom1_pose_rejection_threshold: 10000000.0
-    odom1_twist_rejection_threshold: 10000000.0
+    odom1_relative: false
 
     imu0: imu
     imu0_config: [
@@ -95,12 +91,12 @@
         # orientation
         true,
         true,
-        true,
+        false,
 
         # lineal vel
-        true,
-        true,
-        true,
+        false,
+        false,
+        false,
 
         # angular vel
         true,
@@ -115,10 +111,7 @@
     imu0_nodelay: true
     imu0_differential: true
     imu0_relative: false
-    # imu0_queue_size: 10
-    # imu0_pose_rejection_threshold: 0.8
-    # imu0_twist_rejection_threshold: 0.8
-    # imu0_linear_acceleration_rejection_threshold: 0.8
+    imu0_queue_size: 10
     imu0_remove_gravitational_acceleration: false
 
     use_control: false

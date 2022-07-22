@@ -1,6 +1,6 @@
 /**:
   ros__parameters:
-    frequency: 300.0
+    frequency: 30.0
     # sensor_timeout: 20.0
     use_sim_time: false
 
@@ -17,7 +17,7 @@
     base_link_frame: base_link
     world_frame: odom
 
-    odom0: odom_rgbd
+    odom0: t265/pose/sample
     odom0_config: [
         # position
         true,

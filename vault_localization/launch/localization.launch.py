@@ -39,7 +39,7 @@ def generate_launch_description():
     rgbd_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_localization_dir,
-                         "launch", "rgbd_odometry.launch.py")
+                         "launch/visual_odometry", "rgbd_odometry.launch.py")
         ),
         launch_arguments={"namespace": namespace}.items()
     )
@@ -47,7 +47,7 @@ def generate_launch_description():
     rtabmap_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_localization_dir,
-                         "launch", "rtabmap.launch.py")
+                         "launch/visual_slam", "rtabmap.launch.py")
         ),
         launch_arguments={
             "namespace": namespace,
@@ -60,23 +60,11 @@ def generate_launch_description():
     ekf_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(vault_localization_dir,
-                         "launch", "ekf.launch.py")
+                         "launch/ekf", "dual_ekf.launch.py")
         ),
         launch_arguments={"namespace": namespace,
                           "use_sim_time": use_sim_time
-                          }.items(),
-        condition=IfCondition(PythonExpression([use_visual_slam]))
-    )
-
-    dual_ekf_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch", "dual_ekf.launch.py")
-        ),
-        launch_arguments={"namespace": namespace,
-                          "use_sim_time": use_sim_time
-                          }.items(),
-        condition=UnlessCondition(PythonExpression([use_visual_slam]))
+                          }.items()
     )
 
     ld = LaunchDescription()
@@ -87,8 +75,7 @@ def generate_launch_description():
     ld.add_action(use_t265_cmd)
 
     # ld.add_action(rgbd_odometry_cmd)
-    # ld.add_action(ekf_cmd)
     ld.add_action(rtabmap_cmd)
-    ld.add_action(dual_ekf_cmd)
+    # ld.add_action(ekf_cmd)
 
     return ld

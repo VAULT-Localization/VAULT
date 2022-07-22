@@ -84,18 +84,29 @@ def generate_launch_description():
     }]
 
     remappings = [
-        ("rgb/image", "d435i/color/image_raw"),
-        ("rgb/camera_info", "d435i/color/camera_info"),
-        ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
+        # subs
+        ("left/image_rect", "d435i/infra1/image_rect_raw"),
+        ("left/camera_info", "d435i/infra1/camera_info"),
+        ("right/image_rect", "d435i/infra2/image_rect_raw"),
+        ("right/camera_info", "d435i/infra2/camera_info"),
         ("imu", "imu"),
-        ("odom", "odom_rgbd")]
+
+        # pubs
+        ("odom", "stereo/odom"),
+        ("odom_info", "stereo/odom_info"),
+        ("odom_info_lite", "stereo/odom_info_lite"),
+        ("odom_last_frame", "stereo/odom_last_frame"),
+        ("odom_local_map", "stereo/odom_local_map"),
+        ("odom_local_scan_map", "stereo/odom_local_scan_map"),
+        ("odom_rgbd_image", "stereo/odom_rgbd_image")
+    ]
 
     return LaunchDescription([
         namespace_cmd,
 
         Node(
             package="rtabmap_ros",
-            executable="rgbd_odometry",
+            executable="stereo_odometry",
             output="log",
             namespace=namespace,
             parameters=parameters,

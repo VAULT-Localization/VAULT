@@ -32,7 +32,7 @@ def generate_launch_description():
         "subscribe_rgb": PythonExpression(["not ", use_t265]),
         "subscribe_stereo": use_t265,
         "subscribe_scan": False,
-        "subscribe_odom_info": True,
+        "subscribe_odom_info": False,
         "approx_sync": True,
         "publish_tf": True,
         "use_sim_time": use_sim_time,
@@ -44,6 +44,7 @@ def generate_launch_description():
     }]
 
     remappings = [
+        # subs
         ("rgb/image", "d435i/color/image_raw"),
         ("rgb/camera_info", "d435i/color/camera_info"),
         ("depth/image", "d435i/aligned_depth_to_color/image_raw"),

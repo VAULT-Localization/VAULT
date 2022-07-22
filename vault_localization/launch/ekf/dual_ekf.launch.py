@@ -57,7 +57,10 @@ def generate_launch_description():
             namespace=namespace,
             output="screen",
             parameters=[ekf_odom_params],
-            remappings=[("odometry/filtered", "odom_local")]
+            remappings=[
+                # pubs
+                ("odometry/filtered", "odom_local")
+            ]
         ),
 
         launch_ros.actions.Node(
@@ -67,7 +70,10 @@ def generate_launch_description():
             namespace=namespace,
             output="screen",
             parameters=[ekf_map_params],
-            remappings=[("odometry/filtered", "odom_global")]
+            remappings=[
+                # pubs
+                ("odometry/filtered", "odom_global")
+            ]
         ),
 
         launch_ros.actions.Node(
@@ -77,11 +83,15 @@ def generate_launch_description():
             namespace=namespace,
             output="screen",
             parameters=[navsat_transform_params],
-            remappings=[("imu/data", "imu"),
-                        ("gps/fix", "fix"),
-                        ("gps/filtered", "gps"),
-                        ("odometry/gps", "odom_gps"),
-                        ("odometry/filtered", "odom_global")]
+            remappings=[
+                # subs
+                ("gps/fix", "gps/fix"),
+                ("imu", "imu"),
+                ("odometry/filtered", "odom_global"),
 
+                # pubs
+                ("gps/filtered", "gps/fix_filtered"),
+                ("odometry/gps", "gps/odom")
+            ]
         )
     ])
