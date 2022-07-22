@@ -41,10 +41,43 @@
         <sensor name="gps_sensor" type="gps">
             <always_on>true</always_on>
             <update_rate>30.0</update_rate>
-            <plugin name="gps_controller" filename="libgazebo_ros_gps_sensor.so">
+
+            <gps>
+              <position_sensing>
+                <horizontal>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>2e-4</stddev>
+                  </noise>
+                </horizontal>
+                <vertical>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>2e-4</stddev>
+                  </noise>
+                </vertical>
+              </position_sensing>
+              <velocity_sensing>
+                <horizontal>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>2e-4</stddev>
+                  </noise>
+                </horizontal>
+                <vertical>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>2e-4</stddev>
+                  </noise>
+                </vertical>
+              </velocity_sensing>
+            </gps>
+
+            <plugin name="gps_plugin" filename="libgazebo_ros_gps_sensor.so">
                 <ros>
-                    <namespace>${namespace}</namespace>
-                    <remapping>gps_controller/out:=fix</remapping>
+                  <namespace>${namespace}</namespace>
+                  <remapping>~/out:=gps/fix</remapping>
+                  <remapping>~/vel:=gps/fix_velocity</remapping>                
                 </ros>
                 <frame_name>${namespace}_${name}_antenna_link</frame_name>
             </plugin>
