@@ -111,7 +111,7 @@ def generate_launch_description():
             ("odom", "odom"),
             ("odom_info", "odom_info"),
             ("goal", "goal_pose"),
-            ("gps/fix", "fix"),
+            ("gps/fix", "gps/fix"),
             ("left/image_rect", "t265/fisheye1/image_raw"),
             ("left/camera_info", "t265/fisheye1/camera_info"),
             ("right/image_rect", "t265/fisheye2/image_raw"),
@@ -155,19 +155,12 @@ def generate_launch_description():
     use_gps = LaunchConfiguration("use_gps")
     use_gps_cmd = DeclareLaunchArgument(
         "use_gps",
-        default_value="false",
+        default_value="True",
         description="Wheter to use GPS data in the loop clousure")
-
-    launch_rtabmapviz = LaunchConfiguration("launch_rtabmapviz")
-    launch_rtabmapviz_cmd = DeclareLaunchArgument(
-        "launch_rtabmapviz",
-        default_value="False",
-        description="Wheather to launch rtabmapviz")
 
     return LaunchDescription([
         namespace_cmd,
         use_sim_time_cmd,
-        launch_rtabmapviz_cmd,
         publish_visual_slam_tf_cmd,
         use_t265_cmd,
         use_gps_cmd,

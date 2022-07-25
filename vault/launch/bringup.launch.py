@@ -65,19 +65,19 @@ def generate_launch_description():
             "namespace": namespace,
             "use_sim_time": "False",
 
-            "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default=True),
-            "publish_d435i_imu_filter": os.getenv("PUBLISH_D435i_IMU_FILTER", default=False),
+            "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default="True"),
+            "publish_d435i_imu_filter": os.getenv("PUBLISH_D435i_IMU_FILTER", default="False"),
 
-            "publish_visual_slam_tf": os.getenv("PUBLISH_VISUAL_SLAM_TF", default=True),
-            "use_t265": os.getenv("USE_T265", default=False),
-            "use_gps": os.getenv("USE_GPS", default=False),
+            "publish_visual_slam_tf": os.getenv("PUBLISH_VISUAL_SLAM_TF", default="True"),
+            "use_t265": os.getenv("USE_T265", default="False"),
+            "use_gps": os.getenv("USE_GPS", default="True").lower(),
 
-            "run_ekf": os.getenv("RUN_EKF", default=False),
-            "run_dual_ekf": os.getenv("RUN_DUAL_EKF", default=False),
+            "run_ekf": os.getenv("RUN_EKF", default="False"),
+            "run_dual_ekf": os.getenv("RUN_DUAL_EKF", default="False"),
 
-            "run_rgbd_odometry": os.getenv("RUN_RDGD_ODOMETRY", default=False),
-            "run_stereo_odometry": os.getenv("RUN_STEREO_ODOMETRY", default=False),
-            "run_icp_odometry": os.getenv("RUN_ICP_ODOMETRY", default=False),
+            "run_rgbd_odometry": os.getenv("RUN_RDGD_ODOMETRY", default="False"),
+            "run_stereo_odometry": os.getenv("RUN_STEREO_ODOMETRY", default="False"),
+            "run_icp_odometry": os.getenv("RUN_ICP_ODOMETRY", default="False"),
         }.items()
     )
 
@@ -87,7 +87,7 @@ def generate_launch_description():
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(t265_cmd)
     ld.add_action(d435i_cmd)
-    # ld.add_action(ubx_cmd)
+    ld.add_action(ubx_cmd)
     ld.add_action(localization_cmd)
 
     return ld

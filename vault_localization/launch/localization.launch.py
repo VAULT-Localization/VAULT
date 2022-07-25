@@ -55,7 +55,7 @@ def generate_launch_description():
     use_gps = LaunchConfiguration("use_gps")
     use_gps_cmd = DeclareLaunchArgument(
         "use_gps",
-        default_value="False",
+        default_value="True",
         description="Wheter to use GPS data in the loop clousure")
 
     ## EKF ##
