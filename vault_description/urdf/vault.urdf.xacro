@@ -49,7 +49,7 @@
         </xacro:sensor_d435i>
 
         <xacro:sensor_t265 parent="vault_realsense_mount_link" name="t265" namespace="vault" base_link="${parent}">
-            <origin xyz="-0.01 0.0035 0.035" rpy="0 0 -1.57"/>
+            <origin xyz="0 0.0035 0.035" rpy="0 0 -1.57"/>
         </xacro:sensor_t265>
 
         <xacro:sensor_imu name="imu" namespace="vault" parent="vault_box_link">
@@ -60,7 +60,7 @@
             <origin xyz="0 0 0.1075" rpy="0 0 0"/>
         </xacro:sensor_gps>
         <xacro:gps_board name="gps" namespace="vault" parent="vault_box_link">
-            <origin xyz="-0.077 0 -0.010" rpy="0 1.57 0"/>
+            <origin xyz="-0.077 0 -0.010" rpy="1.57 0 1.57"/>
         </xacro:gps_board>
     </xacro:macro>
 </robot>
