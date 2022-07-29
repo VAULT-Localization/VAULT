@@ -11,6 +11,7 @@
 
   <depend>rviz2</depend>
   <depend>rtabmap_ros</depend>
+  <depend>rosbridge_server</depend>
 
   <depend>rclcpp</depend>
   <depend>image_transport</depend>

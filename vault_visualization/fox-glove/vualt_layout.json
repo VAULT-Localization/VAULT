@@ -1,0 +1,99 @@
+{
+  "configById": {
+    "3D Panel!3ogro3r": {
+      "autoSyncCameraState": false,
+      "autoTextBackgroundColor": true,
+      "cameraState": {
+        "distance": 5.146860013949496,
+        "perspective": true,
+        "phi": 1.2800993274543173,
+        "targetOffset": [
+          0.9953232603944977,
+          -2.4257852014486705,
+          0
+        ],
+        "thetaOffset": 9.250947227343184,
+        "fovy": 0.7853981633974483,
+        "near": 0.01,
+        "far": 5000
+      },
+      "checkedKeys": [
+        "name:Topics",
+        "t:/foxglove/grid",
+        "t:/vault/cloud_map",
+        "t:/tf",
+        "t:/robot_description"
+      ],
+      "clickToPublishPoseTopic": "/move_base_simple/goal",
+      "clickToPublishPointTopic": "/clicked_point",
+      "clickToPublishPoseEstimateTopic": "/initialpose",
+      "clickToPublishPoseEstimateXDeviation": 0.5,
+      "clickToPublishPoseEstimateYDeviation": 0.5,
+      "clickToPublishPoseEstimateThetaDeviation": 0.26179939,
+      "customBackgroundColor": "#ffffff",
+      "diffModeEnabled": true,
+      "expandedKeys": [
+        "name:Topics"
+      ],
+      "followMode": "follow",
+      "followTf": "map",
+      "modifiedNamespaceTopics": [],
+      "pinTopics": false,
+      "settingsByKey": {
+        "t:/vault/cloud_map": {
+          "pointSize": 7
+        }
+      },
+      "useThemeBackgroundColor": false,
+      "colorOverrideByVariable": {}
+    },
+    "ImageViewPanel!4e4txv7": {
+      "cameraTopic": "/vault/d435i/color/image_raw/compressed",
+      "enabledMarkerTopics": [],
+      "mode": "fit",
+      "pan": {
+        "x": 5.188844045014463,
+        "y": 7.5095574749070835
+      },
+      "rotation": 0,
+      "synchronize": false,
+      "transformMarkers": false,
+      "zoom": 0.8517353858982668
+    },
+    "map!3dr62yx": {
+      "disabledTopics": [],
+      "layer": "map",
+      "customTileUrl": "",
+      "followTopic": "/vault/gps/fix",
+      "zoomLevel": 3
+    },
+    "SourceInfo!3naf0nt": {}
+  },
+  "globalVariables": {},
+  "userNodes": {
+    "a5ea0720-3351-4f26-bd52-6ce6214622cc": {
+      "sourceCode": "// The ./types module provides helper types for your Input events and messages.\nimport { Input, Message } from \"./types\";\n\n// Your node can output well-known message types, any of your custom message types, or\n// complete custom message types.\n//\n// Use `Message` to access your data source types or well-known types:\n// type Twist = Message<\"geometry_msgs/Twist\">;\n//\n// Conventionally, it's common to make a _type alias_ for your node's output type\n// and use that type name as the return type for your node function.\n// Here we've called the type `Output` but you can pick any type name.\ntype Output = {\n  hello: string;\n};\n\n// These are the topics your node \"subscribes\" to. Studio will invoke your node function\n// when any message is received on one of these topics.\nexport const inputs = [\"/input/topic\"];\n\n// Any output your node produces is \"published\" to this topic. Published messages are only visible within Studio, not to your original data source.\nexport const output = \"/studio_node/output_topic\";\n\n// This function is called with messages from your input topics.\n// The first argument is an event with the topic, receive time, and message.\n// Use the `Input<...>` helper to get the correct event type for your input topic messages.\nexport default function node(event: Input<\"/input/topic\">): Output {\n  return {\n    hello: \"world!\",\n  };\n};",
+      "name": "a5ea0720"
+    }
+  },
+  "linkedGlobalVariables": [],
+  "playbackConfig": {
+    "speed": 1,
+    "messageOrder": "receiveTime"
+  },
+  "layout": {
+    "first": "3D Panel!3ogro3r",
+    "second": {
+      "first": {
+        "first": "ImageViewPanel!4e4txv7",
+        "second": "map!3dr62yx",
+        "direction": "column"
+      },
+      "second": "SourceInfo!3naf0nt",
+      "direction": "column",
+      "splitPercentage": 72.14566929133859
+    },
+    "direction": "row",
+    "splitPercentage": 70.69970845481049
+  }
+}
