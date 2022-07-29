@@ -12,6 +12,9 @@
   <depend>rviz2</depend>
   <depend>rtabmap_ros</depend>
 
+  <depend>rclcpp</depend>
+  <depend>image_transport</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
