@@ -1,8 +1,9 @@
 import os
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -14,6 +15,20 @@ def generate_launch_description():
         "rviz",
         "default.rviz")
 
+    repub_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory("vault_visualization"),
+                         "launch", "republish.launch.py")
+        ),
+        launch_arguments={
+            "namespace": "vault",
+            "repub_rgb": "True",
+            "repub_depth": "False",
+            "repub_infras": "False",
+            "repub_fisheyes": "False"
+        }.items()
+    )
+
     rviz_cmd = Node(
         name="rviz",
         package="rviz2",
@@ -23,5 +38,6 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
+    ld.add_action(repub_cmd)
     ld.add_action(rviz_cmd)
     return ld

@@ -1,7 +1,11 @@
+import os
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PythonExpression
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -45,7 +49,7 @@ def generate_launch_description():
 
     remappings = [
         # subs
-        ("rgb/image", "d435i/color/image_raw"),
+        ("rgb/image", "d435i/color/image_raw/repub"),
         ("rgb/camera_info", "d435i/color/camera_info"),
         ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
         ("imu", "imu"),
@@ -53,9 +57,9 @@ def generate_launch_description():
         ("odom_info", "odom_info"),
         ("goal", "goal_pose"),
         ("gps/fix", "fix"),
-        ("left/image_rect", "t265/fisheye1/image_raw"),
+        ("left/image_rect", "t265/fisheye1/image_raw/repub"),
         ("left/camera_info", "t265/fisheye1/camera_info"),
-        ("right/image_rect", "t265/fisheye2/image_raw"),
+        ("right/image_rect", "t265/fisheye2/image_raw/repub"),
         ("right/camera_info", "t265/fisheye2/camera_info"),
     ]
 
@@ -63,6 +67,20 @@ def generate_launch_description():
         namespace_cmd,
         use_sim_time_cmd,
         use_t265_cmd,
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(get_package_share_directory("vault_visualization"),
+                             "launch", "republish.launch.py")
+            ),
+            launch_arguments={
+                "namespace": namespace,
+                "repub_rgb": PythonExpression(["not ", use_t265]),
+                "repub_depth": "False",
+                "repub_infras": "False",
+                "repub_fisheyes": use_t265
+            }.items()
+        ),
 
         Node(
             package="rtabmap_ros",
