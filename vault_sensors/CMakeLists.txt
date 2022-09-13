@@ -14,6 +14,7 @@ INCLUDE_DIRECTORIES(
   include
 )
 
+# fix imu frame
 add_executable(fix_imu_frame_node src/fix_imu_frame_node.cpp)
 target_link_libraries(fix_imu_frame_node)
 ament_target_dependencies(fix_imu_frame_node rclcpp sensor_msgs)
@@ -22,6 +23,7 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+# fix odom frame
 add_executable(fix_odom_frame_node src/fix_odom_frame_node.cpp)
 target_link_libraries(fix_odom_frame_node)
 ament_target_dependencies(fix_odom_frame_node
@@ -33,6 +35,13 @@ ament_target_dependencies(fix_odom_frame_node
 install(TARGETS
   fix_odom_frame_node
   DESTINATION lib/${PROJECT_NAME}
+)
+
+# imu hfi-a9
+install(PROGRAMS
+  ${PROJECT_NAME}/imu_hfi_a9_node.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME imu_hfi_a9_node
 )
 
 install(
