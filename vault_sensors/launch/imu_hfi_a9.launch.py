@@ -23,7 +23,7 @@ def generate_launch_description():
     update_rate = LaunchConfiguration("update_rate")
     update_rate_cmd = DeclareLaunchArgument(
         "update_rate",
-        default_value="200",
+        default_value="300",
         description="update rate")
 
     read_rate = LaunchConfiguration("read_rate")

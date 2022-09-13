@@ -25,7 +25,7 @@ class ImuHfiA9Node(Node):
         self.frame_id = self.get_parameter(
             "frame_id").get_parameter_value().string_value
 
-        self.declare_parameter("update_rate", 200)
+        self.declare_parameter("update_rate", 300)
         self.update_rate = self.get_parameter(
             "update_rate").get_parameter_value().integer_value
 
