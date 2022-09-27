@@ -55,6 +55,16 @@ def generate_launch_description():
         }.items()
     )
 
+    imu_hfi_a9_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory("vault_sensors"),
+                         "launch", "imu_hfi_a9.launch.py")
+        ),
+        launch_arguments={
+            "namespace": namespace
+        }.items()
+    )
+
     ## Localization ##
     localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -65,8 +75,9 @@ def generate_launch_description():
             "namespace": namespace,
             "use_sim_time": "False",
 
-            "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default="True"),
-            "publish_d435i_imu_filter": os.getenv("PUBLISH_D435i_IMU_FILTER", default="False"),
+            "fix_t265_odom": os.getenv("FIX_T265_ODOM", default="True"),
+            "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default="False"),
+            "fix_d435i_imu_filter": os.getenv("FIX_D435i_IMU_FILTER", default="False"),
 
             "publish_visual_slam_tf": os.getenv("PUBLISH_VISUAL_SLAM_TF", default="True"),
             "use_t265": os.getenv("USE_T265", default="False"),
@@ -88,6 +99,7 @@ def generate_launch_description():
     ld.add_action(t265_cmd)
     ld.add_action(d435i_cmd)
     ld.add_action(ubx_cmd)
+    ld.add_action(imu_hfi_a9_cmd)
     ld.add_action(localization_cmd)
 
     return ld
