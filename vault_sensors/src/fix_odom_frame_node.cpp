@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -26,6 +27,9 @@ FixOdomFrameNode::FixOdomFrameNode() : rclcpp::Node("fix_odom_frame_node") {
   this->declare_parameter<std::string>("odom_frame", "odom");
   this->get_parameter("odom_frame", this->odom_frame);
 
+  this->declare_parameter<bool>("publish_tf", false);
+  this->get_parameter("publish_tf", this->publish_tf);
+
   this->tf_buffer = std::make_unique<tf2_ros::Buffer>(this->get_clock());
   this->transform_listener =
       std::make_shared<tf2_ros::TransformListener>(*this->tf_buffer);
@@ -41,17 +45,16 @@ void FixOdomFrameNode::callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
 
   geometry_msgs::msg::TransformStamped transform_stamped;
   geometry_msgs::msg::TransformStamped new_odom_transform;
+  geometry_msgs::msg::PoseWithCovarianceStamped pose_stamped;
 
   try {
-    transform_stamped = tf_buffer->lookupTransform(
+    transform_stamped = this->tf_buffer->lookupTransform(
         this->frame_id, msg->child_frame_id, tf2::TimePointZero);
 
-    // rotate
-    tf2::Quaternion q_orig, q_rot, q_new;
-    tf2::convert(msg->pose.pose.orientation, q_orig);
-    tf2::convert(transform_stamped.transform.rotation, q_rot);
-    q_new = q_rot.inverse() * q_orig;
-    q_new.normalize();
+    pose_stamped.header = msg->header;
+    pose_stamped.pose = msg->pose;
+
+    tf2::doTransform(pose_stamped, pose_stamped, transform_stamped);
 
     // new odom msg
     nav_msgs::msg::Odometry new_odom;
@@ -59,43 +62,33 @@ void FixOdomFrameNode::callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
     new_odom.header.frame_id = this->odom_frame;
     new_odom.header.stamp = msg->header.stamp;
     new_odom.child_frame_id = this->frame_id;
-
-    double roll, pitch, yaw;
-    tf2::Matrix3x3 m(q_rot);
-    m.getRPY(roll, pitch, yaw);
-
-    new_odom.pose.pose.position.x =
-        msg->pose.pose.position.x -
-        ((transform_stamped.transform.translation.x * cos(yaw)) -
-         (-transform_stamped.transform.translation.y * sin(yaw)));
-    new_odom.pose.pose.position.y =
-        msg->pose.pose.position.y -
-        ((transform_stamped.transform.translation.x * sin(yaw)) +
-         (-transform_stamped.transform.translation.y * cos(yaw)));
-    new_odom.pose.pose.position.z =
-        msg->pose.pose.position.z - transform_stamped.transform.translation.z;
-
-    tf2::convert(q_new, new_odom.pose.pose.orientation);
-
-    new_odom.pose.covariance = msg->pose.covariance;
+    new_odom.pose = pose_stamped.pose;
     new_odom.twist = msg->twist;
 
-    // new odom tf
-    new_odom_transform.header = new_odom.header;
-    new_odom_transform.child_frame_id = new_odom.child_frame_id;
-
-    new_odom_transform.transform.translation.x = new_odom.pose.pose.position.x;
-    new_odom_transform.transform.translation.y = new_odom.pose.pose.position.y;
-    new_odom_transform.transform.translation.z = new_odom.pose.pose.position.z;
-
-    new_odom_transform.transform.rotation.x = new_odom.pose.pose.orientation.x;
-    new_odom_transform.transform.rotation.y = new_odom.pose.pose.orientation.y;
-    new_odom_transform.transform.rotation.z = new_odom.pose.pose.orientation.z;
-    new_odom_transform.transform.rotation.w = new_odom.pose.pose.orientation.w;
-
-    // publish
     this->pub->publish(new_odom);
-    this->tf_broadcaster->sendTransform(new_odom_transform);
+
+    // new odom tf
+    if (this->publish_tf) {
+      new_odom_transform.header = new_odom.header;
+      new_odom_transform.child_frame_id = new_odom.child_frame_id;
+
+      new_odom_transform.transform.translation.x =
+          new_odom.pose.pose.position.x;
+      new_odom_transform.transform.translation.y =
+          new_odom.pose.pose.position.y;
+      new_odom_transform.transform.translation.z =
+          new_odom.pose.pose.position.z;
+
+      new_odom_transform.transform.rotation.x =
+          new_odom.pose.pose.orientation.x;
+      new_odom_transform.transform.rotation.y =
+          new_odom.pose.pose.orientation.y;
+      new_odom_transform.transform.rotation.z =
+          new_odom.pose.pose.orientation.z;
+      new_odom_transform.transform.rotation.w =
+          new_odom.pose.pose.orientation.w;
+      this->tf_broadcaster->sendTransform(new_odom_transform);
+    }
 
   } catch (tf2::TransformException &ex) {
     RCLCPP_WARN(this->get_logger(), "Could not transform %s to %s: %s",

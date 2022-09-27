@@ -27,17 +27,23 @@ def generate_launch_description():
         description="Use simulation (Gazebo) clock if True")
 
     ## Sensors ##
+    fix_t265_odom = LaunchConfiguration("fix_t265_odom")
+    fix_t265_odom_cmd = DeclareLaunchArgument(
+        "fix_t265_odom",
+        default_value="True",
+        description="Wheter to fix odom of T265")
+
     publish_t265_odom_tf = LaunchConfiguration("publish_t265_odom_tf")
     publish_t265_odom_tf_cmd = DeclareLaunchArgument(
         "publish_t265_odom_tf",
         default_value="True",
         description="Wheter to publish odom tf of T265")
 
-    publish_d435i_imu_filter = LaunchConfiguration("publish_d435i_imu_filter")
-    publish_d435i_imu_filter_cmd = DeclareLaunchArgument(
-        "publish_d435i_imu_filter",
+    fix_d435i_imu_filter = LaunchConfiguration("fix_d435i_imu_filter")
+    fix_d435i_imu_filter_cmd = DeclareLaunchArgument(
+        "fix_d435i_imu_filter",
         default_value="True",
-        description="Wheter to publish D435i imu data fixed")
+        description="Wheter to fix D435i imu data")
 
     ## VSLAM ##
     publish_visual_slam_tf = LaunchConfiguration("publish_visual_slam_tf")
@@ -100,10 +106,11 @@ def generate_launch_description():
         namespace=namespace,
         output="screen",
         parameters=[{"frame_id": "base_link",
-                     "odom_frame": "odom"}],
-        remappings=[("odom_out", "odom"),
+                     "odom_frame": "odom",
+                     "publish_tf": publish_t265_odom_tf}],
+        remappings=[("odom_out", "t265/odom"),
                     ("odom_in", "t265/pose/sample")],
-        condition=IfCondition(PythonExpression([publish_t265_odom_tf]))
+        condition=IfCondition(PythonExpression([fix_t265_odom]))
     )
 
     imu_filter_cmd = IncludeLaunchDescription(
@@ -114,7 +121,7 @@ def generate_launch_description():
         launch_arguments={
             "namespace": namespace
         }.items(),
-        condition=IfCondition(PythonExpression([publish_d435i_imu_filter]))
+        condition=IfCondition(PythonExpression([fix_d435i_imu_filter]))
     )
 
     ## VSLAM ##
@@ -189,8 +196,9 @@ def generate_launch_description():
     ld.add_action(use_sim_time_cmd)
 
     ## Sensors ##
+    ld.add_action(fix_t265_odom_cmd)
     ld.add_action(publish_t265_odom_tf_cmd)
-    ld.add_action(publish_d435i_imu_filter_cmd)
+    ld.add_action(fix_d435i_imu_filter_cmd)
 
     ld.add_action(fix_odom_frame_cmd)
     ld.add_action(imu_filter_cmd)

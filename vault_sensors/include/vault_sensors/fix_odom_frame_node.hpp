@@ -19,6 +19,7 @@ public:
 private:
   std::string frame_id;
   std::string odom_frame;
+  bool publish_tf;
 
   std::shared_ptr<tf2_ros::TransformListener> transform_listener{nullptr};
   std::unique_ptr<tf2_ros::Buffer> tf_buffer;

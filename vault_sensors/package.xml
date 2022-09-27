@@ -14,6 +14,7 @@
   <depend>geometry_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
   <depend>realsense2_camera</depend>
   <depend>imu_filter_madgwick</depend>
   <depend>ubx_ros</depend>

@@ -114,14 +114,15 @@ def generate_launch_description():
             "namespace": namespace,
             "use_sim_time": "True",
 
-            "publish_t265_odom_tf": "True",
-            "publish_d435i_imu_filter": "False",
+            "fix_t265_odom": "True",
+            "publish_t265_odom_tf": "False",
+            "fix_d435i_imu_filter": "False",
 
             "publish_visual_slam_tf": "True",
             "use_t265": "False",
             "use_gps": "False",
 
-            "run_ekf": "False",
+            "run_ekf": "True",
             "run_dual_ekf": "False",
 
             "run_rgbd_odometry": "False",
