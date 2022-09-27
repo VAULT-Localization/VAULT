@@ -4,6 +4,8 @@
     
     <xacro:macro name="vault" params="parent *origin">
 
+        <xacro:property name="M_PI" value="3.1415926535897931" />
+
         <!-- Include macros -->
         <xacro:include filename="$(find vault_description)/urdf/inertials.xacro"/>
         <xacro:include filename="$(find vault_description)/urdf/box/box.urdf.xacro" />
@@ -45,22 +47,22 @@
 
         <!-- sensors -->
         <xacro:sensor_d435i parent="vault_realsense_mount_link" name="d435i" namespace="vault">
-            <origin xyz="0 -0.005 -0.0075" rpy="0 0 -1.57"/>
+            <origin xyz="0 -0.005 -0.0075" rpy="0 0 -${M_PI/2}"/>
         </xacro:sensor_d435i>
 
         <xacro:sensor_t265 parent="vault_realsense_mount_link" name="t265" namespace="vault" base_link="${parent}">
-            <origin xyz="0 0.0035 0.035" rpy="0 0 -1.57"/>
+            <origin xyz="0 0.0035 0.035" rpy="0 0 -${M_PI/2}"/>
         </xacro:sensor_t265>
 
         <xacro:sensor_imu name="imu" namespace="vault" parent="vault_box_link">
-            <origin xyz="0 -0.075 0.084" rpy="0 -3.141516 0"/>
+            <origin xyz="0 -0.075 0.084" rpy="0 -${M_PI} ${M_PI/2}"/>
         </xacro:sensor_imu>
 
         <xacro:sensor_gps name="gps" namespace="vault" parent="vault_box_link">
             <origin xyz="0 0 0.1075" rpy="0 0 0"/>
         </xacro:sensor_gps>
         <xacro:gps_board name="gps" namespace="vault" parent="vault_box_link">
-            <origin xyz="-0.077 0 -0.010" rpy="1.57 0 1.57"/>
+            <origin xyz="-0.077 0 -0.010" rpy="${M_PI/2} 0 ${M_PI/2}"/>
         </xacro:gps_board>
     </xacro:macro>
 </robot>
