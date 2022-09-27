@@ -39,19 +39,23 @@ $ sudo touch /etc/vault
 
    - Sensors config:
 
-     - PUBLISH_T265_ODOM_TF
-     - PUBLISH_D435i_IMU_FILTER
+     - FIX_T265_ODOM=True
+     - PUBLISH_T265_ODOM_TF=False
+     - FIX_D435i_IMU_FILTER=False
 
    - Visual SLAM config:
+
      - PUBLISH_VISUAL_SLAM_TF
      - USE_T265
      - USE_GPS
+
    - EKF config:
 
      - RUN_EKF
      - RUN_DUAL_EKF
 
    - Visual odometry config:
+
      - RUN_RDGD_ODOMETRY
      - RUN_STEREO_ODOMETRY
      - RUN_ICP_ODOMETRY
