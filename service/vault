@@ -20,7 +20,7 @@ USE_T265=False
 USE_GPS=True
 
 # EKF
-RUN_EKF=Ture
+RUN_EKF=True
 RUN_DUAL_EKF=False
 
 # Visual odometry
