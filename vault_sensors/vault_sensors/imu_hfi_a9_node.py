@@ -10,6 +10,8 @@ from typing import List
 import rclpy
 from rclpy.node import Node
 
+from tf_transformations import quaternion_from_euler
+
 from rclpy.qos import QoSProfile
 from rclpy.qos import QoSDurabilityPolicy
 from rclpy.qos import QoSHistoryPolicy
@@ -30,7 +32,7 @@ class ImuHfiA9Node(Node):
         self.frame_id = self.get_parameter(
             "frame_id").get_parameter_value().string_value
 
-        self.declare_parameter("update_rate", 300)
+        self.declare_parameter("update_rate", 200)
         self.update_rate = self.get_parameter(
             "update_rate").get_parameter_value().integer_value
 
@@ -103,19 +105,10 @@ class ImuHfiA9Node(Node):
 
     @staticmethod
     def eul_to_qua(euler: List[float]) -> Quaternion:
-        eular_div = [0, 0, 0]
-        eular_div[0], eular_div[1], eular_div[2] = euler[0] / \
-            2.0, euler[1] / 2.0, euler[2] / 2.0
 
-        ca, cb, cc = math.cos(eular_div[0]), math.cos(
-            eular_div[1]), math.cos(eular_div[2])
-        sa, sb, sc = math.sin(eular_div[0]), math.sin(
-            eular_div[1]), math.sin(eular_div[2])
-
-        x = sa * cb * cc - ca * sb * sc
-        y = ca * sb * cc + sa * cb * sc
-        z = ca * cb * sc - sa * sb * cc
-        w = ca * cb * cc + sa * sb * sc
+        x, y, z, w = quaternion_from_euler(euler[0],
+                                           euler[1],
+                                           euler[2])
 
         orientation = Quaternion()
         orientation.x, orientation.y, orientation.z, orientation.w = x, y, z, w
