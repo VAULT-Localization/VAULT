@@ -10,6 +10,11 @@ from typing import List
 import rclpy
 from rclpy.node import Node
 
+from rclpy.qos import QoSProfile
+from rclpy.qos import QoSDurabilityPolicy
+from rclpy.qos import QoSHistoryPolicy
+from rclpy.qos import QoSReliabilityPolicy
+
 from geometry_msgs.msg import Quaternion
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
@@ -62,8 +67,15 @@ class ImuHfiA9Node(Node):
             "magnetic_field_covariance").get_parameter_value().double_array_value.tolist()
 
         # pubs
-        self.imu_pub = self.create_publisher(Imu, "imu", 10)
-        self.mag_pub = self.create_publisher(MagneticField, "mag", 10)
+        sensor_qos = QoSProfile(
+            history=QoSHistoryPolicy.KEEP_LAST,
+            durability=QoSDurabilityPolicy.VOLATILE,
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            depth=10
+        )
+
+        self.imu_pub = self.create_publisher(Imu, "imu", sensor_qos)
+        self.mag_pub = self.create_publisher(MagneticField, "mag", sensor_qos)
 
         # aux
         self._sensor_data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
