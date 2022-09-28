@@ -55,7 +55,7 @@
         </xacro:sensor_t265>
 
         <xacro:sensor_imu name="imu" namespace="vault" parent="vault_box_link">
-            <origin xyz="0 -0.075 0.084" rpy="0 -${M_PI} ${M_PI/2}"/>
+            <origin xyz="0 0 0.044" rpy="0 -${M_PI} ${M_PI/2}"/>
         </xacro:sensor_imu>
 
         <xacro:sensor_gps name="gps" namespace="vault" parent="vault_box_link">
