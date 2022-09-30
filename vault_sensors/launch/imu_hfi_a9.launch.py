@@ -20,18 +20,6 @@ def generate_launch_description():
         default_value=[namespace, "_imu_link"],
         description="frame_id")
 
-    update_rate = LaunchConfiguration("update_rate")
-    update_rate_cmd = DeclareLaunchArgument(
-        "update_rate",
-        default_value="300",
-        description="update rate")
-
-    read_rate = LaunchConfiguration("read_rate")
-    read_rate_cmd = DeclareLaunchArgument(
-        "read_rate",
-        default_value="1000",
-        description="read rate from serial")
-
     device = LaunchConfiguration("device")
     device_cmd = DeclareLaunchArgument(
         "device",
@@ -43,6 +31,13 @@ def generate_launch_description():
         "baud",
         default_value="921600",
         description="baud rate")
+
+    gravitacional_normalization = LaunchConfiguration(
+        "gravitacional_normalization")
+    gravitacional_normalization_cmd = DeclareLaunchArgument(
+        "gravitacional_normalization",
+        default_value="True",
+        description="Wheter to apply gravitacional normalization to linear acceleration")
 
     orientation_covariance = LaunchConfiguration("orientation_covariance")
     orientation_covariance_cmd = DeclareLaunchArgument(
@@ -78,10 +73,9 @@ def generate_launch_description():
                            parameters=[
                                {
                                    "frame_id": frame_id,
-                                   "update_rate": update_rate,
-                                   "read_rate": read_rate,
                                    "device": device,
                                    "baud": baud,
+                                   "gravitacional_normalization": gravitacional_normalization,
                                    "orientation_covariance": orientation_covariance,
                                    "angular_velocity_covariance": angular_velocity_covariance,
                                    "linear_acceleration_covariance": linear_acceleration_covariance,
@@ -94,10 +88,9 @@ def generate_launch_description():
 
     ld.add_action(namespace_cmd)
     ld.add_action(frame_id_cmd)
-    ld.add_action(update_rate_cmd)
-    ld.add_action(read_rate_cmd)
     ld.add_action(device_cmd)
     ld.add_action(baud_cmd)
+    ld.add_action(gravitacional_normalization_cmd)
     ld.add_action(orientation_covariance_cmd)
     ld.add_action(angular_velocity_covariance_cmd)
     ld.add_action(linear_acceleration_covariance_cmd)

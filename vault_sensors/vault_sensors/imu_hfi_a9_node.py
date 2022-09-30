@@ -3,7 +3,6 @@
 import math
 import serial
 import struct
-import binascii
 
 from typing import List
 
@@ -17,7 +16,6 @@ from rclpy.qos import QoSDurabilityPolicy
 from rclpy.qos import QoSHistoryPolicy
 from rclpy.qos import QoSReliabilityPolicy
 
-from geometry_msgs.msg import Quaternion
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
@@ -32,14 +30,6 @@ class ImuHfiA9Node(Node):
         self.frame_id = self.get_parameter(
             "frame_id").get_parameter_value().string_value
 
-        self.declare_parameter("update_rate", 200)
-        self.update_rate = self.get_parameter(
-            "update_rate").get_parameter_value().integer_value
-
-        self.declare_parameter("read_rate", 1000)
-        self.read_rate = self.get_parameter(
-            "read_rate").get_parameter_value().integer_value
-
         self.declare_parameter("device", "/dev/ttyUSB0")
         self.usb_port = self.get_parameter(
             "device").get_parameter_value().string_value
@@ -47,6 +37,10 @@ class ImuHfiA9Node(Node):
         self.declare_parameter("baud", 921600)
         self.baudrate = self.get_parameter(
             "baud").get_parameter_value().integer_value
+
+        self.declare_parameter("gravitacional_normalization", True)
+        self.gravitacional_normalization = self.get_parameter(
+            "gravitacional_normalization").get_parameter_value().bool_value
 
         self.declare_parameter("orientation_covariance", [
                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -68,6 +62,12 @@ class ImuHfiA9Node(Node):
         self.magnetic_field_covariance = self.get_parameter(
             "magnetic_field_covariance").get_parameter_value().double_array_value.tolist()
 
+        # aux
+        self.orientation = [0, 0, 0]
+        self.angular_velocity = [0, 0, 0]
+        self.linear_acceleration = [0, 0, 0]
+        self.magnetometer = [0, 0, 0]
+
         # pubs
         sensor_qos = QoSProfile(
             history=QoSHistoryPolicy.KEEP_LAST,
@@ -79,14 +79,9 @@ class ImuHfiA9Node(Node):
         self.imu_pub = self.create_publisher(Imu, "imu", sensor_qos)
         self.mag_pub = self.create_publisher(MagneticField, "mag", sensor_qos)
 
-        # aux
-        self._sensor_data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self._rpy_degree = [0, 0, 0]
-
         # starts
         self.open_device(self.usb_port, self.baudrate)
-        self.create_timer(1 / self.read_rate, self.read_data)
-        self.create_timer(1 / self.update_rate, self.publish_data)
+        self.create_timer(1 / 1000, self.work)
 
     def open_device(self, usb_port: str, baudrate: int, timeout: float = 0.5) -> None:
         try:
@@ -104,96 +99,122 @@ class ImuHfiA9Node(Node):
             exit()
 
     @staticmethod
-    def eul_to_qua(euler: List[float]) -> Quaternion:
-
-        x, y, z, w = quaternion_from_euler(euler[0],
-                                           euler[1],
-                                           euler[2])
-
-        orientation = Quaternion()
-        orientation.x, orientation.y, orientation.z, orientation.w = x, y, z, w
-        return orientation
-
-    @staticmethod
-    def receive_split(buffer: bytearray) -> List[bytes]:
-        new_buffer = []
-        for i in range(0, len(buffer), 2):
-            new_buffer.append(buffer[i:i + 2])
-        return new_buffer
+    def check_sum(raw_data: List[int], check_data: List[int]) -> bool:
+        data = bytearray(raw_data)
+        crc = 0xFFFF
+        for pos in data:
+            crc ^= pos
+            for _ in range(8):
+                if (crc & 1) != 0:
+                    crc >>= 1
+                    crc ^= 0xA001
+                else:
+                    crc >>= 1
+        return hex(((crc & 0xff) << 8) + (crc >> 8)) == hex(check_data[0] << 8 | check_data[1])
 
     @staticmethod
-    def hex_to_ieee(size: int, buffer: List[bytes]) -> List[float]:
-        aux = ""
-        data = []
+    def hex_to_ieee(raw_data: List[int]) -> List[float]:
+        ieee_data = []
+        raw_data.reverse()
+        for i in range(0, len(raw_data), 4):
+            data2str = (
+                hex(raw_data[i] | 0xff00)[4:6] +
+                hex(raw_data[i + 1] | 0xff00)[4:6] +
+                hex(raw_data[i + 2] | 0xff00)[4:6] +
+                hex(raw_data[i + 3] | 0xff00)[4:6]
+            )
+            ieee_data.append(struct.unpack('>f', bytes.fromhex(data2str))[0])
+        ieee_data.reverse()
+        return ieee_data
 
-        for i in range(int(size / 2 - 3), 11, -4):
-            for j in range(i, i - 4, -1):
-                aux += buffer[j].decode("utf-8")
-            aux = bytes.fromhex(aux)
-            data.append(struct.unpack(">f", aux)[0])
-            aux = ""
-
-        data.reverse()
-        return data
-
-    def read_data(self) -> None:
-
-        # check if there are data
+    def work(self) -> None:
         count = self.hf_imu.inWaiting()
 
-        if count > 24:
-            # read data
-            receive_buffer = bytearray()
-            receive_buffer = binascii.b2a_hex(self.hf_imu.read(count))
-            receive_len = len(receive_buffer)
-            buffer = self.receive_split(receive_buffer)
+        if count > 0:
+            buff_data = self.hf_imu.read(count)
+            self.handle_data(list(buff_data))
 
-            # parse sensors data
-            if (buffer[0] + buffer[1] + buffer[2]).decode("utf-8") == "aa552c":
-                self._sensor_data = self.hex_to_ieee(receive_len, buffer)
+    def handle_data(self, raw_data: List[int]) -> None:
 
-            # parse orientation
-            if (buffer[0] + buffer[1] + buffer[2]).decode("utf-8") == "aa5514":
-                rpy = self.hex_to_ieee(receive_len, buffer)
-                self._rpy_degree[0] = rpy[0] / 180 * math.pi
-                self._rpy_degree[1] = rpy[1] / -180 * math.pi
-                self._rpy_degree[2] = rpy[2] / -180 * math.pi
+        # check header
+        if raw_data[0] != 0xaa:
+            return
+        if raw_data[1] != 0x55:
+            return
 
-    def publish_data(self) -> None:
+        # check msg type
+        if raw_data[2] == 0x2c:
+
+            if self.check_sum(raw_data[2:47], raw_data[47:49]):
+                data = self.hex_to_ieee(raw_data[7:47])
+                self.angular_velocity = data[1:4]
+                self.linear_acceleration = data[4:7]
+                self.magnetometer = data[7:10]
+            else:
+                self.get_logger().error("Check Sum verification failed")
+                return
+
+        elif raw_data[2] == 0x14:
+
+            if self.check_sum(raw_data[2:23], raw_data[23:25]):
+                data = self.hex_to_ieee(raw_data[7:23])
+                self.orientation = data[1:4]
+                self.orientation = [self.orientation[i]
+                                    * math.pi / 180 for i in range(3)]
+            else:
+                self.get_logger().error("Check Sum verification failed")
+                return
+
+        # publish
         stamp = self.get_clock().now().to_msg()
 
-        # IMU msg
         imu_msg = Imu()
-
         imu_msg.header.stamp = stamp
         imu_msg.header.frame_id = self.frame_id
 
-        imu_msg.orientation = self.eul_to_qua(self._rpy_degree)
+        qua = quaternion_from_euler(
+            self.orientation[0], -self.orientation[1], -self.orientation[2])
+        imu_msg.orientation.x = qua[0]
+        imu_msg.orientation.y = qua[1]
+        imu_msg.orientation.z = qua[2]
+        imu_msg.orientation.w = qua[3]
         imu_msg.orientation_covariance = self.orientation_covariance
 
-        imu_msg.angular_velocity.x = float(self._sensor_data[0])
-        imu_msg.angular_velocity.y = float(self._sensor_data[1])
-        imu_msg.angular_velocity.z = float(self._sensor_data[2])
+        imu_msg.angular_velocity.x = float(self.angular_velocity[0])
+        imu_msg.angular_velocity.y = float(self.angular_velocity[1])
+        imu_msg.angular_velocity.z = float(self.angular_velocity[2])
         imu_msg.angular_velocity_covariance = self.angular_velocity_covariance
 
-        imu_msg.linear_acceleration.x = float(
-            self._sensor_data[3] * -9.8)
-        imu_msg.linear_acceleration.y = float(
-            self._sensor_data[4] * -9.8)
-        imu_msg.linear_acceleration.z = float(
-            self._sensor_data[5] * -9.8)
+        acc_k = math.sqrt(
+            self.linear_acceleration[0] ** 2 +
+            self.linear_acceleration[1] ** 2 +
+            self.linear_acceleration[2] ** 2
+        )
+        if acc_k == 0:
+            acc_k = 1
+        if self.gravitacional_normalization:
+            imu_msg.linear_acceleration.x = self.linear_acceleration[0] * -9.8 / acc_k
+            imu_msg.linear_acceleration.y = self.linear_acceleration[1] * -9.8 / acc_k
+            imu_msg.linear_acceleration.z = self.linear_acceleration[2] * -9.8 / acc_k
+        else:
+            imu_msg.linear_acceleration.x = float(
+                self.linear_acceleration[0] * -9.8)
+            imu_msg.linear_acceleration.y = float(
+                self.linear_acceleration[1] * -9.8)
+            imu_msg.linear_acceleration.z = float(
+                self.linear_acceleration[2] * -9.8)
         imu_msg.linear_acceleration_covariance = self.linear_acceleration_covariance
 
         self.imu_pub.publish(imu_msg)
 
-        # magnetic msg
+        # mag
         mag_msg = MagneticField()
         mag_msg.header.stamp = stamp
         mag_msg.header.frame_id = self.frame_id
-        mag_msg.magnetic_field.x = float(self._sensor_data[6])
-        mag_msg.magnetic_field.y = float(self._sensor_data[7])
-        mag_msg.magnetic_field.z = float(self._sensor_data[8])
-        mag_msg.magnetic_field_covariance = self.magnetic_field_covariance
+
+        mag_msg.magnetic_field.x = float(self.magnetometer[0])
+        mag_msg.magnetic_field.y = float(self.magnetometer[1])
+        mag_msg.magnetic_field.z = float(self.magnetometer[2])
 
         self.mag_pub.publish(mag_msg)
 
