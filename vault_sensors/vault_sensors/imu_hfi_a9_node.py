@@ -63,10 +63,10 @@ class ImuHfiA9Node(Node):
             "magnetic_field_covariance").get_parameter_value().double_array_value.tolist()
 
         # aux
-        self.orientation = [0, 0, 0]
-        self.angular_velocity = [0, 0, 0]
-        self.linear_acceleration = [0, 0, 0]
-        self.magnetometer = [0, 0, 0]
+        self.orientation = [0.0, 0.0, 0.0, 0.0]
+        self.angular_velocity = [0.0, 0.0, 0.0]
+        self.linear_acceleration = [0.0, 0.0, 0.0]
+        self.magnetometer = [0.0, 0.0, 0.0]
 
         # pubs
         sensor_qos = QoSProfile(
@@ -158,9 +158,10 @@ class ImuHfiA9Node(Node):
 
             if self.check_sum(raw_data[2:23], raw_data[23:25]):
                 data = self.hex_to_ieee(raw_data[7:23])
-                self.orientation = data[1:4]
-                self.orientation = [self.orientation[i]
-                                    * math.pi / 180 for i in range(3)]
+                angles = data[1:4]
+                angles = [angles[i] * math.pi / 180 for i in range(3)]
+                self.orientation = quaternion_from_euler(
+                    angles[0], -angles[1], -angles[2])
             else:
                 self.get_logger().error("Check Sum verification failed")
                 return
@@ -172,17 +173,15 @@ class ImuHfiA9Node(Node):
         imu_msg.header.stamp = stamp
         imu_msg.header.frame_id = self.frame_id
 
-        qua = quaternion_from_euler(
-            self.orientation[0], -self.orientation[1], -self.orientation[2])
-        imu_msg.orientation.x = qua[0]
-        imu_msg.orientation.y = qua[1]
-        imu_msg.orientation.z = qua[2]
-        imu_msg.orientation.w = qua[3]
+        imu_msg.orientation.x = self.orientation[0]
+        imu_msg.orientation.y = self.orientation[1]
+        imu_msg.orientation.z = self.orientation[2]
+        imu_msg.orientation.w = self.orientation[3]
         imu_msg.orientation_covariance = self.orientation_covariance
 
-        imu_msg.angular_velocity.x = float(self.angular_velocity[0])
-        imu_msg.angular_velocity.y = float(self.angular_velocity[1])
-        imu_msg.angular_velocity.z = float(self.angular_velocity[2])
+        imu_msg.angular_velocity.x = self.angular_velocity[0]
+        imu_msg.angular_velocity.y = self.angular_velocity[1]
+        imu_msg.angular_velocity.z = self.angular_velocity[2]
         imu_msg.angular_velocity_covariance = self.angular_velocity_covariance
 
         acc_k = math.sqrt(
@@ -197,12 +196,9 @@ class ImuHfiA9Node(Node):
             imu_msg.linear_acceleration.y = self.linear_acceleration[1] * -9.8 / acc_k
             imu_msg.linear_acceleration.z = self.linear_acceleration[2] * -9.8 / acc_k
         else:
-            imu_msg.linear_acceleration.x = float(
-                self.linear_acceleration[0] * -9.8)
-            imu_msg.linear_acceleration.y = float(
-                self.linear_acceleration[1] * -9.8)
-            imu_msg.linear_acceleration.z = float(
-                self.linear_acceleration[2] * -9.8)
+            imu_msg.linear_acceleration.x = self.linear_acceleration[0] * -9.8
+            imu_msg.linear_acceleration.y = self.linear_acceleration[1] * -9.8
+            imu_msg.linear_acceleration.z = self.linear_acceleration[2] * -9.8
         imu_msg.linear_acceleration_covariance = self.linear_acceleration_covariance
 
         self.imu_pub.publish(imu_msg)
@@ -212,9 +208,9 @@ class ImuHfiA9Node(Node):
         mag_msg.header.stamp = stamp
         mag_msg.header.frame_id = self.frame_id
 
-        mag_msg.magnetic_field.x = float(self.magnetometer[0])
-        mag_msg.magnetic_field.y = float(self.magnetometer[1])
-        mag_msg.magnetic_field.z = float(self.magnetometer[2])
+        mag_msg.magnetic_field.x = self.magnetometer[0]
+        mag_msg.magnetic_field.y = self.magnetometer[1]
+        mag_msg.magnetic_field.z = self.magnetometer[2]
 
         self.mag_pub.publish(mag_msg)
 
