@@ -39,9 +39,9 @@ def generate_launch_description():
         default_value="True",
         description="Wheter to publish odom tf of T265")
 
-    fix_d435i_imu_filter = LaunchConfiguration("fix_d435i_imu_filter")
-    fix_d435i_imu_filter_cmd = DeclareLaunchArgument(
-        "fix_d435i_imu_filter",
+    fix_d435i_imu = LaunchConfiguration("fix_d435i_imu")
+    fix_d435i_imu_cmd = DeclareLaunchArgument(
+        "fix_d435i_imu",
         default_value="True",
         description="Wheter to fix D435i imu data")
 
@@ -121,7 +121,7 @@ def generate_launch_description():
         launch_arguments={
             "namespace": namespace
         }.items(),
-        condition=IfCondition(PythonExpression([fix_d435i_imu_filter]))
+        condition=IfCondition(PythonExpression([fix_d435i_imu]))
     )
 
     ## VSLAM ##
@@ -198,7 +198,7 @@ def generate_launch_description():
     ## Sensors ##
     ld.add_action(fix_t265_odom_cmd)
     ld.add_action(publish_t265_odom_tf_cmd)
-    ld.add_action(fix_d435i_imu_filter_cmd)
+    ld.add_action(fix_d435i_imu_cmd)
 
     ld.add_action(fix_odom_frame_cmd)
     ld.add_action(imu_filter_cmd)

@@ -77,7 +77,7 @@ def generate_launch_description():
 
             "fix_t265_odom": os.getenv("FIX_T265_ODOM", default="True"),
             "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default="False"),
-            "fix_d435i_imu_filter": os.getenv("FIX_D435i_IMU_FILTER", default="False"),
+            "fix_d435i_imu": os.getenv("FIX_D435i_IMU", default="False"),
 
             "publish_visual_slam_tf": os.getenv("PUBLISH_VISUAL_SLAM_TF", default="True"),
             "use_t265": os.getenv("USE_T265", default="False"),

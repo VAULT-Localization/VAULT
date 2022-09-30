@@ -41,7 +41,7 @@ $ sudo touch /etc/vault
 
      - FIX_T265_ODOM=True
      - PUBLISH_T265_ODOM_TF=False
-     - FIX_D435i_IMU_FILTER=False
+     - FIX_D435i_IMU=False
 
    - Visual SLAM config:
 

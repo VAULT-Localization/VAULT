@@ -116,7 +116,7 @@ def generate_launch_description():
 
             "fix_t265_odom": "True",
             "publish_t265_odom_tf": "False",
-            "fix_d435i_imu_filter": "False",
+            "fix_d435i_imu": "False",
 
             "publish_visual_slam_tf": "True",
             "use_t265": "False",

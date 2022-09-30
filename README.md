@@ -13,7 +13,7 @@
 
 ```shell
 $ cd ~/ros2_ws/src
-$ git clone https://github.com/mgonzs13/ros2_vault.git
+$ git clone https://github.com/mgonzs13/VAULT.git
 $ cd ~/ros2_ws
 $ rosdep install --from-paths src -r -y
 $ colcon build
