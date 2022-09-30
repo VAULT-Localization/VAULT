@@ -158,10 +158,11 @@ class ImuHfiA9Node(Node):
 
             if self.check_sum(raw_data[2:23], raw_data[23:25]):
                 data = self.hex_to_ieee(raw_data[7:23])
-                angles = data[1:4]
-                angles = [angles[i] * math.pi / 180 for i in range(3)]
+                aux_orientation = data[1:4]
+                aux_orientation = [aux_orientation[i]
+                                   * math.pi / 180 for i in range(3)]
                 self.orientation = quaternion_from_euler(
-                    angles[0], -angles[1], -angles[2])
+                    aux_orientation[0], -aux_orientation[1], -aux_orientation[2])
             else:
                 self.get_logger().error("Check Sum verification failed")
                 return
