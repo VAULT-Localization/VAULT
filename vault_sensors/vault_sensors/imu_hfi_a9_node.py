@@ -131,8 +131,12 @@ class ImuHfiA9Node(Node):
         count = self.hf_imu.inWaiting()
 
         if count > 0:
-            buff_data = self.hf_imu.read(count)
-            self.handle_data(list(buff_data))
+            try:
+                buff_data = self.hf_imu.read(count)
+                self.handle_data(list(buff_data))
+            except serial.SerialException as e:
+                self.get_logger().error(
+                    "Error reading from serial: {:s}".format(str(e)))
 
     def handle_data(self, raw_data: List[int]) -> None:
 

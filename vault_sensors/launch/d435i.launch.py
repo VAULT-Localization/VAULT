@@ -28,7 +28,7 @@ def generate_launch_description():
             "enable_gyro": "true",
             "enable_accel": "true",
             "unite_imu_method": "2",
-            "pointcloud.enable": "true",
+            "pointcloud.enable": "false",
             "align_depth.enable": "true",
             "enable_sync": "true",
             "linear_accel_cov": "1.0",
@@ -37,8 +37,8 @@ def generate_launch_description():
             "hole_filling_filter.enable": "true",
             "spatial_filter.enable": "true",
             "temporal_filter.enable": "true",
-            "enable_infra1": "true",
-            "enable_infra2": "true"
+            "enable_infra1": "false",
+            "enable_infra2": "false"
         }.items()
     )
 

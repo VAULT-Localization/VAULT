@@ -38,6 +38,6 @@ def generate_launch_description():
     )
 
     ld = LaunchDescription()
-    ld.add_action(repub_cmd)
+    # ld.add_action(repub_cmd)
     ld.add_action(rviz_cmd)
     return ld

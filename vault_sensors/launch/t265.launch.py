@@ -39,6 +39,8 @@ def generate_launch_description():
             "enable_sync": "true",
             "linear_accel_cov": "1.0",
             "publish_odom_tf": "false",
+            "enable_fisheye1": "false",
+            "enable_fisheye2": "false"
         }.items()
     )
 

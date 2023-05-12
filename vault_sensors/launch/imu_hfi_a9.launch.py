@@ -42,28 +42,36 @@ def generate_launch_description():
     orientation_covariance = LaunchConfiguration("orientation_covariance")
     orientation_covariance_cmd = DeclareLaunchArgument(
         "orientation_covariance",
-        default_value="[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]",
+        default_value="[0.0, 0.0, 0.0, \
+                        0.0, 0.0, 0.0, \
+                        0.0, 0.0, 0.0]",
         description="Covariance for IMU orientation")
 
     angular_velocity_covariance = LaunchConfiguration(
         "angular_velocity_covariance")
     angular_velocity_covariance_cmd = DeclareLaunchArgument(
         "angular_velocity_covariance",
-        default_value="[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]",
+        default_value="[4.0e-08, 0.0, 0.0, \
+                        0.0, 4.0e-08, 0.0, \
+                        0.0, 0.0, 4.0e-08]",
         description="Covariance for IMU angualar velocity")
 
     linear_acceleration_covariance = LaunchConfiguration(
         "linear_acceleration_covariance")
     linear_acceleration_covariance_cmd = DeclareLaunchArgument(
         "linear_acceleration_covariance",
-        default_value="[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]",
+        default_value="[0.000289, 0.0, 0.0, \
+                        0.0, 0.000289, 0.0, \
+                        0.0, 0.0, 0.000289]",
         description="Covariance for IMU linar acceleration")
 
     magnetic_field_covariance = LaunchConfiguration(
         "magnetic_field_covariance")
     magnetic_field_covariance_cmd = DeclareLaunchArgument(
         "magnetic_field_covariance",
-        default_value="[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]",
+        default_value="[0.0, 0.0, 0.0, \
+                        0.0, 0.0, 0.0, \
+                        0.0, 0.0, 0.0]",
         description="Covariance for magnetic field")
 
     imu_hfi_a9_node = Node(package="vault_sensors",
