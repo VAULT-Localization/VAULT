@@ -1,4 +1,4 @@
-# VAULT
+# VAULT (Visual and Autonomous Localization Kit)
 
 <p align="center">
   <img src="./docs/logo.png" width="50%" />
