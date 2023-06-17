@@ -31,19 +31,19 @@ def generate_launch_description():
         "rviz",
         "default.rviz")
 
-    repub_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_visualization"),
-                         "launch", "republish.launch.py")
-        ),
-        launch_arguments={
-            "namespace": "vault",
-            "repub_rgb": "True",
-            "repub_depth": "False",
-            "repub_infras": "False",
-            "repub_fisheyes": "False"
-        }.items()
-    )
+    # repub_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory("vault_visualization"),
+    #                      "launch", "republish.launch.py")
+    #     ),
+    #     launch_arguments={
+    #         "namespace": "vault",
+    #         "repub_rgb": "True",
+    #         "repub_depth": "False",
+    #         "repub_infras": "False",
+    #         "repub_fisheyes": "False"
+    #     }.items()
+    # )
 
     rviz_cmd = Node(
         name="rviz",

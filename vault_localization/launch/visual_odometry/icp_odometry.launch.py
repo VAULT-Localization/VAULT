@@ -119,7 +119,7 @@ def generate_launch_description():
         namespace_cmd,
 
         Node(
-            package="rtabmap_ros",
+            package="rtabmap_odom",
             executable="icp_odometry",
             output="log",
             namespace=namespace,

@@ -22,43 +22,7 @@ $ sudo chmod 664 /etc/systemd/system/vault.service
 $ sudo touch /etc/vault
 ```
 
-4. Add environment variables to /etc/vault
-
-   - ROS 2 config:
-
-     - ROS_DOMAIN_ID
-     - RMW_IMPLEMENTATION
-
-   - Ntrip server config
-
-     - NTRIP_HOST
-     - NTRIP_PORT
-     - NTRIP_MOUNTPOINT
-     - NTRIP_USER
-     - NTRIP_PASSWORD
-
-   - Sensors config:
-
-     - FIX_T265_ODOM=True
-     - PUBLISH_T265_ODOM_TF=False
-     - FIX_D435i_IMU=False
-
-   - Visual SLAM config:
-
-     - PUBLISH_VISUAL_SLAM_TF
-     - USE_T265
-     - USE_GPS
-
-   - EKF config:
-
-     - RUN_EKF
-     - RUN_DUAL_EKF
-
-   - Visual odometry config:
-
-     - RUN_RDGD_ODOMETRY
-     - RUN_STEREO_ODOMETRY
-     - RUN_ICP_ODOMETRY
+4. Edit the environment variables of /etc/vault
 
 5. Enable and start the service
 

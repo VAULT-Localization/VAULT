@@ -121,7 +121,7 @@ def generate_launch_description():
         namespace_cmd,
 
         Node(
-            package="rtabmap_ros",
+            package="rtabmap_odom",
             executable="stereo_odometry",
             output="log",
             namespace=namespace,

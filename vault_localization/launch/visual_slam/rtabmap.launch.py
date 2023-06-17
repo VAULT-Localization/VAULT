@@ -135,7 +135,7 @@ def generate_launch_description():
         ]
 
         return Node(
-            package="rtabmap_ros",
+            package="rtabmap_slam",
             executable="rtabmap",
             output="screen",
             namespace=namespace,

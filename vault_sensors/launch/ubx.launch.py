@@ -72,7 +72,7 @@ def generate_launch_description():
                             "use_nav": use_nav
                         }
                     ]
-                    )
+    )
 
     ntrip_client_node = Node(
         name="ntrip_client_node",

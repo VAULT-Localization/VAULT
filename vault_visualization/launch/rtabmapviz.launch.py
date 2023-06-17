@@ -99,8 +99,8 @@ def generate_launch_description():
         # ),
 
         Node(
-            package="rtabmap_ros",
-            executable="rtabmapviz",
+            package="rtabmap_viz",
+            executable="rtabmap_viz",
             output="screen",
             namespace=namespace,
             parameters=parameters,

@@ -17,7 +17,7 @@ FIX_D435i_IMU=False
 # Visual SLAM
 PUBLISH_VISUAL_SLAM_TF=True
 USE_T265=False
-USE_GPS=True
+USE_GPS=False
 
 # EKF
 RUN_EKF=True
