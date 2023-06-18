@@ -57,7 +57,7 @@ Intel RealSense 435i camera.
 
       <gazebo reference="${namespace}_${name}_imu_optical_frame">
         <sensor name="${name}_imu_plugin" type="imu">
-          <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_controller">
+          <plugin filename="libgazebo_ros_imu_sensor.so" name="${name}_imu_controller">
             <ros>
               <namespace>${namespace}</namespace>
               <remapping>~/out:=${name}/imu</remapping>
