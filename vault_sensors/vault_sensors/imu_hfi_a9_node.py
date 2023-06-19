@@ -182,7 +182,7 @@ class ImuHfiA9Node(Node):
                 aux_orientation = [aux_orientation[i]
                                    * math.pi / 180 for i in range(3)]
                 self.orientation = quaternion_from_euler(
-                    aux_orientation[0], -aux_orientation[1], -aux_orientation[2])
+                    -aux_orientation[0], aux_orientation[1], -aux_orientation[2])
             else:
                 self.get_logger().error("Check Sum verification failed")
                 return
@@ -200,8 +200,8 @@ class ImuHfiA9Node(Node):
         imu_msg.orientation.w = self.orientation[3]
         imu_msg.orientation_covariance = self.orientation_covariance
 
-        imu_msg.angular_velocity.x = self.angular_velocity[0]
-        imu_msg.angular_velocity.y = self.angular_velocity[1]
+        imu_msg.angular_velocity.x = -self.angular_velocity[0]
+        imu_msg.angular_velocity.y = -self.angular_velocity[1]
         imu_msg.angular_velocity.z = self.angular_velocity[2]
         imu_msg.angular_velocity_covariance = self.angular_velocity_covariance
 

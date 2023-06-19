@@ -54,16 +54,16 @@ def generate_launch_description():
             "Rtabmap/LoopGPS": use_gps,
 
             # 0=TORO, 1=g2o, 2=GTSAM and 3=Ceres
-            "Optimizer/Strategy": "2",
-            "Optimizer/GravitySigma": "0.3",
+            "Optimizer/Strategy": "1",
+            "Optimizer/GravitySigma": "0.0",
 
             "RGBD/OptimizeMaxError": "1.0",
             "RGBD/OptimizeFromGraphEnd": "true",
             "RGBD/LocalRadius": "20",
 
             "Grid/DepthDecimation": "2",
-            # "Grid/RangeMin": "0.0",
-            # "Grid/RangeMax": "3.0",
+            "Grid/RangeMin": "0.0",
+            "Grid/RangeMax": "2.5",
             "Grid/MinClusterSize": "20",
             "Grid/MaxGroundAngle": "35",
             "Grid/NormalK": "20",
@@ -73,7 +73,7 @@ def generate_launch_description():
             "GridGlobal/UpdateError": "0.01",
             "GridGlobal/MinSize": "200",
 
-            "GFTT/MinDistance": "2",
+            "GFTT/MinDistance": "2.5",
             "GFTT/QualityLevel": "0.1",
             "GFTT/BlockSize": "4",
             "GFTT/UseHarrisDetector": "false",
@@ -111,6 +111,8 @@ def generate_launch_description():
             "Vis/FeatureWindowSize": "9",
             "Vis/CorGuessWinSize": "40",
             "Vis/MaxFeatures": "1000",
+            "Vis/MinDepth": "0.0",
+            "Vis/MaxDepth": "2.5",
             # 0=Features Matching, 1=Optical Flow
             "Vis/CorType": "0",
             # kNNFlannNaive=0, kNNFlannKdTree=1, kNNFlannLSH=2, kNNBruteForce=3, kNNBruteForceGPU=4, BruteForceCrossCheck=5, SuperGlue=6, GMS=7
