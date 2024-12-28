@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,22 +23,23 @@ from launch.launch_description_sources import AnyLaunchDescriptionSource
 
 def generate_launch_description():
 
-    return LaunchDescription([
-
-
-        ExecuteProcess(
-            cmd=["foxglove-studio"],
-            log_cmd=True,
-            sigterm_timeout="0",
-            sigkill_timeout="0",
-            on_exit=[]
-        ),
-
-        IncludeLaunchDescription(
-            AnyLaunchDescriptionSource(
-                os.path.join(get_package_share_directory("rosbridge_server"),
-                             "launch", "rosbridge_websocket_launch.xml")
-            )
-        ),
-
-    ])
+    return LaunchDescription(
+        [
+            ExecuteProcess(
+                cmd=["foxglove-studio"],
+                log_cmd=True,
+                sigterm_timeout="0",
+                sigkill_timeout="0",
+                on_exit=[],
+            ),
+            IncludeLaunchDescription(
+                AnyLaunchDescriptionSource(
+                    os.path.join(
+                        get_package_share_directory("rosbridge_server"),
+                        "launch",
+                        "rosbridge_websocket_launch.xml",
+                    )
+                )
+            ),
+        ]
+    )

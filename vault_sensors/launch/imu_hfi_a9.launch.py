@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,34 +24,30 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
+        "namespace", default_value="vault", description="Vault namespace"
+    )
 
     frame_id = LaunchConfiguration("frame_id")
     frame_id_cmd = DeclareLaunchArgument(
-        "frame_id",
-        default_value=[namespace, "_imu_link"],
-        description="frame_id")
+        "frame_id", default_value=[namespace, "_imu_link"], description="frame_id"
+    )
 
     device = LaunchConfiguration("device")
     device_cmd = DeclareLaunchArgument(
-        "device",
-        default_value="/dev/ttyUSB0",
-        description="USB device")
+        "device", default_value="/dev/ttyUSB0", description="USB device"
+    )
 
     baud = LaunchConfiguration("baud")
     baud_cmd = DeclareLaunchArgument(
-        "baud",
-        default_value="921600",
-        description="baud rate")
+        "baud", default_value="921600", description="baud rate"
+    )
 
-    gravitacional_normalization = LaunchConfiguration(
-        "gravitacional_normalization")
+    gravitacional_normalization = LaunchConfiguration("gravitacional_normalization")
     gravitacional_normalization_cmd = DeclareLaunchArgument(
         "gravitacional_normalization",
         default_value="True",
-        description="Wheter to apply gravitacional normalization to linear acceleration")
+        description="Wheter to apply gravitacional normalization to linear acceleration",
+    )
 
     orientation_covariance = LaunchConfiguration("orientation_covariance")
     orientation_covariance_cmd = DeclareLaunchArgument(
@@ -59,52 +55,54 @@ def generate_launch_description():
         default_value="[0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0]",
-        description="Covariance for IMU orientation")
+        description="Covariance for IMU orientation",
+    )
 
-    angular_velocity_covariance = LaunchConfiguration(
-        "angular_velocity_covariance")
+    angular_velocity_covariance = LaunchConfiguration("angular_velocity_covariance")
     angular_velocity_covariance_cmd = DeclareLaunchArgument(
         "angular_velocity_covariance",
         default_value="[4.0e-08, 0.0, 0.0, \
                         0.0, 4.0e-08, 0.0, \
                         0.0, 0.0, 4.0e-08]",
-        description="Covariance for IMU angualar velocity")
+        description="Covariance for IMU angualar velocity",
+    )
 
-    linear_acceleration_covariance = LaunchConfiguration(
-        "linear_acceleration_covariance")
+    linear_acceleration_covariance = LaunchConfiguration("linear_acceleration_covariance")
     linear_acceleration_covariance_cmd = DeclareLaunchArgument(
         "linear_acceleration_covariance",
         default_value="[0.000289, 0.0, 0.0, \
                         0.0, 0.000289, 0.0, \
                         0.0, 0.0, 0.000289]",
-        description="Covariance for IMU linar acceleration")
+        description="Covariance for IMU linar acceleration",
+    )
 
-    magnetic_field_covariance = LaunchConfiguration(
-        "magnetic_field_covariance")
+    magnetic_field_covariance = LaunchConfiguration("magnetic_field_covariance")
     magnetic_field_covariance_cmd = DeclareLaunchArgument(
         "magnetic_field_covariance",
         default_value="[0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0]",
-        description="Covariance for magnetic field")
+        description="Covariance for magnetic field",
+    )
 
-    imu_hfi_a9_node = Node(package="vault_sensors",
-                           executable="imu_hfi_a9_node",
-                           namespace=namespace,
-                           output="both",
-                           parameters=[
-                               {
-                                   "frame_id": frame_id,
-                                   "device": device,
-                                   "baud": baud,
-                                   "gravitacional_normalization": gravitacional_normalization,
-                                   "orientation_covariance": orientation_covariance,
-                                   "angular_velocity_covariance": angular_velocity_covariance,
-                                   "linear_acceleration_covariance": linear_acceleration_covariance,
-                                   "magnetic_field_covariance": magnetic_field_covariance
-                               }
-                           ]
-                           )
+    imu_hfi_a9_node = Node(
+        package="vault_sensors",
+        executable="imu_hfi_a9_node",
+        namespace=namespace,
+        output="both",
+        parameters=[
+            {
+                "frame_id": frame_id,
+                "device": device,
+                "baud": baud,
+                "gravitacional_normalization": gravitacional_normalization,
+                "orientation_covariance": orientation_covariance,
+                "angular_velocity_covariance": angular_velocity_covariance,
+                "linear_acceleration_covariance": linear_acceleration_covariance,
+                "magnetic_field_covariance": magnetic_field_covariance,
+            }
+        ],
+    )
 
     ld = LaunchDescription()
 

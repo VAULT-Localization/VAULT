@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,26 +27,25 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
+        "namespace", default_value="vault", description="Vault namespace"
+    )
 
     use_sim_time = LaunchConfiguration("use_sim_time")
     use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time",
         default_value="False",
-        description="Use simulation (Gazebo) clock if True")
+        description="Use simulation (Gazebo) clock if True",
+    )
 
-    params_file = os.path.join(get_package_share_directory(
-        "vault_localization"), "config", "ekf.yaml")
+    params_file = os.path.join(
+        get_package_share_directory("vault_localization"), "config", "ekf.yaml"
+    )
 
-    param_substitutions = {
-        "use_sim_time": use_sim_time}
+    param_substitutions = {"use_sim_time": use_sim_time}
 
     configured_params = RewrittenYaml(
-        source_file=params_file,
-        param_rewrites=param_substitutions,
-        convert_types=True)
+        source_file=params_file, param_rewrites=param_substitutions, convert_types=True
+    )
 
     ekf_cmd = Node(
         package="robot_localization",
@@ -55,8 +54,8 @@ def generate_launch_description():
         namespace=namespace,
         output="log",
         parameters=[configured_params],
-        remappings=[("odometry/filtered", "odom"),
-                    ("accel/filtered", "accel")])
+        remappings=[("odometry/filtered", "odom"), ("accel/filtered", "accel")],
+    )
 
     ld = LaunchDescription()
 

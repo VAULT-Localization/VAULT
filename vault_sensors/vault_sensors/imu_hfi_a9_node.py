@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,40 +43,57 @@ class ImuHfiA9Node(Node):
 
         # params
         self.declare_parameter("frame_id", "imu_link")
-        self.frame_id = self.get_parameter(
-            "frame_id").get_parameter_value().string_value
+        self.frame_id = self.get_parameter("frame_id").get_parameter_value().string_value
 
         self.declare_parameter("device", "/dev/ttyUSB0")
-        self.usb_port = self.get_parameter(
-            "device").get_parameter_value().string_value
+        self.usb_port = self.get_parameter("device").get_parameter_value().string_value
 
         self.declare_parameter("baud", 921600)
-        self.baudrate = self.get_parameter(
-            "baud").get_parameter_value().integer_value
+        self.baudrate = self.get_parameter("baud").get_parameter_value().integer_value
 
         self.declare_parameter("gravitacional_normalization", True)
-        self.gravitacional_normalization = self.get_parameter(
-            "gravitacional_normalization").get_parameter_value().bool_value
+        self.gravitacional_normalization = (
+            self.get_parameter("gravitacional_normalization")
+            .get_parameter_value()
+            .bool_value
+        )
 
-        self.declare_parameter("orientation_covariance", [
-                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-        self.orientation_covariance = self.get_parameter(
-            "orientation_covariance").get_parameter_value().double_array_value.tolist()
+        self.declare_parameter(
+            "orientation_covariance", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        )
+        self.orientation_covariance = (
+            self.get_parameter("orientation_covariance")
+            .get_parameter_value()
+            .double_array_value.tolist()
+        )
 
-        self.declare_parameter("angular_velocity_covariance", [
-                               0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-        self.angular_velocity_covariance = self.get_parameter(
-            "angular_velocity_covariance").get_parameter_value().double_array_value.tolist()
+        self.declare_parameter(
+            "angular_velocity_covariance", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        )
+        self.angular_velocity_covariance = (
+            self.get_parameter("angular_velocity_covariance")
+            .get_parameter_value()
+            .double_array_value.tolist()
+        )
 
-        self.declare_parameter("linear_acceleration_covariance", [
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-        self.linear_acceleration_covariance = self.get_parameter(
-            "linear_acceleration_covariance").get_parameter_value().double_array_value.tolist()
+        self.declare_parameter(
+            "linear_acceleration_covariance",
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        )
+        self.linear_acceleration_covariance = (
+            self.get_parameter("linear_acceleration_covariance")
+            .get_parameter_value()
+            .double_array_value.tolist()
+        )
 
-        self.declare_parameter("magnetic_field_covariance", [
-            0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-        self.magnetic_field_covariance = self.get_parameter(
-            "magnetic_field_covariance").get_parameter_value().double_array_value.tolist()
+        self.declare_parameter(
+            "magnetic_field_covariance", [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        )
+        self.magnetic_field_covariance = (
+            self.get_parameter("magnetic_field_covariance")
+            .get_parameter_value()
+            .double_array_value.tolist()
+        )
 
         # aux
         self.orientation = [0.0, 0.0, 0.0, 0.0]
@@ -89,7 +106,7 @@ class ImuHfiA9Node(Node):
             history=QoSHistoryPolicy.KEEP_LAST,
             durability=QoSDurabilityPolicy.VOLATILE,
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
-            depth=10
+            depth=10,
         )
 
         self.imu_pub = self.create_publisher(Imu, "imu", sensor_qos)
@@ -101,9 +118,7 @@ class ImuHfiA9Node(Node):
 
     def open_device(self, usb_port: str, baudrate: int, timeout: float = 0.5) -> None:
         try:
-            self.hf_imu = serial.Serial(port=usb_port,
-                                        baudrate=baudrate,
-                                        timeout=timeout)
+            self.hf_imu = serial.Serial(port=usb_port, baudrate=baudrate, timeout=timeout)
             if self.hf_imu.isOpen():
                 self.get_logger().info("IMU is already open")
             else:
@@ -126,7 +141,9 @@ class ImuHfiA9Node(Node):
                     crc ^= 0xA001
                 else:
                     crc >>= 1
-        return hex(((crc & 0xff) << 8) + (crc >> 8)) == hex(check_data[0] << 8 | check_data[1])
+        return hex(((crc & 0xFF) << 8) + (crc >> 8)) == hex(
+            check_data[0] << 8 | check_data[1]
+        )
 
     @staticmethod
     def hex_to_ieee(raw_data: List[int]) -> List[float]:
@@ -134,12 +151,12 @@ class ImuHfiA9Node(Node):
         raw_data.reverse()
         for i in range(0, len(raw_data), 4):
             data2str = (
-                hex(raw_data[i] | 0xff00)[4:6] +
-                hex(raw_data[i + 1] | 0xff00)[4:6] +
-                hex(raw_data[i + 2] | 0xff00)[4:6] +
-                hex(raw_data[i + 3] | 0xff00)[4:6]
+                hex(raw_data[i] | 0xFF00)[4:6]
+                + hex(raw_data[i + 1] | 0xFF00)[4:6]
+                + hex(raw_data[i + 2] | 0xFF00)[4:6]
+                + hex(raw_data[i + 3] | 0xFF00)[4:6]
             )
-            ieee_data.append(struct.unpack('>f', bytes.fromhex(data2str))[0])
+            ieee_data.append(struct.unpack(">f", bytes.fromhex(data2str))[0])
         ieee_data.reverse()
         return ieee_data
 
@@ -151,19 +168,18 @@ class ImuHfiA9Node(Node):
                 buff_data = self.hf_imu.read(count)
                 self.handle_data(list(buff_data))
             except serial.SerialException as e:
-                self.get_logger().error(
-                    "Error reading from serial: {:s}".format(str(e)))
+                self.get_logger().error("Error reading from serial: {:s}".format(str(e)))
 
     def handle_data(self, raw_data: List[int]) -> None:
 
         # check header
-        if raw_data[0] != 0xaa:
+        if raw_data[0] != 0xAA:
             return
         if raw_data[1] != 0x55:
             return
 
         # check msg type
-        if raw_data[2] == 0x2c:
+        if raw_data[2] == 0x2C:
 
             if self.check_sum(raw_data[2:47], raw_data[47:49]):
                 data = self.hex_to_ieee(raw_data[7:47])
@@ -179,10 +195,10 @@ class ImuHfiA9Node(Node):
             if self.check_sum(raw_data[2:23], raw_data[23:25]):
                 data = self.hex_to_ieee(raw_data[7:23])
                 aux_orientation = data[1:4]
-                aux_orientation = [aux_orientation[i]
-                                   * math.pi / 180 for i in range(3)]
+                aux_orientation = [aux_orientation[i] * math.pi / 180 for i in range(3)]
                 self.orientation = quaternion_from_euler(
-                    -aux_orientation[0], aux_orientation[1], -aux_orientation[2])
+                    -aux_orientation[0], aux_orientation[1], -aux_orientation[2]
+                )
             else:
                 self.get_logger().error("Check Sum verification failed")
                 return
@@ -206,9 +222,9 @@ class ImuHfiA9Node(Node):
         imu_msg.angular_velocity_covariance = self.angular_velocity_covariance
 
         acc_k = math.sqrt(
-            self.linear_acceleration[0] ** 2 +
-            self.linear_acceleration[1] ** 2 +
-            self.linear_acceleration[2] ** 2
+            self.linear_acceleration[0] ** 2
+            + self.linear_acceleration[1] ** 2
+            + self.linear_acceleration[2] ** 2
         )
         if acc_k == 0:
             acc_k = 1

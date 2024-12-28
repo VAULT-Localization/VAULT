@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,40 +27,43 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
+        "namespace", default_value="vault", description="Vault namespace"
+    )
 
     use_sim_time = LaunchConfiguration("use_sim_time")
     use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time",
         default_value="False",
-        description="Use simulation (Gazebo) clock if True")
+        description="Use simulation (Gazebo) clock if True",
+    )
 
     use_t265 = LaunchConfiguration("use_t265")
     use_t265_cmd = DeclareLaunchArgument(
         "use_t265",
         default_value="False",
-        description="Wheter to use T265 camera or D435i for visual SLAM")
+        description="Wheter to use T265 camera or D435i for visual SLAM",
+    )
 
-    parameters = [{
-        "frame_id": "base_link",
-        "odom_frame_id": "odom",
-        "map_frame_id": "map",
-        "subscribe_depth": PythonExpression(["not ", use_t265]),
-        "subscribe_rgb": PythonExpression(["not ", use_t265]),
-        "subscribe_stereo": use_t265,
-        "subscribe_scan": False,
-        "subscribe_odom_info": False,
-        "approx_sync": True,
-        "publish_tf": True,
-        "use_sim_time": use_sim_time,
-        "qos_image": 2,
-        "qos_camera_info": 2,
-        "qos_gps": 2,
-        "qos_imu": 2,
-        "qos_scan": 2,
-    }]
+    parameters = [
+        {
+            "frame_id": "base_link",
+            "odom_frame_id": "odom",
+            "map_frame_id": "map",
+            "subscribe_depth": PythonExpression(["not ", use_t265]),
+            "subscribe_rgb": PythonExpression(["not ", use_t265]),
+            "subscribe_stereo": use_t265,
+            "subscribe_scan": False,
+            "subscribe_odom_info": False,
+            "approx_sync": True,
+            "publish_tf": True,
+            "use_sim_time": use_sim_time,
+            "qos_image": 2,
+            "qos_camera_info": 2,
+            "qos_gps": 2,
+            "qos_imu": 2,
+            "qos_scan": 2,
+        }
+    ]
 
     remappings = [
         # subs
@@ -79,30 +82,31 @@ def generate_launch_description():
         ("right/camera_info", "t265/fisheye2/camera_info"),
     ]
 
-    return LaunchDescription([
-        namespace_cmd,
-        use_sim_time_cmd,
-        use_t265_cmd,
-
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource(
-        #         os.path.join(get_package_share_directory("vault_visualization"),
-        #                      "launch", "republish.launch.py")
-        #     ),
-        #     launch_arguments={
-        #         "namespace": namespace,
-        #         "repub_rgb": PythonExpression(["not ", use_t265]),
-        #         "repub_depth": "False",
-        #         "repub_infras": "False",
-        #         "repub_fisheyes": use_t265
-        #     }.items()
-        # ),
-
-        Node(
-            package="rtabmap_viz",
-            executable="rtabmap_viz",
-            output="screen",
-            namespace=namespace,
-            parameters=parameters,
-            remappings=remappings),
-    ])
+    return LaunchDescription(
+        [
+            namespace_cmd,
+            use_sim_time_cmd,
+            use_t265_cmd,
+            # IncludeLaunchDescription(
+            #     PythonLaunchDescriptionSource(
+            #         os.path.join(get_package_share_directory("vault_visualization"),
+            #                      "launch", "republish.launch.py")
+            #     ),
+            #     launch_arguments={
+            #         "namespace": namespace,
+            #         "repub_rgb": PythonExpression(["not ", use_t265]),
+            #         "repub_depth": "False",
+            #         "repub_infras": "False",
+            #         "repub_fisheyes": use_t265
+            #     }.items()
+            # ),
+            Node(
+                package="rtabmap_viz",
+                executable="rtabmap_viz",
+                output="screen",
+                namespace=namespace,
+                parameters=parameters,
+                remappings=remappings,
+            ),
+        ]
+    )

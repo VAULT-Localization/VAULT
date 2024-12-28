@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,20 +27,19 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
+        "namespace", default_value="vault", description="Vault namespace"
+    )
 
     use_camera_imu = LaunchConfiguration("use_camera_imu")
     use_camera_imu_cmd = DeclareLaunchArgument(
-        "use_camera_imu",
-        default_value="True",
-        description="Whether to use camera IMU")
+        "use_camera_imu", default_value="True", description="Whether to use camera IMU"
+    )
 
     realsense_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_sensors"),
-                         "launch", "rs.launch.py")
+            os.path.join(
+                get_package_share_directory("vault_sensors"), "launch", "rs.launch.py"
+            )
         ),
         launch_arguments={
             "node_namespace": [namespace, "/t265"],
@@ -56,8 +55,8 @@ def generate_launch_description():
             "linear_accel_cov": "1.0",
             "publish_odom_tf": "false",
             "enable_fisheye1": "false",
-            "enable_fisheye2": "false"
-        }.items()
+            "enable_fisheye2": "false",
+        }.items(),
     )
 
     ld = LaunchDescription()

@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,14 +27,14 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
+        "namespace", default_value="vault", description="Vault namespace"
+    )
 
     realsense_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_sensors"),
-                         "launch", "rs.launch.py")
+            os.path.join(
+                get_package_share_directory("vault_sensors"), "launch", "rs.launch.py"
+            )
         ),
         launch_arguments={
             "node_namespace": [namespace, "/d435i"],
@@ -54,8 +54,8 @@ def generate_launch_description():
             "spatial_filter.enable": "true",
             "temporal_filter.enable": "true",
             "enable_infra1": "false",
-            "enable_infra2": "false"
-        }.items()
+            "enable_infra2": "false",
+        }.items(),
     )
 
     ld = LaunchDescription()

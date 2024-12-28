@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,85 +32,90 @@ def generate_launch_description():
     ### ARGS ###
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace",
-        default_value="vault",
-        description="Vault namespace")
+        "namespace", default_value="vault", description="Vault namespace"
+    )
 
     use_sim_time = LaunchConfiguration("use_sim_time")
     use_sim_time_cmd = DeclareLaunchArgument(
         "use_sim_time",
         default_value="False",
-        description="Use simulation (Gazebo) clock if True")
+        description="Use simulation (Gazebo) clock if True",
+    )
 
     ## Sensors ##
     fix_t265_odom = LaunchConfiguration("fix_t265_odom")
     fix_t265_odom_cmd = DeclareLaunchArgument(
-        "fix_t265_odom",
-        default_value="True",
-        description="Wheter to fix odom of T265")
+        "fix_t265_odom", default_value="True", description="Wheter to fix odom of T265"
+    )
 
     publish_t265_odom_tf = LaunchConfiguration("publish_t265_odom_tf")
     publish_t265_odom_tf_cmd = DeclareLaunchArgument(
         "publish_t265_odom_tf",
         default_value="True",
-        description="Wheter to publish odom tf of T265")
+        description="Wheter to publish odom tf of T265",
+    )
 
     fix_d435i_imu = LaunchConfiguration("fix_d435i_imu")
     fix_d435i_imu_cmd = DeclareLaunchArgument(
-        "fix_d435i_imu",
-        default_value="True",
-        description="Wheter to fix D435i imu data")
+        "fix_d435i_imu", default_value="True", description="Wheter to fix D435i imu data"
+    )
 
     ## VSLAM ##
     publish_visual_slam_tf = LaunchConfiguration("publish_visual_slam_tf")
     publish_visual_slam_tf_cmd = DeclareLaunchArgument(
         "publish_visual_slam_tf",
         default_value="True",
-        description="Wheter to publish visual SLAM tf map or EKF one")
+        description="Wheter to publish visual SLAM tf map or EKF one",
+    )
 
     use_t265 = LaunchConfiguration("use_t265")
     use_t265_cmd = DeclareLaunchArgument(
         "use_t265",
         default_value="False",
-        description="Wheter to use T265 camera or D435i for visual SLAM")
+        description="Wheter to use T265 camera or D435i for visual SLAM",
+    )
 
     use_gps = LaunchConfiguration("use_gps")
     use_gps_cmd = DeclareLaunchArgument(
         "use_gps",
         default_value="True",
-        description="Wheter to use GPS data in the loop clousure")
+        description="Wheter to use GPS data in the loop clousure",
+    )
 
     ## EKF ##
     run_ekf = LaunchConfiguration("run_ekf")
     run_ekf_cmd = DeclareLaunchArgument(
-        "run_ekf",
-        default_value="False",
-        description="Wheter to run EKF")
+        "run_ekf", default_value="False", description="Wheter to run EKF"
+    )
 
     run_dual_ekf = LaunchConfiguration("run_dual_ekf")
     run_dual_ekf_cmd = DeclareLaunchArgument(
         "run_dual_ekf",
         default_value="False",
-        description="Wheter to run dual EKF (GPS+IMU+Odom)")
+        description="Wheter to run dual EKF (GPS+IMU+Odom)",
+    )
 
     ## Visual Odometry ##
     run_rgbd_odometry = LaunchConfiguration("run_rgbd_odometry")
     run_rgbd_odometry_cmd = DeclareLaunchArgument(
         "run_rgbd_odometry",
         default_value="False",
-        description="Wheter to run rgd odometry")
+        description="Wheter to run rgd odometry",
+    )
 
     run_stereo_odometry = LaunchConfiguration("run_stereo_odometry")
     run_stereo_odometry_cmd = DeclareLaunchArgument(
         "run_stereo_odometry",
         default_value="False",
-        description="Wheter to run stereo odometry")
+        description="Wheter to run stereo odometry",
+    )
 
     run_icp_odometry = LaunchConfiguration("run_icp_odometry")
     run_icp_odometry_cmd = DeclareLaunchArgument(
         "run_icp_odometry",
         default_value="False",
-        description="Wheter to run icp odometry")
+        description="Wheter to run icp odometry",
+    )
 
     ### LAUNCHS & NODES ###
 
@@ -121,89 +126,95 @@ def generate_launch_description():
         name="fix_odom_frame_node",
         namespace=namespace,
         output="screen",
-        parameters=[{"frame_id": "base_link",
-                     "odom_frame": "odom",
-                     "publish_tf": publish_t265_odom_tf}],
-        remappings=[("odom_out", "t265/odom"),
-                    ("odom_in", "t265/pose/sample")],
-        condition=IfCondition(PythonExpression([fix_t265_odom]))
+        parameters=[
+            {
+                "frame_id": "base_link",
+                "odom_frame": "odom",
+                "publish_tf": publish_t265_odom_tf,
+            }
+        ],
+        remappings=[("odom_out", "t265/odom"), ("odom_in", "t265/pose/sample")],
+        condition=IfCondition(PythonExpression([fix_t265_odom])),
     )
 
     imu_filter_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("vault_sensors"),
-                         "launch", "imu_filter.launch.py")
+            os.path.join(
+                get_package_share_directory("vault_sensors"),
+                "launch",
+                "imu_filter.launch.py",
+            )
         ),
-        launch_arguments={
-            "namespace": namespace
-        }.items(),
-        condition=IfCondition(PythonExpression([fix_d435i_imu]))
+        launch_arguments={"namespace": namespace}.items(),
+        condition=IfCondition(PythonExpression([fix_d435i_imu])),
     )
 
     ## VSLAM ##
     rtabmap_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch/visual_slam", "rtabmap.launch.py")
+            os.path.join(
+                vault_localization_dir, "launch/visual_slam", "rtabmap.launch.py"
+            )
         ),
         launch_arguments={
             "namespace": namespace,
             "use_sim_time": use_sim_time,
             "publish_visual_slam_tf": publish_visual_slam_tf,
             "use_t265": use_t265,
-            "use_gps": use_gps
-        }.items()
+            "use_gps": use_gps,
+        }.items(),
     )
 
     ## EKF ##
     ekf_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch/ekf", "ekf.launch.py")
+            os.path.join(vault_localization_dir, "launch/ekf", "ekf.launch.py")
         ),
-        launch_arguments={"namespace": namespace,
-                          "use_sim_time": use_sim_time
-                          }.items(),
-        condition=IfCondition(PythonExpression([run_ekf]))
+        launch_arguments={"namespace": namespace, "use_sim_time": use_sim_time}.items(),
+        condition=IfCondition(PythonExpression([run_ekf])),
     )
 
     dual_ekf_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch/ekf", "dual_ekf.launch.py")
+            os.path.join(vault_localization_dir, "launch/ekf", "dual_ekf.launch.py")
         ),
-        launch_arguments={"namespace": namespace,
-                          "use_sim_time": use_sim_time
-                          }.items(),
-        condition=IfCondition(PythonExpression([run_dual_ekf]))
+        launch_arguments={"namespace": namespace, "use_sim_time": use_sim_time}.items(),
+        condition=IfCondition(PythonExpression([run_dual_ekf])),
     )
 
     ## Visual Odometry ##
     rgbd_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch/visual_odometry", "rgbd_odometry.launch.py")
+            os.path.join(
+                vault_localization_dir,
+                "launch/visual_odometry",
+                "rgbd_odometry.launch.py",
+            )
         ),
         launch_arguments={"namespace": namespace}.items(),
-        condition=IfCondition(PythonExpression([run_rgbd_odometry]))
+        condition=IfCondition(PythonExpression([run_rgbd_odometry])),
     )
 
     stereo_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch/visual_odometry", "stereo_odometry.launch.py")
+            os.path.join(
+                vault_localization_dir,
+                "launch/visual_odometry",
+                "stereo_odometry.launch.py",
+            )
         ),
         launch_arguments={"namespace": namespace}.items(),
-        condition=IfCondition(PythonExpression([run_stereo_odometry]))
+        condition=IfCondition(PythonExpression([run_stereo_odometry])),
     )
 
     icp_odometry_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(vault_localization_dir,
-                         "launch/visual_odometry", "icp_odometry.launch.py")
+            os.path.join(
+                vault_localization_dir, "launch/visual_odometry", "icp_odometry.launch.py"
+            )
         ),
         launch_arguments={"namespace": namespace}.items(),
-        condition=IfCondition(PythonExpression([run_icp_odometry]))
+        condition=IfCondition(PythonExpression([run_icp_odometry])),
     )
 
     ld = LaunchDescription()

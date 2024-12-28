@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,10 +26,7 @@ def generate_launch_description():
 
     pkg_path = get_package_share_directory("vault_visualization")
 
-    rviz_config = os.path.join(
-        pkg_path,
-        "rviz",
-        "default.rviz")
+    rviz_config = os.path.join(pkg_path, "rviz", "default.rviz")
 
     # repub_cmd = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(

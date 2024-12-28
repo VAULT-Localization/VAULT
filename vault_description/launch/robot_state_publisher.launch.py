@@ -1,4 +1,4 @@
-# Copyright (C) 2023  Miguel Ángel González Santamarta
+# Copyright (C) 2023 Miguel Ángel González Santamarta
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,8 +25,9 @@ import xacro
 def robot_state_publisher(context: LaunchContext):
 
     ### XACRO ###
-    xacro_file = os.path.join(get_package_share_directory(
-        "vault_description"), "robots/vault.urdf.xacro")
+    xacro_file = os.path.join(
+        get_package_share_directory("vault_description"), "robots/vault.urdf.xacro"
+    )
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
 
@@ -38,7 +39,7 @@ def robot_state_publisher(context: LaunchContext):
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="screen",
-        parameters=[params]
+        parameters=[params],
     )
 
     return [robot_state_publisher_cmd]
