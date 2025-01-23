@@ -41,6 +41,24 @@ $ rosdep install --from-paths src -r -y
 $ colcon build
 ```
 
+### Assigning ttyUSB
+
+You can assign a ttyUSB to each serial:
+
+```shell
+$ sudo udevadm info --query=property --name=/dev/ttyUSB0 | grep SERIAL
+ID_SERIAL=Silicon_Labs_HandsFree_IMU_USB_to_UART_Bridge_Controller_0001
+ID_SERIAL_SHORT=0001
+$ sudo udevadm info --query=property --name=/dev/ttyACM0 | grep SERIAL
+ID_SERIAL=u-bloxAG-_www.u-blox.com_u-blox_GNSS_receiver
+Parece que se desconecta el ublox cada x tiempo
+$ sudo nano /etc/udev/rules.d/99-usbserial.rules
+# add the following lines
+ACTION=="add",ENV{ID_BUS}=="usb",ENV{ID_SERIAL}=="Silicon_Labs_HandsFree_IMU_USB_to_UART_Bridge_Controller_0001",SYMLINK+="ttyUSB0"
+ACTION=="add",ENV{ID_BUS}=="usb",ENV{ID_SERIAL}=="u-bloxAG-_www.u-blox.com_u-blox_GNSS_receiver",SYMLINK+="ttyACM0"
+
+```
+
 ## Usage
 
 ### Running VAULT
