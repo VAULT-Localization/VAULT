@@ -25,13 +25,11 @@ from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
 
-    ### ARGS ###
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
         "namespace", default_value="vault", description="Vault namespace"
     )
 
-    ### LAUNCHS ###
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -113,7 +111,7 @@ def generate_launch_description():
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(t265_cmd)
     ld.add_action(d435i_cmd)
-    # ld.add_action(ubx_cmd)
+    ld.add_action(ubx_cmd)
     ld.add_action(imu_hfi_a9_cmd)
     ld.add_action(localization_cmd)
 

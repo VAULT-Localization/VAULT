@@ -12,6 +12,8 @@
   <depend>vault_description</depend>
   <depend>rtabmap</depend>
   <depend>rtabmap_ros</depend>
+  <depend>rtabmap_odom</depend>
+  <depend>rtabmap_slam</depend>
   <depend>robot_localization</depend>
   <depend>realsense2_camera</depend>
 

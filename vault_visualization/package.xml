@@ -10,7 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rviz2</depend>
-  <depend>rtabmap_ros</depend>
+  <depend>rtabmap_viz</depend>
   <depend>rosbridge_server</depend>
   <depend>pluginlib</depend>
 

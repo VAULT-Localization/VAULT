@@ -29,10 +29,11 @@ def generate_launch_description():
 
     vault_localization_dir = get_package_share_directory("vault_localization")
 
-    ### ARGS ###
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace", default_value="vault", description="Vault namespace"
+        "namespace",
+        default_value="vault",
+        description="Vault namespace",
     )
 
     use_sim_time = LaunchConfiguration("use_sim_time")
@@ -45,19 +46,23 @@ def generate_launch_description():
     ## Sensors ##
     fix_t265_odom = LaunchConfiguration("fix_t265_odom")
     fix_t265_odom_cmd = DeclareLaunchArgument(
-        "fix_t265_odom", default_value="True", description="Wheter to fix odom of T265"
+        "fix_t265_odom",
+        default_value="True",
+        description="Wheter to fix odom of T265",
     )
 
     publish_t265_odom_tf = LaunchConfiguration("publish_t265_odom_tf")
     publish_t265_odom_tf_cmd = DeclareLaunchArgument(
         "publish_t265_odom_tf",
-        default_value="True",
+        default_value="False",
         description="Wheter to publish odom tf of T265",
     )
 
     fix_d435i_imu = LaunchConfiguration("fix_d435i_imu")
     fix_d435i_imu_cmd = DeclareLaunchArgument(
-        "fix_d435i_imu", default_value="True", description="Wheter to fix D435i imu data"
+        "fix_d435i_imu",
+        default_value="True",
+        description="Wheter to fix D435i imu data",
     )
 
     ## VSLAM ##
@@ -85,7 +90,7 @@ def generate_launch_description():
     ## EKF ##
     run_ekf = LaunchConfiguration("run_ekf")
     run_ekf_cmd = DeclareLaunchArgument(
-        "run_ekf", default_value="False", description="Wheter to run EKF"
+        "run_ekf", default_value="True", description="Wheter to run EKF"
     )
 
     run_dual_ekf = LaunchConfiguration("run_dual_ekf")
@@ -117,8 +122,6 @@ def generate_launch_description():
         description="Wheter to run icp odometry",
     )
 
-    ### LAUNCHS & NODES ###
-
     ## Sensors ##
     fix_odom_frame_cmd = Node(
         package="vault_sensors",
@@ -133,7 +136,10 @@ def generate_launch_description():
                 "publish_tf": publish_t265_odom_tf,
             }
         ],
-        remappings=[("odom_out", "t265/odom"), ("odom_in", "t265/pose/sample")],
+        remappings=[
+            ("odom_out", "t265/odom"),
+            ("odom_in", "t265/odom/sample"),
+        ],
         condition=IfCondition(PythonExpression([fix_t265_odom])),
     )
 

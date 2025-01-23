@@ -24,7 +24,6 @@ import xacro
 
 def robot_state_publisher(context: LaunchContext):
 
-    ### XACRO ###
     xacro_file = os.path.join(
         get_package_share_directory("vault_description"), "robots/vault.urdf.xacro"
     )
@@ -33,7 +32,6 @@ def robot_state_publisher(context: LaunchContext):
 
     params = {"robot_description": doc.toxml(), "use_sim_time": True}
 
-    ### NODES ###
     robot_state_publisher_cmd = Node(
         name="robot_state_publisher",
         package="robot_state_publisher",

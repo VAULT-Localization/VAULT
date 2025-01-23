@@ -25,27 +25,37 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace", default_value="vault", description="Vault namespace"
+        "namespace",
+        default_value="vault",
+        description="Vault namespace",
     )
 
     update_rate = LaunchConfiguration("update_rate")
     update_rate_cmd = DeclareLaunchArgument(
-        "update_rate", default_value="30", description="update rate"
+        "update_rate",
+        default_value="30",
+        description="update rate",
     )
 
     device = LaunchConfiguration("device")
     device_cmd = DeclareLaunchArgument(
-        "device", default_value="/dev/ttyACM0", description="GPS device"
+        "device",
+        default_value="/dev/ttyACM0",
+        description="GPS device",
     )
 
     baud = LaunchConfiguration("baud")
     baud_cmd = DeclareLaunchArgument(
-        "baud", default_value="460800", description="baud rate"
+        "baud",
+        default_value="460800",
+        description="baud rate",
     )
 
     frame_id = LaunchConfiguration("frame_id")
     frame_id_cmd = DeclareLaunchArgument(
-        "frame_id", default_value=[namespace, "_gps_antenna_link"], description="frame_id"
+        "frame_id",
+        default_value=[namespace, "_gps_antenna_link"],
+        description="frame_id",
     )
 
     use_nav = LaunchConfiguration("use_nav")
