@@ -81,11 +81,8 @@ def generate_launch_description():
                 executable="republish_node",
                 name="depth_republish_node",
                 remappings=[
-                    (
-                        "in/compressedDepth",
-                        "d435i/aligned_depth_to_color/image_raw/compressedDepth",
-                    ),
-                    ("out", "d435i/aligned_depth_to_color/image_raw/repub"),
+                    ("in/compressedDepth", "d435i/depth/image_rect_raw/compressedDepth"),
+                    ("out", "d435i/depth/image_rect_raw/repub"),
                 ],
                 arguments=["compressedDepth", "raw"],
                 namespace=namespace,

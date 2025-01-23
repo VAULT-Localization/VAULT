@@ -95,7 +95,7 @@ def generate_launch_description():
         # subs
         ("rgb/image", "d435i/color/image_raw"),
         ("rgb/camera_info", "d435i/color/camera_info"),
-        ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
+        ("depth/image", "d435i/depth/image_rect_raw"),
         ("imu", "imu"),
         # pubs
         ("odom", "rgbd/odom"),

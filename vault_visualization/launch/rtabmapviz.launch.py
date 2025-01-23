@@ -14,13 +14,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -70,7 +67,7 @@ def generate_launch_description():
         # ("rgb/image", "d435i/color/image_raw/repub"),
         ("rgb/image", "d435i/color/image_raw"),
         ("rgb/camera_info", "d435i/color/camera_info"),
-        ("depth/image", "d435i/aligned_depth_to_color/image_raw"),
+        ("depth/image", "d435i/depth/image_rect_raw"),
         ("imu", "imu"),
         ("odom", "odom"),
         ("odom_info", "odom_info"),

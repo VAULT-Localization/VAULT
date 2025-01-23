@@ -27,12 +27,16 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace", default_value="vault", description="Vault namespace"
+        "namespace",
+        default_value="vault",
+        description="Vault namespace",
     )
 
     use_camera_imu = LaunchConfiguration("use_camera_imu")
     use_camera_imu_cmd = DeclareLaunchArgument(
-        "use_camera_imu", default_value="True", description="Whether to use camera IMU"
+        "use_camera_imu",
+        default_value="True",
+        description="Whether to use camera IMU",
     )
 
     realsense_cmd = IncludeLaunchDescription(
@@ -43,7 +47,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             "node_namespace": [namespace, "/t265"],
-            "node_name": "t265",
+            "node_name": "t265_node",
             "camera_name": [namespace, "_t265"],
             "device_type": "t265",
             "enable_gyro": use_camera_imu,
@@ -56,6 +60,7 @@ def generate_launch_description():
             "publish_odom_tf": "false",
             "enable_fisheye1": "false",
             "enable_fisheye2": "false",
+            "publish_tf": "false",
         }.items(),
     )
 

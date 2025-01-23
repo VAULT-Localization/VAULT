@@ -200,9 +200,9 @@ aluminum peripherial evaluation case.
             <remapping>${name}/image_raw/compressed:=${name}/color/image_raw/compressed</remapping>
             <remapping>${name}/image_raw/compressedDepth:=${name}/color/image_raw/compressedDepth</remapping>
             <remapping>${name}/camera_info:=${name}/color/camera_info</remapping>
-            <remapping>${name}/depth/image_raw:=${name}/aligned_depth_to_color/image_raw</remapping>
-            <remapping>${name}/depth/image_raw/compressed:=${name}/aligned_depth_to_color/image_raw/compressed</remapping>
-            <remapping>${name}/depth/image_raw/compressedDepth:=${name}/aligned_depth_to_color/image_raw/compressedDepth</remapping>
+            <remapping>${name}/depth/image_raw:=${name}/depth/image_rect_raw</remapping>
+            <remapping>${name}/depth/image_raw/compressed:=${name}/depth/image_rect_raw/compressed</remapping>
+            <remapping>${name}/depth/image_raw/compressedDepth:=${name}/depth/image_rect_raw/compressedDepth</remapping>
             <remapping>${name}/depth/camera_info:=${name}/aligned_depth_to_color/camera_info</remapping>
             <remapping>${name}/points:=${name}/depth/color/points</remapping>
           </ros>
