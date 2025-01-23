@@ -14,6 +14,18 @@
 Install the depebndencies:
 
 - [librealsense](https://github.com/IntelRealSense/librealsense) [v2.50.0](https://github.com/IntelRealSense/librealsense/releases/tag/v2.50.0)
+
+```shell
+git clone https://github.com/IntelRealSense/cd.git
+cd librealsense
+git checkout v2.50.0
+mkdir build
+cd build
+cmake
+make
+sudo make install
+```
+
 - [realsense-ros](https://github.com/IntelRealSense/realsense-ros) [3.2.3](https://github.com/IntelRealSense/realsense-ros/releases/tag/3.2.3)
 - [Foxglove](https://foxglove.dev/download)
 
