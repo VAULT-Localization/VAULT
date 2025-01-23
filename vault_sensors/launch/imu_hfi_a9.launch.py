@@ -27,58 +27,66 @@ def generate_launch_description():
         "namespace", default_value="vault", description="Vault namespace"
     )
 
-    frame_id = LaunchConfiguration("frame_id")
+    frame_id = LaunchConfiguration("imu_frame_id")
     frame_id_cmd = DeclareLaunchArgument(
-        "frame_id", default_value=[namespace, "_imu_link"], description="frame_id"
+        "imu_frame_id",
+        default_value=[namespace, "_imu_link"],
+        description="frame_id",
     )
 
-    device = LaunchConfiguration("device")
+    device = LaunchConfiguration("imu_device")
     device_cmd = DeclareLaunchArgument(
-        "device", default_value="/dev/ttyUSB0", description="USB device"
+        "imu_device",
+        default_value="/dev/ttyUSB2",
+        description="USB device",
     )
 
-    baud = LaunchConfiguration("baud")
+    baud = LaunchConfiguration("imu_baud")
     baud_cmd = DeclareLaunchArgument(
-        "baud", default_value="921600", description="baud rate"
+        "imu_baud",
+        default_value="921600",
+        description="baud rate",
     )
 
-    gravitacional_normalization = LaunchConfiguration("gravitacional_normalization")
+    gravitacional_normalization = LaunchConfiguration("imu_gravitacional_normalization")
     gravitacional_normalization_cmd = DeclareLaunchArgument(
-        "gravitacional_normalization",
+        "imu_gravitacional_normalization",
         default_value="True",
         description="Wheter to apply gravitacional normalization to linear acceleration",
     )
 
-    orientation_covariance = LaunchConfiguration("orientation_covariance")
+    orientation_covariance = LaunchConfiguration("imu_orientation_covariance")
     orientation_covariance_cmd = DeclareLaunchArgument(
-        "orientation_covariance",
+        "imu_orientation_covariance",
         default_value="[0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0]",
         description="Covariance for IMU orientation",
     )
 
-    angular_velocity_covariance = LaunchConfiguration("angular_velocity_covariance")
+    angular_velocity_covariance = LaunchConfiguration("imu_angular_velocity_covariance")
     angular_velocity_covariance_cmd = DeclareLaunchArgument(
-        "angular_velocity_covariance",
+        "imu_angular_velocity_covariance",
         default_value="[4.0e-08, 0.0, 0.0, \
                         0.0, 4.0e-08, 0.0, \
                         0.0, 0.0, 4.0e-08]",
         description="Covariance for IMU angualar velocity",
     )
 
-    linear_acceleration_covariance = LaunchConfiguration("linear_acceleration_covariance")
+    linear_acceleration_covariance = LaunchConfiguration(
+        "imu_linear_acceleration_covariance"
+    )
     linear_acceleration_covariance_cmd = DeclareLaunchArgument(
-        "linear_acceleration_covariance",
+        "imu_linear_acceleration_covariance",
         default_value="[0.000289, 0.0, 0.0, \
                         0.0, 0.000289, 0.0, \
                         0.0, 0.0, 0.000289]",
         description="Covariance for IMU linar acceleration",
     )
 
-    magnetic_field_covariance = LaunchConfiguration("magnetic_field_covariance")
+    magnetic_field_covariance = LaunchConfiguration("imu_magnetic_field_covariance")
     magnetic_field_covariance_cmd = DeclareLaunchArgument(
-        "magnetic_field_covariance",
+        "imu_magnetic_field_covariance",
         default_value="[0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0, \
                         0.0, 0.0, 0.0]",
