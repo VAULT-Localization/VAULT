@@ -7,9 +7,17 @@
 ## Table of Contents
 
 1. [Installation](#installation)
-2. [Docs](#docs)
+2. [Usage](#usage)
 
 ## Installation
+
+Install the depebndencies:
+
+- [librealsense](https://github.com/IntelRealSense/librealsense) [v2.50.0](https://github.com/IntelRealSense/librealsense/releases/tag/v2.50.0)
+- [realsense-ros](https://github.com/IntelRealSense/realsense-ros) [3.2.3](https://github.com/IntelRealSense/realsense-ros/releases/tag/3.2.3)
+- [Foxglove](https://foxglove.dev/download)
+
+Then, clone and compile the repo:
 
 ```shell
 $ cd ~/ros2_ws/src
@@ -20,11 +28,6 @@ $ cd ~/ros2_ws
 $ rosdep install --from-paths src -r -y
 $ colcon build
 ```
-
-### Others
-- [librealsense](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md)
-- [Foxglove](https://foxglove.dev/download)
-
 
 ## Usage
 
@@ -71,7 +74,6 @@ $ ros2 launch vault_bringup vault.launch.py
 ### Using a Linux service
 
 [See vault_service README.](./vault_service/README.md)
-
 
 <!-- ## Docs
 
