@@ -19,7 +19,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.actions import DeclareLaunchArgument
 
 
@@ -28,6 +28,27 @@ def generate_launch_description():
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
         "namespace", default_value="vault", description="Vault namespace"
+    )
+
+    enable_imu = LaunchConfiguration("enable_imu")
+    enable_imu_cmd = DeclareLaunchArgument(
+        "enable_imu",
+        default_value="False",
+        description="Whether to enable D435i gyro and accel streams",
+    )
+
+    enable_infra = LaunchConfiguration("enable_infra")
+    enable_infra_cmd = DeclareLaunchArgument(
+        "enable_infra",
+        default_value="False",
+        description="Whether to enable D435i infra streams",
+    )
+
+    enable_pointcloud = LaunchConfiguration("enable_pointcloud")
+    enable_pointcloud_cmd = DeclareLaunchArgument(
+        "enable_pointcloud",
+        default_value="False",
+        description="Whether to enable D435i pointcloud",
     )
 
     realsense_cmd = IncludeLaunchDescription(
@@ -41,16 +62,18 @@ def generate_launch_description():
             "node_name": "d435i_node",
             "camera_name": [namespace, "_d435i"],
             "device_type": "d435",
-            "enable_gyro": "false",
-            "enable_accel": "false",
-            "unite_imu_method": "0",
-            "pointcloud.enable": "false",
+            "enable_gyro": enable_imu,
+            "enable_accel": enable_imu,
+            "unite_imu_method": PythonExpression(
+                ["'2' if '", enable_imu, "'.lower() == 'true' else '0'"]
+            ),
+            "pointcloud.enable": enable_pointcloud,
             "align_depth.enable": "true",
             "enable_sync": "true",
             "linear_accel_cov": "1.0",
             "decimation_filter.enable": "true",
-            "enable_infra1": "false",
-            "enable_infra2": "false",
+            "enable_infra1": enable_infra,
+            "enable_infra2": enable_infra,
             "publish_tf": "false",
         }.items(),
     )
@@ -58,6 +81,10 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(namespace_cmd)
+    ld.add_action(enable_imu_cmd)
+    ld.add_action(enable_infra_cmd)
+    ld.add_action(enable_pointcloud_cmd)
+
     ld.add_action(realsense_cmd)
 
     return ld

@@ -17,7 +17,7 @@
     base_link_frame: base_link
     world_frame: map
 
-    odom0: t265/odom/sample
+    odom0: t265/odom
     odom0_config: [
         # position
         false,

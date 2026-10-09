@@ -11,19 +11,20 @@
 
 ## Installation
 
-Install the depebndencies:
+Install the dependencies:
 
 - [librealsense](https://github.com/IntelRealSense/librealsense) [v2.50.0](https://github.com/IntelRealSense/librealsense/releases/tag/v2.50.0)
 
 ```shell
-git clone https://github.com/IntelRealSense/cd.git
+git clone https://github.com/IntelRealSense/librealsense.git
 cd librealsense
 git checkout v2.50.0
 mkdir build
 cd build
-cmake
-make
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
 sudo make install
+sudo ldconfig
 ```
 
 - [realsense-ros](https://github.com/IntelRealSense/realsense-ros) [3.2.3](https://github.com/IntelRealSense/realsense-ros/releases/tag/3.2.3)
@@ -32,13 +33,13 @@ sudo make install
 Then, clone and compile the repo:
 
 ```shell
-$ cd ~/ros2_ws/src
-$ git clone https://github.com/mgonzs13/VAULT.git
-$ git clone https://github.com/mgonzs13/ubx_ros
-$ pip3 install -r VAULT/requirements.txt
-$ cd ~/ros2_ws
-$ rosdep install --from-paths src -r -y
-$ colcon build
+cd ~/ros2_ws/src
+git clone https://github.com/mgonzs13/VAULT.git
+git clone https://github.com/mgonzs13/ubx_ros
+pip3 install -r VAULT/requirements.txt
+cd ~/ros2_ws
+rosdep install --from-paths src -r -y
+colcon build
 ```
 
 ### Assigning ttyUSB
@@ -46,13 +47,12 @@ $ colcon build
 You can assign a ttyUSB to each serial:
 
 ```shell
-$ sudo udevadm info --query=property --name=/dev/ttyUSB0 | grep SERIAL
+sudo udevadm info --query=property --name=/dev/ttyUSB0 | grep SERIAL
 ID_SERIAL=Silicon_Labs_HandsFree_IMU_USB_to_UART_Bridge_Controller_0001
 ID_SERIAL_SHORT=0001
-$ sudo udevadm info --query=property --name=/dev/ttyACM0 | grep SERIAL
+sudo udevadm info --query=property --name=/dev/ttyACM0 | grep SERIAL
 ID_SERIAL=u-bloxAG-_www.u-blox.com_u-blox_GNSS_receiver
-Parece que se desconecta el ublox cada x tiempo
-$ sudo nano /etc/udev/rules.d/99-usbserial.rules
+sudo nano /etc/udev/rules.d/99-usbserial.rules
 # add the following lines
 ACTION=="add",ENV{ID_BUS}=="usb",ENV{ID_SERIAL}=="Silicon_Labs_HandsFree_IMU_USB_to_UART_Bridge_Controller_0001",SYMLINK+="ttyUSB0"
 ACTION=="add",ENV{ID_BUS}=="usb",ENV{ID_SERIAL}=="u-bloxAG-_www.u-blox.com_u-blox_GNSS_receiver",SYMLINK+="ttyACM0"
@@ -98,7 +98,7 @@ export RUN_ICP_ODOMETRY=False
 ```
 
 ```shell
-$ ros2 launch vault_bringup vault.launch.py
+ros2 launch vault_bringup vault.launch.py
 ```
 
 ### Using a Linux service

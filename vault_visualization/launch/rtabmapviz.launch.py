@@ -54,7 +54,6 @@ def generate_launch_description():
             "subscribe_scan": False,
             "subscribe_odom_info": False,
             "approx_sync": True,
-            "publish_tf": True,
             "use_sim_time": use_sim_time,
             "qos_image": 2,
             "qos_camera_info": 2,
@@ -66,7 +65,6 @@ def generate_launch_description():
 
     remappings = [
         # subs
-        # ("rgb/image", "d435i/color/image_raw/repub"),
         ("rgb/image", "d435i/color/image_raw"),
         ("rgb/camera_info", "d435i/color/camera_info"),
         ("depth/image", "d435i/depth/image_rect_raw"),
@@ -74,10 +72,10 @@ def generate_launch_description():
         ("odom", "odom"),
         ("odom_info", "odom_info"),
         ("goal", "goal_pose"),
-        ("gps/fix", "fix"),
-        # ("left/image_rect", "t265/fisheye1/image_raw/repub"),
+        ("gps/fix", "gps/fix"),
+        ("left/image_rect", "t265/fisheye1/image_raw"),
         ("left/camera_info", "t265/fisheye1/camera_info"),
-        # ("right/image_rect", "t265/fisheye2/image_raw/repub"),
+        ("right/image_rect", "t265/fisheye2/image_raw"),
         ("right/camera_info", "t265/fisheye2/camera_info"),
     ]
 

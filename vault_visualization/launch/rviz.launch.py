@@ -18,6 +18,8 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
@@ -25,6 +27,13 @@ def generate_launch_description():
     pkg_path = get_package_share_directory("vault_visualization")
 
     rviz_config = os.path.join(pkg_path, "rviz", "default.rviz")
+
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    use_sim_time_cmd = DeclareLaunchArgument(
+        "use_sim_time",
+        default_value="False",
+        description="Use simulation (Gazebo) clock if True",
+    )
 
     # repub_cmd = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
@@ -45,10 +54,11 @@ def generate_launch_description():
         package="rviz2",
         executable="rviz2",
         arguments=["-d", rviz_config],
-        parameters=[{"use_sim_time": True}],
+        parameters=[{"use_sim_time": use_sim_time}],
     )
 
     ld = LaunchDescription()
+    ld.add_action(use_sim_time_cmd)
     # ld.add_action(repub_cmd)
     ld.add_action(rviz_cmd)
     return ld

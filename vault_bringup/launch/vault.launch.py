@@ -39,7 +39,8 @@ def generate_launch_description():
                 "launch",
                 "robot_state_publisher.launch.py",
             )
-        )
+        ),
+        launch_arguments={"use_sim_time": "False"}.items(),
     )
 
     ## Sensors ##
@@ -49,7 +50,10 @@ def generate_launch_description():
                 get_package_share_directory("vault_sensors"), "launch", "t265.launch.py"
             )
         ),
-        launch_arguments={"namespace": namespace}.items(),
+        launch_arguments={
+            "namespace": namespace,
+            "enable_fisheye": os.getenv("USE_T265", default="False"),
+        }.items(),
     )
 
     d435i_cmd = IncludeLaunchDescription(
@@ -58,7 +62,12 @@ def generate_launch_description():
                 get_package_share_directory("vault_sensors"), "launch", "d435i.launch.py"
             )
         ),
-        launch_arguments={"namespace": namespace}.items(),
+        launch_arguments={
+            "namespace": namespace,
+            "enable_imu": os.getenv("FIX_D435i_IMU", default="False"),
+            "enable_infra": os.getenv("RUN_STEREO_ODOMETRY", default="False"),
+            "enable_pointcloud": os.getenv("RUN_ICP_ODOMETRY", default="False"),
+        }.items(),
     )
 
     ubx_cmd = IncludeLaunchDescription(
@@ -95,7 +104,7 @@ def generate_launch_description():
             "use_sim_time": "False",
             "fix_t265_odom": os.getenv("FIX_T265_ODOM", default="True"),
             "publish_t265_odom_tf": os.getenv("PUBLISH_T265_ODOM_TF", default="False"),
-            "fix_d435i_imu_filter": os.getenv("FIX_D435i_IMU_FILTER", default="False"),
+            "fix_d435i_imu": os.getenv("FIX_D435i_IMU", default="False"),
             "publish_visual_slam_tf": os.getenv("PUBLISH_VISUAL_SLAM_TF", default="True"),
             "use_t265": os.getenv("USE_T265", default="False"),
             "use_gps": os.getenv("USE_GPS", default="True").lower(),

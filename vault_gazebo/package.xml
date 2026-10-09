@@ -11,6 +11,10 @@
 
   <depend>vault_description</depend>
 
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>vault_localization</exec_depend>
+  <exec_depend>vault_visualization</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

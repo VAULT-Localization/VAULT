@@ -18,7 +18,8 @@ import os
 from ament_index_python import get_package_share_directory
 from launch_ros.actions import Node
 from launch import LaunchDescription, LaunchContext
-from launch.actions import OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 import xacro
 
 
@@ -31,7 +32,10 @@ def robot_state_publisher(context: LaunchContext):
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
 
-    params = {"robot_description": doc.toxml(), "use_sim_time": True}
+    params = {
+        "robot_description": doc.toxml(),
+        "use_sim_time": LaunchConfiguration("use_sim_time"),
+    }
 
     ### NODES ###
     robot_state_publisher_cmd = Node(
@@ -47,9 +51,16 @@ def robot_state_publisher(context: LaunchContext):
 
 def generate_launch_description():
 
+    use_sim_time_cmd = DeclareLaunchArgument(
+        "use_sim_time",
+        default_value="False",
+        description="Use simulation (Gazebo) clock if True",
+    )
+
     prepare_xacro_cmd = OpaqueFunction(function=robot_state_publisher)
 
     ld = LaunchDescription()
+    ld.add_action(use_sim_time_cmd)
     ld.add_action(prepare_xacro_cmd)
 
     return ld

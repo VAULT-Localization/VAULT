@@ -90,7 +90,7 @@ def generate_launch_description():
         parameters=[
             {
                 "host": os.getenv("NTRIP_HOST"),
-                "port": int(os.getenv("NTRIP_PORT")),
+                "port": int(os.getenv("NTRIP_PORT", "2101")),
                 "mountpoint": os.getenv("NTRIP_MOUNTPOINT"),
                 "authenticate": True,
                 "username": os.getenv("NTRIP_USER"),

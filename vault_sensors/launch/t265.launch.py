@@ -39,6 +39,13 @@ def generate_launch_description():
         description="Whether to use camera IMU",
     )
 
+    enable_fisheye = LaunchConfiguration("enable_fisheye")
+    enable_fisheye_cmd = DeclareLaunchArgument(
+        "enable_fisheye",
+        default_value="False",
+        description="Whether to enable T265 fisheye streams",
+    )
+
     realsense_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -58,8 +65,8 @@ def generate_launch_description():
             "enable_sync": "true",
             "linear_accel_cov": "1.0",
             "publish_odom_tf": "false",
-            "enable_fisheye1": "false",
-            "enable_fisheye2": "false",
+            "enable_fisheye1": enable_fisheye,
+            "enable_fisheye2": enable_fisheye,
             "publish_tf": "false",
         }.items(),
     )
@@ -68,6 +75,7 @@ def generate_launch_description():
 
     ld.add_action(namespace_cmd)
     ld.add_action(use_camera_imu_cmd)
+    ld.add_action(enable_fisheye_cmd)
 
     ld.add_action(realsense_cmd)
 

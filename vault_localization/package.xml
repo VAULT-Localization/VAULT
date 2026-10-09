@@ -17,6 +17,9 @@
   <depend>robot_localization</depend>
   <depend>realsense2_camera</depend>
 
+  <exec_depend>nav2_common</exec_depend>
+  <exec_depend>vault_sensors</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

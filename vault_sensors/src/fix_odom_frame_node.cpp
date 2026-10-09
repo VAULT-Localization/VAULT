@@ -19,6 +19,7 @@
 
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
+#include <geometry_msgs/msg/vector3_stamped.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <rclcpp/rclcpp.hpp>
 
@@ -60,6 +61,8 @@ void FixOdomFrameNode::callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
   geometry_msgs::msg::TransformStamped transform_stamped;
   geometry_msgs::msg::TransformStamped new_odom_transform;
   geometry_msgs::msg::PoseWithCovarianceStamped pose_stamped;
+  geometry_msgs::msg::Vector3Stamped twist_linear;
+  geometry_msgs::msg::Vector3Stamped twist_angular;
 
   try {
     transform_stamped = this->tf_buffer->lookupTransform(
@@ -70,6 +73,14 @@ void FixOdomFrameNode::callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
 
     tf2::doTransform(pose_stamped, pose_stamped, transform_stamped);
 
+    twist_linear.header = msg->header;
+    twist_linear.vector = msg->twist.twist.linear;
+    twist_angular.header = msg->header;
+    twist_angular.vector = msg->twist.twist.angular;
+
+    tf2::doTransform(twist_linear, twist_linear, transform_stamped);
+    tf2::doTransform(twist_angular, twist_angular, transform_stamped);
+
     // new odom msg
     nav_msgs::msg::Odometry new_odom;
 
@@ -78,6 +89,8 @@ void FixOdomFrameNode::callback(const nav_msgs::msg::Odometry::SharedPtr msg) {
     new_odom.child_frame_id = this->frame_id;
     new_odom.pose = pose_stamped.pose;
     new_odom.twist = msg->twist;
+    new_odom.twist.twist.linear = twist_linear.vector;
+    new_odom.twist.twist.angular = twist_angular.vector;
 
     this->pub->publish(new_odom);
 

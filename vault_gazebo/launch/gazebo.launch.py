@@ -41,7 +41,7 @@ def generate_launch_description():
     world = LaunchConfiguration("world")
     world_cmd = DeclareLaunchArgument(
         "world",
-        default_value=os.path.join(pkg_path, "worlds", "empty.world"),
+        default_value=os.path.join(pkg_gazebo_ros, "worlds", "empty.world"),
         description="Gazebo world",
     )
 
@@ -99,6 +99,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_visualization_path, "launch", "rviz.launch.py")
         ),
+        launch_arguments={"use_sim_time": "True"}.items(),
         condition=IfCondition(PythonExpression([launch_rviz])),
     )
 

@@ -38,6 +38,8 @@ from sensor_msgs.msg import MagneticField
 
 class ImuHfiA9Node(Node):
 
+    frame_lengths = {0x2C: 49, 0x14: 25}
+
     def __init__(self) -> None:
         super().__init__("imu_hfi_a9_node")
 
@@ -96,6 +98,7 @@ class ImuHfiA9Node(Node):
         )
 
         # aux
+        self.buffer = bytearray()
         self.orientation = [0.0, 0.0, 0.0, 0.0]
         self.angular_velocity = [0.0, 0.0, 0.0]
         self.linear_acceleration = [0.0, 0.0, 0.0]
@@ -114,7 +117,7 @@ class ImuHfiA9Node(Node):
 
         # starts
         self.open_device(self.usb_port, self.baudrate)
-        self.create_timer(1 / 1000, self.work)
+        self.create_timer(1 / 200, self.work)
 
     def open_device(self, usb_port: str, baudrate: int, timeout: float = 0.5) -> None:
         try:
@@ -165,43 +168,53 @@ class ImuHfiA9Node(Node):
 
         if count > 0:
             try:
-                buff_data = self.hf_imu.read(count)
-                self.handle_data(list(buff_data))
+                self.buffer.extend(self.hf_imu.read(count))
             except serial.SerialException as e:
                 self.get_logger().error("Error reading from serial: {:s}".format(str(e)))
+                return
+
+        self.process_buffer()
+
+    def process_buffer(self) -> None:
+        while len(self.buffer) >= 3:
+            if self.buffer[0] != 0xAA or self.buffer[1] != 0x55:
+                del self.buffer[0]
+                continue
+
+            frame_len = self.frame_lengths.get(self.buffer[2])
+            if frame_len is None:
+                del self.buffer[0]
+                continue
+
+            if len(self.buffer) < frame_len:
+                return
+
+            raw_data = list(self.buffer[:frame_len])
+            del self.buffer[:frame_len]
+
+            if self.check_sum(raw_data[2:-2], raw_data[-2:]):
+                self.handle_data(raw_data)
+            else:
+                self.get_logger().error("Check Sum verification failed")
 
     def handle_data(self, raw_data: List[int]) -> None:
-
-        # check header
-        if raw_data[0] != 0xAA:
-            return
-        if raw_data[1] != 0x55:
-            return
 
         # check msg type
         if raw_data[2] == 0x2C:
 
-            if self.check_sum(raw_data[2:47], raw_data[47:49]):
-                data = self.hex_to_ieee(raw_data[7:47])
-                self.angular_velocity = data[1:4]
-                self.linear_acceleration = data[4:7]
-                self.magnetometer = data[7:10]
-            else:
-                self.get_logger().error("Check Sum verification failed")
-                return
+            data = self.hex_to_ieee(raw_data[7:47])
+            self.angular_velocity = data[1:4]
+            self.linear_acceleration = data[4:7]
+            self.magnetometer = data[7:10]
 
         elif raw_data[2] == 0x14:
 
-            if self.check_sum(raw_data[2:23], raw_data[23:25]):
-                data = self.hex_to_ieee(raw_data[7:23])
-                aux_orientation = data[1:4]
-                aux_orientation = [aux_orientation[i] * math.pi / 180 for i in range(3)]
-                self.orientation = quaternion_from_euler(
-                    -aux_orientation[0], aux_orientation[1], -aux_orientation[2]
-                )
-            else:
-                self.get_logger().error("Check Sum verification failed")
-                return
+            data = self.hex_to_ieee(raw_data[7:23])
+            aux_orientation = data[1:4]
+            aux_orientation = [aux_orientation[i] * math.pi / 180 for i in range(3)]
+            self.orientation = quaternion_from_euler(
+                -aux_orientation[0], aux_orientation[1], -aux_orientation[2]
+            )
 
         # publish
         stamp = self.get_clock().now().to_msg()

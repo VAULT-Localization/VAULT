@@ -87,7 +87,8 @@ def generate_launch_description():
                 "launch",
                 "robot_state_publisher.launch.py",
             )
-        )
+        ),
+        launch_arguments={"use_sim_time": "True"}.items(),
     )
 
     ld = LaunchDescription()

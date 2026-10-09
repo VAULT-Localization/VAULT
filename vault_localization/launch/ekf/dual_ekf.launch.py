@@ -86,7 +86,7 @@ def generate_launch_description():
                 parameters=[ekf_odom_params],
                 remappings=[
                     # pubs
-                    ("odometry/filtered", "odom_local")
+                    ("odometry/filtered", "odom")
                 ],
             ),
             launch_ros.actions.Node(
