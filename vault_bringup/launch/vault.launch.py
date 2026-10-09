@@ -25,11 +25,13 @@ from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
 
+    ### ARGS ###
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
         "namespace", default_value="vault", description="Vault namespace"
     )
 
+    ### LAUNCHS ###
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(

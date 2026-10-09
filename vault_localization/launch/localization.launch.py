@@ -29,6 +29,7 @@ def generate_launch_description():
 
     vault_localization_dir = get_package_share_directory("vault_localization")
 
+    ### ARGS ###
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
         "namespace",
@@ -121,6 +122,8 @@ def generate_launch_description():
         default_value="False",
         description="Wheter to run icp odometry",
     )
+
+    ### LAUNCHS & NODES ###
 
     ## Sensors ##
     fix_odom_frame_cmd = Node(

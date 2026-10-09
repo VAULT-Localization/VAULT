@@ -13,13 +13,13 @@
 # limitations under the License.
 
 """Launch realsense2_camera node."""
+
 import os
 import yaml
 from launch import LaunchDescription
 import launch_ros.actions
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
-
 
 configurable_parameters = [
     {"name": "camera_name", "default": "camera", "description": "camera unique name"},

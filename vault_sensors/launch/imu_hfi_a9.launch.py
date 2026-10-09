@@ -37,7 +37,7 @@ def generate_launch_description():
     device = LaunchConfiguration("imu_device")
     device_cmd = DeclareLaunchArgument(
         "imu_device",
-        default_value="/dev/ttyUSB0",
+        default_value="/dev/ttyUSB10",
         description="USB device",
     )
 

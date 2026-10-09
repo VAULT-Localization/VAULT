@@ -24,7 +24,9 @@ def generate_launch_description():
 
     namespace = LaunchConfiguration("namespace")
     namespace_cmd = DeclareLaunchArgument(
-        "namespace", default_value="vault", description="Vault namespace"
+        "namespace",
+        default_value="vault",
+        description="Vault namespace",
     )
 
     use_sim_time = LaunchConfiguration("use_sim_time")

@@ -26,6 +26,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
+    ### ARGS ###
     initial_pose_x = LaunchConfiguration("initial_pose_x")
     initial_pose_x_cmd = DeclareLaunchArgument(
         "initial_pose_x",
@@ -54,6 +55,7 @@ def generate_launch_description():
         description="Initial pose yaw",
     )
 
+    ### NODES ###
     spawn_entity_cmd = Node(
         package="gazebo_ros",
         executable="spawn_entity.py",
@@ -77,6 +79,7 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
+    ### LAUNCHES ###
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
